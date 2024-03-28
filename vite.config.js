@@ -8,7 +8,6 @@ export default defineConfig({
             input: [
                 'resources/css/app.scss',
                 'resources/js/index.js',
-                'resources/images/*'
             ],
             refresh: true,
         }),
