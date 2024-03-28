@@ -4,8 +4,8 @@ import Header from './components/Header.vue';
 
 </script>
 <template>
-    <div class="container">
+    <div class="container-fluid p-0">
         <Header/>
-        Hello
+        <router-view></router-view>
     </div>
 </template>

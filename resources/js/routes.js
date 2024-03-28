@@ -1,7 +1,7 @@
-import App from './App.vue';
+import Index from './pages/Index.vue';
 import Book from './pages/Book.vue';
 
 export const routes = [
-    { path: '/', component: App },
+    { path: '/', component: Index },
     { path: '/booking', component: Book },
 ]
