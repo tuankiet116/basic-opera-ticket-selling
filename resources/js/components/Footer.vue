@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid position-absolute bottom-0 text-center">
+    <div class="container-fluid text-center">
         <hr />
         <div class="row justify-content-center">
             <div class="text-start col-auto">
