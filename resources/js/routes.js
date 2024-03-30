@@ -3,5 +3,5 @@ import Book from './pages/Book.vue';
 
 export const routes = [
     { path: '/', component: Index },
-    { path: '/booking', component: Book },
+    { path: '/book/:eventId', component: Book, name: 'book-ticket' },
 ]

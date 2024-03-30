@@ -2,5 +2,17 @@ $primary: rgb(205, 153, 86);
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    font-family: '__Montserrat_26bb97','__Montserrat_Fallback_26bb97';
+    font-family: '__Montserrat_26bb97', '__Montserrat_Fallback_26bb97';
+}
+
+.text-truncate-custom {
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
 }
