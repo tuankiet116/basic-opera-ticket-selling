@@ -1,4 +1,21 @@
 $primary: rgb(205, 153, 86);
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-size": map-merge(
+      map-get($utilities, "font-size"),
+    (responsive: true),
+    ),
+  )
+);
+
+@import "bootstrap/scss/utilities/api";
 @import 'bootstrap/scss/bootstrap';
 
 body {
@@ -15,4 +32,20 @@ body {
 a {
     text-decoration: none;
     color: unset;
+}
+
+.min-vh-80 {
+    min-height: 80vh !important;
+}
+
+.border-hg-bottom {
+    border-bottom: solid 2px $primary;
+}
+
+.wall {
+  background-color: #424642;
+}
+
+* {
+  border: red 1px;
 }

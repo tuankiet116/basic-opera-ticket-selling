@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue'; 
- 
+import vue from '@vitejs/plugin-vue';
+
 export default defineConfig({
+    // base: "https://1977-27-72-29-216.ngrok-free.app",
     plugins: [
         laravel({
             input: [
@@ -11,7 +12,7 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        vue({ 
+        vue({
             template: {
                 transformAssetUrls: {
                     base: null,
@@ -20,9 +21,12 @@ export default defineConfig({
             },
         }),
     ],
-    resolve: { 
+    resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
+    server: {
+        host: false
+    }
 });
