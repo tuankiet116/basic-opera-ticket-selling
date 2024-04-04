@@ -20,6 +20,7 @@ $utilities: map-merge(
 
 body {
     font-family: '__Montserrat_26bb97', '__Montserrat_Fallback_26bb97';
+    min-height: 100vh;
 }
 
 .text-truncate-custom {
@@ -48,4 +49,13 @@ a {
 
 * {
   border: red 1px;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
