@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid shadow row pe-0 w-100 position-sticky top-0 bg-white w-100 m-0">
+    <div class="container-fluid shadow row pe-0 w-100 position-sticky top-0 bg-white w-100 m-0 z-1">
         <div class="container-fluid py-2 d-flex row">
             <div class="col p-0">
                 <router-link :to="{ name: 'index' }">

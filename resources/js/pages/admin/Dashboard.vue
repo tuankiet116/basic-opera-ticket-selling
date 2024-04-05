@@ -1,6 +1,10 @@
 <template>
-    <SideBar />
-    <router-view></router-view>
+    <div class="d-flex">
+        <SideBar />
+        <div class="w-100">
+            <router-view></router-view>
+        </div>
+    </div>
 </template>
 
 <script setup>

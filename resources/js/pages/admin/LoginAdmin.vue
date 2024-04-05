@@ -41,7 +41,7 @@
                             </form>
                         </div>
                     </div>
-                    <p class="text-end text-secondary mt-3">Bootstrap 5 Login Page Design</p>
+                    <p class="text-end text-secondary mt-3">Hoguom Opera</p>
                 </div>
             </div>
         </div>

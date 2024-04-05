@@ -7,15 +7,30 @@
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
+                <router-link :to="{ name: 'admin-list-events' }" class="nav-link"
+                    :class="{ 'active': isActiveRouter('admin-list-events') }" aria-current="page">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
                         <path
                             d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
                     </svg>
                     &nbsp;
-                    Events
-                </a>
+                    Danh sách sự kiện
+                </router-link>
+            </li>
+            <li class="nav-item mt-2">
+                <router-link :to="{ name: 'admin-create-event' }" class="nav-link" aria-current="page"
+                    :class="{ 'active': isActiveRouter('admin-create-event') }">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-calendar-plus" viewBox="0 0 16 16">
+                        <path
+                            d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
+                        <path
+                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                    </svg>
+                    &nbsp;
+                    Tạo sự kiện
+                </router-link>
             </li>
         </ul>
         <hr>
@@ -42,4 +57,13 @@
     </div>
 </template>
 <script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const isActiveRouter = (typeRouter) => {
+    if (typeRouter == router.currentRoute.value.name) {
+        return true;
+    }
+    return false;
+}
 </script>
