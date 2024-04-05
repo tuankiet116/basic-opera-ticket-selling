@@ -15,7 +15,7 @@ let halls = [
         id: "fl_3-4"
     }
 ];
-let hallSelected = ref(halls[1].id);
+let hallSelected = ref(halls[0].id);
 let eventId = route.params.eventId;
 
 const selectHall = (hallId: string): void => {

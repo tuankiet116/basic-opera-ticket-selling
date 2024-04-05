@@ -5,42 +5,38 @@ $primary: rgb(205, 153, 86);
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
-$utilities: map-merge(
-  $utilities,
-  (
-    "font-size": map-merge(
-      map-get($utilities, "font-size"),
-    (responsive: true),
-    ),
-  )
-);
+$utilities: map-merge($utilities,
+    ("font-size": map-merge(map-get($utilities, "font-size"),
+        (responsive: true),
+      ),
+    ));
 
 @import "bootstrap/scss/utilities/api";
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    font-family: '__Montserrat_26bb97', '__Montserrat_Fallback_26bb97';
-    min-height: 100vh;
+  font-family: '__Montserrat_26bb97', '__Montserrat_Fallback_26bb97';
+  min-height: 100vh;
 }
 
 .text-truncate-custom {
-    -webkit-line-clamp: 3;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 a {
-    text-decoration: none;
-    color: unset;
+  text-decoration: none;
+  color: unset;
 }
 
 .min-vh-80 {
-    min-height: 80vh !important;
+  min-height: 80vh !important;
 }
 
 .border-hg-bottom {
-    border-bottom: solid 2px $primary;
+  border-bottom: solid 2px $primary;
 }
 
 .wall {

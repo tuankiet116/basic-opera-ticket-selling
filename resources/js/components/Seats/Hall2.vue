@@ -104,5 +104,9 @@ const caculateRowHeight = (row) => {
 .seat {
     margin-left: 1px;
     margin-right: 1px;
+    cursor: pointer;
+    span {
+        cursor: pointer;
+    }
 }
 </style>
