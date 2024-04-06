@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->string("name")->unique();
+            $table->string("row")->index();
             $table->string("hall")->index();
             $table->timestamps();
         });

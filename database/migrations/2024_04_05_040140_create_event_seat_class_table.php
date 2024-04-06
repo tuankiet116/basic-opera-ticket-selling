@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_seats', function (Blueprint $table) {
+        Schema::create('event_seat_class', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("event_id");
             $table->bigInteger("seat_id");
+            $table->bigInteger("ticket_class_id");
             $table->timestamps();
+
+            $table->foreign("ticket_class_id")->references("id")->on("ticket_classes");
+            $table->foreign("seat_id")->references("id")->on("seats");
+            $table->foreign("event_id")->references("id")->on("events");
         });
     }
 
