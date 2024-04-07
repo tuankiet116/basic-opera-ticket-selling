@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,4 +16,9 @@ class EventModel extends Model
         "description",
         "image_url"
     ];
+
+    public function scopeSearchBy(Builder $query, string $search) {
+        if (!$search) return $query;
+        return $query->where("name", "like", "%$search%");
+    }
 }

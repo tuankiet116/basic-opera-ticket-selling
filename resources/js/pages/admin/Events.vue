@@ -21,7 +21,18 @@
                     </button>
                 </div>
             </div>
-            <hr/>
+            <hr />
         </div>
     </div>
 </template>
+
+<script setup>
+import { onMounted, reactive } from "vue";
+import { getListEvent } from "../../api/admin/events";
+
+let events = reactive([]);
+
+onMounted(async () => {
+    await getListEvent()
+})
+</script>
