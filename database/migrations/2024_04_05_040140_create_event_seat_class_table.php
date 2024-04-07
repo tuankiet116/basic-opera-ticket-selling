@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('event_seat_class', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("event_id");
-            $table->bigInteger("seat_id");
-            $table->bigInteger("ticket_class_id");
+            $table->unsignedBigInteger("event_id");
+            $table->unsignedBigInteger("seat_id");
+            $table->unsignedBigInteger("ticket_class_id");
             $table->timestamps();
 
             $table->foreign("ticket_class_id")->references("id")->on("ticket_classes");

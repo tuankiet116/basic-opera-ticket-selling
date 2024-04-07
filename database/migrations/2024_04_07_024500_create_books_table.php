@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("event_id");
-            $table->bigInteger("client_id")->nullable();
-            $table->bigInteger("seat_id");
+            $table->unsignedBigInteger("event_id");
+            $table->unsignedBigInteger("client_id")->nullable();
+            $table->unsignedBigInteger("seat_id");
             $table->boolean("isBooked")->default(false);
             $table->boolean("isPending")->default(false);
             $table->dateTime("start_pending")->nullable();
