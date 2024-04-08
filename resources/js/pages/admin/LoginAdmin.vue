@@ -8,10 +8,10 @@
                             <h3 class="mb-3">HGO Admin Login</h3>
                             <form action="" class="row g-4">
                                 <div class="col-12">
-                                    <label>Username<span class="text-danger">*</span></label>
+                                    <label>Email<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
-                                        <input type="text" class="form-control" placeholder="Enter Username">
+                                        <input v-model="credentials.email" type="email" class="form-control" placeholder="Enter Email">
                                     </div>
                                 </div>
 
@@ -19,13 +19,13 @@
                                     <label>Password<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-lock-fill"></i></div>
-                                        <input type="text" class="form-control" placeholder="Enter Password">
+                                        <input type="password" v-model="credentials.password" class="form-control" placeholder="Enter Password">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="inlineFormCheck">
+                                        <input class="form-check-input" type="checkbox" id="inlineFormCheck" v-model="credentials.remember_me">
                                         <label class="form-check-label" for="inlineFormCheck">Remember me</label>
                                     </div>
                                 </div>
@@ -47,3 +47,17 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { onMounted, reactive } from 'vue';
+
+let credentials = reactive({
+    email: null,
+    password: null,
+    remember_me: false
+});
+
+const login = () => {
+
+}
+</script>

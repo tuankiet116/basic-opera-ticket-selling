@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
@@ -29,7 +29,15 @@ const setCSRFToken = () => {
     return axiosInstance.get('/csrf-cookie'); // resolves to '/api/csrf-cookie'.
 }
 
+const onResponse = (axiosResponse) => {
+    if (axiosResponse.response.status == 401) {
+        location.href = "/admin/login";
+    }
+    return axiosResponse;
+}
+
 // attach your interceptor
 axiosInstance.interceptors.request.use(onRequest, null);
+axiosInstance.interceptors.response.use(onResponse, onResponse);
 
 export default axiosInstance;
