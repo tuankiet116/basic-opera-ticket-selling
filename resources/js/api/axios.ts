@@ -33,11 +33,11 @@ const onResponse = (axiosResponse) => {
     if (axiosResponse.response.status == 401) {
         location.href = "/admin/login";
     }
-    return axiosResponse;
+    return axiosResponse.response;
 }
 
 // attach your interceptor
 axiosInstance.interceptors.request.use(onRequest, null);
-axiosInstance.interceptors.response.use(onResponse, onResponse);
+axiosInstance.interceptors.response.use(null, onResponse);
 
 export default axiosInstance;

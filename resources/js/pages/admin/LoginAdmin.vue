@@ -11,7 +11,8 @@
                                     <label>Email<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
-                                        <input v-model="credentials.email" type="email" class="form-control" placeholder="Enter Email">
+                                        <input v-model="credentials.email" type="email" class="form-control"
+                                            placeholder="Enter Email">
                                     </div>
                                 </div>
 
@@ -19,23 +20,24 @@
                                     <label>Password<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-lock-fill"></i></div>
-                                        <input type="password" v-model="credentials.password" class="form-control" placeholder="Enter Password">
+                                        <input type="password" v-model="credentials.password" class="form-control"
+                                        placeholder="Enter Password">
                                     </div>
+                                    <small v-if="errors.credentials" class="text-danger m-0 p-0">{{ errors.credentials }}</small>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="inlineFormCheck" v-model="credentials.remember_me">
+                                        <input class="form-check-input" type="checkbox" id="inlineFormCheck"
+                                            v-model="credentials.remember_me">
                                         <label class="form-check-label" for="inlineFormCheck">Remember me</label>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <a href="#" class="float-end text-primary">Forgot Password?</a>
                                 </div>
-
                                 <div class="col-12">
-                                    <button type="submit"
+                                    <button @click.prevent="login()"
                                         class="btn btn-primary px-4 float-end mt-4 text-white">Login</button>
                                 </div>
                             </form>
@@ -49,15 +51,21 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { reactive } from 'vue';
+import { loginAPI } from "../../api/admin/auth";
+import { useRouter } from "vue-router";
+import { BAD_REQUEST, HTTP_SUCCESS } from "../../config/const";
 
 let credentials = reactive({
     email: null,
     password: null,
     remember_me: false
 });
-
-const login = () => {
-
+let errors = reactive({});
+let router = useRouter();
+const login = async () => {
+    let result = await loginAPI(credentials);
+    if (result.status == BAD_REQUEST) errors.credentials = result.data.message;
+    if (result.status == HTTP_SUCCESS) router.push({ name: "admin-list-events" });
 }
 </script>

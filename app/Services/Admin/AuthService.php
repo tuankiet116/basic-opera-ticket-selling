@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 class AuthService
 {
@@ -11,8 +11,10 @@ class AuthService
 
     public function login(array $credentials)
     {
-        dd($credentials);
-        $isLogin = auth()->attempt($credentials, data_get($credentials, "remember_me", false));
+        $isLogin = auth()->attempt([
+            "email" => $credentials["email"],
+            "password" => $credentials["password"]
+        ], data_get($credentials, "remember_me", false));
         if ($isLogin) {
             return true;
         }
