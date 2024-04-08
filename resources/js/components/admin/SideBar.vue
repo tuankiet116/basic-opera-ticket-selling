@@ -51,19 +51,30 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item" href="#" @click="logout">Sign out</a></li>
             </ul>
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useRouter } from "vue-router";
+import { logoutAPI } from "../../api/admin/auth";
+import { HTTP_SUCCESS } from "../../config/const";
+import { useAuthenticateStore } from "../../pinia.ts";
 
+const authenticatedStore = useAuthenticateStore();
 const router = useRouter();
 const isActiveRouter = (typeRouter) => {
     if (typeRouter == router.currentRoute.value.name) {
         return true;
     }
     return false;
+}
+
+const logout = async () => {
+    let result = await logoutAPI();
+    authenticatedStore.setAdminLoggedIn(false);
+    if (result.status == HTTP_SUCCESS)
+        router.push({ name: "admin-login" })
 }
 </script>

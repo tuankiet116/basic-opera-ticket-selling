@@ -4,11 +4,6 @@ namespace App\Services\Admin;
 
 class AuthService
 {
-
-    public function isLogin() {
-        return auth() ? true : false;
-    }
-
     public function login(array $credentials)
     {
         $isLogin = auth()->attempt([

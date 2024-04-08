@@ -55,7 +55,9 @@ import { reactive } from 'vue';
 import { loginAPI } from "../../api/admin/auth";
 import { useRouter } from "vue-router";
 import { BAD_REQUEST, HTTP_SUCCESS } from "../../config/const";
+import { useAuthenticateStore } from "../../pinia.ts";
 
+const authenticatedStore = useAuthenticateStore();
 let credentials = reactive({
     email: null,
     password: null,
@@ -66,6 +68,9 @@ let router = useRouter();
 const login = async () => {
     let result = await loginAPI(credentials);
     if (result.status == BAD_REQUEST) errors.credentials = result.data.message;
-    if (result.status == HTTP_SUCCESS) router.push({ name: "admin-list-events" });
+    if (result.status == HTTP_SUCCESS) {
+        authenticatedStore.setAdminLoggedIn();
+        router.push({ name: "admin-list-events" })
+    };
 }
 </script>

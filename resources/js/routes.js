@@ -14,7 +14,7 @@ export const routes = [
         ]
     },
     {
-        path: '/admin', component: Dashboard, children: [
+        path: '/admin', component: Dashboard, name: "admin", children: [
             { path: "", component: Events, name: 'admin-list-events' },
             { path: "create-event", component: CreateEvent, name: 'admin-create-event' }
         ]

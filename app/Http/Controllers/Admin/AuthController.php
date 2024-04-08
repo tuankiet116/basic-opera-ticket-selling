@@ -21,4 +21,16 @@ class AuthController extends Controller
             "message" => "Your credentials is wrong!"
         ], HTTP_CODE["BAD_REQUEST"]);
     }
+
+    public function isLoggedIn()
+    {
+        $user = auth()->user();
+        return $this->responseSuccess($user->toArray());
+    }
+
+    public function logout()
+    {
+        auth("web")->logout();
+        return $this->responseSuccess();
+    }
 }

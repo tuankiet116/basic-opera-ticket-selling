@@ -29,15 +29,12 @@ const setCSRFToken = () => {
     return axiosInstance.get('/csrf-cookie'); // resolves to '/api/csrf-cookie'.
 }
 
-const onResponse = (axiosResponse) => {
-    if (axiosResponse.response.status == 401) {
-        location.href = "/admin/login";
-    }
+const onResponseRejected = (axiosResponse) => {
     return axiosResponse.response;
 }
 
 // attach your interceptor
 axiosInstance.interceptors.request.use(onRequest, null);
-axiosInstance.interceptors.response.use(null, onResponse);
+axiosInstance.interceptors.response.use(null, onResponseRejected);
 
 export default axiosInstance;
