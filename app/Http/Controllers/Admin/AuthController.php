@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
 use App\Services\Admin\AuthService;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -25,6 +26,8 @@ class AuthController extends Controller
     public function isLoggedIn()
     {
         $user = auth()->user();
+        session()->put("language", "vn");
+        Log::debug("Set session " . session()->get("language"));
         return $this->responseSuccess($user->toArray());
     }
 

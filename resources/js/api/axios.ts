@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
     baseURL: '/api',
     withCredentials: true,
+    withXSRFToken: true
 });
 
 // Request interceptor. Runs before your request reaches the server
@@ -26,10 +27,12 @@ const onRequest = (config) => {
 // A function that calls '/api/csrf-cookie' to set the CSRF cookies. The 
 // default is 'sanctum/csrf-cookie' but you can configure it to be anything.
 const setCSRFToken = () => {
-    return axiosInstance.get('/csrf-cookie'); // resolves to '/api/csrf-cookie'.
+    return axiosInstance.get('/sanctum/csrf-cookie', {
+        baseURL: "/"
+    }); // resolves to '/api/csrf-cookie'.
 }
 
-const onResponseRejected = (axiosResponse) => {
+const onResponseRejected = async (axiosResponse) => {
     return axiosResponse.response;
 }
 

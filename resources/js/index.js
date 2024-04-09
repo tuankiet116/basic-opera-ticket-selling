@@ -16,11 +16,16 @@ const router = createRouter({
     routes,
 });
 
-
 router.beforeEach(async (to, from, next) => {
     const isAuthenticated = authenticatedStore.isAdminLoggedIn;
     if (to.matched.find(value => value.name == "admin" && !isAuthenticated)) {
-        next({ name: "admin-login" });
+        let result = await isLoggedInAPI();
+        if (result.status == HTTP_SUCCESS) {
+            authenticatedStore.setAdminLoggedIn();
+            next();
+        } else {
+            next({ name: "admin-login" });
+        }
     } else if (to.name == "admin-login") {
         let result = await isLoggedInAPI();
         if (result.status == HTTP_SUCCESS) {

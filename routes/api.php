@@ -10,6 +10,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     Route::get('/is-logged-in', [AuthController::class, "isLoggedIn"]);
     Route::post('/logout', [AuthController::class, "logout"]);
     Route::prefix("/event")->group(function () {
+        Route::post("/create", [EventController::class, "create"]);
         Route::get("/list", [EventController::class, "listAll"]);
     });
 });
