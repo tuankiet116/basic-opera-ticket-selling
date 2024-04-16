@@ -6,10 +6,10 @@
                     <label for="searchEvent" class="col-form-label">Tìm kiếm sự kiện</label>
                 </div>
                 <div class="col-auto">
-                    <input type="search" id="searchEvent" class="form-control">
+                    <input type="search" id="searchEvent" class="form-control" v-model="searchString">
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-primary text-white">
+                    <button class="btn btn-primary text-white" @click="getEvents">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-search" viewBox="0 0 16 16">
@@ -21,18 +21,82 @@
                     </button>
                 </div>
             </div>
-            <hr />
+        </div>
+        <div class="container p-5">
+            <table class="table table-group-divider">
+                <thead>
+                    <tr>
+                        <th width="10%">#</th>
+                        <th width="10%">Name</th>
+                        <th width="10%">Date</th>
+                        <th width="40%">Description</th>
+                        <th width="30%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="!events.data.length">
+                        <td colspan="5" class="text-center">
+                            No Data Available
+                        </td>
+                    </tr>
+                    <tr v-else v-for="(event, index) in events.data">
+                        <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
+                        <td>{{ event.name }}</td>
+                        <td>{{ convertDate(event.date) }}</td>
+                        <td class="text-wrap">{{ event.description }}</td>
+                        <td>
+                            <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id }}" type="button"
+                                class="btn btn-light mx-1 my-1 btn-sm">Cài đặt thông tin</router-link>
+                            <button type="button" class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</button>
+                            <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="d-flex">
+                    <button class="btn btn-light ms-auto" v-for="page in events.lastPage">
+                        {{ page }}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { getListEvent } from "../../api/admin/events";
+import { HttpStatusCode } from "axios";
+import moment from "moment";
 
-let events = reactive([]);
+let events = reactive({
+    data: [],
+    current_page: 1,
+    lastPage: 1,
+    per_page: 0,
+});
+let searchString = ref("");
 
 onMounted(async () => {
-    await getListEvent()
-})
+    await getEvents();
+});
+
+const getEvents = async () => {
+    let response = await getListEvent(events.current_page, searchString.value);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            events.data = response.data.data;
+            events.current_page = response.data.current_page;
+            events.lastPage = response.data.last_page;
+            events.per_page = response.data.per_page;
+            break;
+        default:
+            console.log(response.data);
+    }
+}
+
+const convertDate = (date) => {
+    return moment(date).format("DD/MM/yyyy")
+}
 </script>

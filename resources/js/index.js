@@ -8,6 +8,8 @@ import { isLoggedInAPI } from './api/admin/auth';
 import { HTTP_SUCCESS, UNAUTHORIZED } from './config/const';
 import { createPinia } from 'pinia';
 import { useAuthenticateStore } from './pinia';
+import Toast from 'vue-toastification';
+import "vue-toastification/dist/index.css";
 
 const pinia = createPinia();
 const authenticatedStore = useAuthenticateStore(pinia);
@@ -39,6 +41,14 @@ router.beforeEach(async (to, from, next) => {
     }
 });
 
-let app = createApp(App).use(router).use(pinia);
+let app = createApp(App)
+    .use(router).use(pinia).use(Toast, {
+        timeout: 3000,
+        position: "top-right",
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        pauseOnFocusLoss: true,
+    });
 app.directive("lazyload", lazyload);
 app.mount("#app");

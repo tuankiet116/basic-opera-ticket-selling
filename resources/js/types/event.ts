@@ -3,7 +3,7 @@ import { TicketClass } from "./ticketClass"
 export type EventData = {
     name: string,
     date: string,
-    desc: string,
-    image: File,
+    description: string,
+    image: any | File,
     ticketClasses: Array<TicketClass>
 }

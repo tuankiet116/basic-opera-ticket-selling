@@ -3,14 +3,16 @@
 namespace App\Services\Admin;
 
 use App\Models\EventModel;
+use App\Models\TicketClassModel;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EventService
 {
-    public function listAll(string $query = ""): array
+    public function listAll(string $query = "")
     {
         return EventModel::searchBy($query)->paginate(PAGINATE_NUMBER);
     }
@@ -23,11 +25,61 @@ class EventService
             $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
             data_set($data, "image_url", $filePath);
             $event = EventModel::create($data);
+            TicketClassModel::insert($data["ticketClasses"]);
         } catch (Exception $e) {
             Log::error("Create Event: ", [
                 "data" => collect($data)->except("image"),
                 "message" => $e->getMessage()
             ]);
+            if (isset($filePath) && $filePath) Storage::disk("public")->delete($filePath);
+            DB::rollBack();
+            return null;
+        } finally {
+            DB::commit();
+            return $event;
+        }
+    }
+
+    public function edit(int $eventId): EventModel | null
+    {
+        $event = EventModel::with("ticketClasses")->find($eventId);
+        if (!$event) return null;
+        return $event;
+    }
+
+    public function update(array $data, int $eventId)
+    {
+        $event = EventModel::find($eventId);
+        if (!$event) throw new NotFoundHttpException("Event not found");
+        DB::beginTransaction();
+        try {
+            $image = request()->file("image");
+            if ($image) {
+                if ($event->image_url) Storage::disk("public")->delete($event->image_url);
+                $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
+                data_set($data, "image_url", $filePath);
+            }
+            $event->save($data);
+
+            $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
+            $ticketClasses->each(function ($ticketClass) use ($data) {
+                $dataTicket = collect($data['ticketClasses'])->where("id", $ticketClass->id)->first();
+                if (!$dataTicket) {
+                    $ticketClass->delete();
+                } else {
+                    $ticketClass->update($dataTicket);
+                }
+            });
+            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->all();
+            if ($dataTicketInsertable) {
+                TicketClassModel::insert($dataTicketInsertable);
+            }
+        } catch (Exception $e) {
+            Log::error("Update Event: ", [
+                "data" => collect($data)->except("image"),
+                "message" => $e->getMessage()
+            ]);
+            if (isset($filePath) && $filePath) Storage::disk("public")->delete($filePath);
             DB::rollBack();
             return null;
         } finally {

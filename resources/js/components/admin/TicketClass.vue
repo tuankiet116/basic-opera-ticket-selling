@@ -5,7 +5,7 @@
             <div class="row" v-for="(data, index) in props.ticketClasses" :key="index">
                 <div class="col-5">
                     <label for="name" class="form-label">Tên hạng vé: </label>
-                    <input type="text" class="form-control" id="name" v-model="data.name">
+                    <input type="text" class="form-control" id="name" v-model="data.name" :disabled="props.isLoading">
                     <small v-if="props.errors[`ticketClasses.${index}.name`]" class="text-danger">
                         {{ props.errors[`ticketClasses.${index}.name`][0] }}
                     </small>
@@ -14,7 +14,7 @@
                     <label for="price" class="form-label">Giá vé: </label>
                     <div class="input-group">
                         <input v-model="data.priceFormatted" type="text" class="form-control" id="price"
-                            @keydown="checkNumber">
+                            @keydown="checkNumber" :disabled="props.isLoading">
                         <span class="input-group-text">vnd</span>
                     </div>
                     <small v-if="props.errors[`ticketClasses.${index}.price`]" class="text-danger">
@@ -23,7 +23,8 @@
                 </div>
                 <div class="col-2">
                     <label for="select-color" class="form-label">Chọn màu sắc: </label>
-                    <input type="color" class="form-control form-control-color" id="select-color" v-model="data.color">
+                    <input type="color" class="form-control form-control-color" id="select-color" v-model="data.color"
+                        :disabled="props.isLoading">
                     <small v-if="props.errors[`ticketClasses.${index}.color`]" class="text-danger">
                         {{ props.errors[`ticketClasses.${index}.color`][0] }}
                     </small>
@@ -73,6 +74,10 @@ const props = defineProps({
     errors: {
         type: Object,
         default: {}
+    },
+    isLoading: {
+        type: Boolean,
+        default: false
     }
 });
 

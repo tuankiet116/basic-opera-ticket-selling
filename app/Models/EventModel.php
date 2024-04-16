@@ -22,4 +22,8 @@ class EventModel extends Model
         if (!$search) return $query;
         return $query->where("name", "like", "%$search%");
     }
+
+    public function ticketClasses() {
+        return $this->hasMany(TicketClassModel::class, "event_id", "id");
+    }
 }

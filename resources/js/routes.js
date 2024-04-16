@@ -16,7 +16,12 @@ export const routes = [
     {
         path: '/admin', component: Dashboard, name: "admin", children: [
             { path: "", component: Events, name: 'admin-list-events' },
-            { path: "create-event", component: CreateEvent, name: 'admin-create-event' }
+            { path: "create-event", component: CreateEvent, name: 'admin-create-event' },
+            {
+                path: "event/:eventId", children: [
+                    { path: "edit", name: 'admin-edit-event', component: CreateEvent, props: { isEdit: true } }
+                ]
+            }
         ]
     },
     { path: '/admin/login', component: LoginAdmin, name: "admin-login" },

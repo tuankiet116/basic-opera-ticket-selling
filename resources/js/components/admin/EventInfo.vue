@@ -5,24 +5,28 @@
             <div class="row">
                 <div class="col-6">
                     <label for="event-name" class="form-label">Tên sự kiện: </label>
-                    <input type="text" class="form-control" id="event-name" v-model="title" @change="changeTitle">
+                    <input type="text" class="form-control" id="event-name" v-model="title" @change="changeTitle"
+                        :disabled="props.isLoading">
                     <small v-if="props.errors.name" class="text-danger">{{ props.errors.name[0] }}</small>
                 </div>
                 <div class="col-6">
                     <label for="event-date" class="form-label">Ngày công chiếu: </label>
-                    <flat-pickr id="event-date" v-model="date" class="form-control" :config="config" @change="changeDate"/>
+                    <flat-pickr id="event-date" v-model="date" class="form-control" :config="config"
+                        @change="changeDate" />
                     <small v-if="props.errors.date" class="text-danger">{{ props.errors.date[0] }}</small>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-6">
                     <label for="event-description" class="form-label">Mô tả sự kiện</label>
-                    <textarea class="form-control" type="textarea" id="event-description" v-model="description" @change="changeDesc"/>
+                    <textarea class="form-control" type="textarea" id="event-description" v-model="description"
+                        @change="changeDesc" :disabled="props.isLoading" />
                     <small v-if="props.errors.desc" class="text-danger">{{ props.errors.desc[0] }}</small>
                 </div>
                 <div class="col-6">
                     <label for="event-image" class="form-label">Ảnh sự kiện</label>
-                    <input class="form-control" type="file" id="event-image" @change="selectImage" accept="image/*">
+                    <input class="form-control" type="file" id="event-image" @change="selectImage" accept="image/*"
+                        :disabled="props.isLoading">
                     <small v-if="props.errors.image" class="text-danger">{{ props.errors.image[0] }}</small>
                 </div>
             </div>
@@ -31,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref, toRef } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import 'flatpickr/dist/flatpickr.css';
 import { Vietnamese } from 'flatpickr/dist/l10n/vn';
@@ -53,6 +57,10 @@ const props = defineProps({
     errors: {
         type: Object,
         default: {}
+    },
+    isLoading: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -62,7 +70,7 @@ const description = ref(props.description);
 const file = ref(null);
 const config = ref({
     altInput: true,
-    dateFormat: 'd-m-Y',
+    dateFormat: 'Y-m-d',
     locale: Vietnamese, // locale for this instance only          
 });
 
