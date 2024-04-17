@@ -6,10 +6,10 @@
         <div id="rows" class="container-md overflow-x-auto container-fluid p-0 m-0" ref="rows">
             <div id="seats-container" ref="seatsContainer"
                 class="row p-0 justify-content-center mt-5 seats-container mx-auto" style="width: 1250px;">
-                <div v-for="row in rows1" class="row p-0 justify-content-center flex-nowrap"
+                <div v-for="(row, index) in rows1" :key="index" class="row p-0 justify-content-center flex-nowrap"
                     :style="`height: ${caculateRowHeight(row)}px`">
-                    <template v-for="seat in row">
-                        <div v-if="seat.id"
+                    <template v-for="seat in row" :key="seat.id">
+                        <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
                             class="border border-dark seat d-flex justify-content-center align-items-center"
                             :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
                             <span>{{ seat.name }}</span>
@@ -29,10 +29,10 @@
                         <span>Cửa số 4</span>
                     </div>
                 </div>
-                <div v-for="row in rows2" class="row justify-content-center flex-nowrap"
+                <div v-for="(row, index) in rows2" class="row justify-content-center flex-nowrap" :key="index"
                     :style="`height: ${caculateRowHeight(row)}px`">
-                    <template v-for="seat in row">
-                        <div v-if="seat.id"
+                    <template v-for="seat in row" :key="seat.id">
+                        <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
                             class="border border-dark seat d-flex justify-content-center align-items-center"
                             :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
                             <span>{{ seat.name }}</span>
@@ -69,6 +69,7 @@ const rows = ref(null);
 const seatsContainer = ref(null);
 const rows1 = ref(Array());
 const rows2 = ref(Array());
+const emits = defineEmits("selectSeat");
 
 onMounted(() => {
     rows1.value = renderSeats(seats1);
@@ -96,6 +97,7 @@ const caculateRowHeight = (row) => {
     margin-right: 1px;
     font-size: 11px;
     cursor: pointer;
+
     span {
         cursor: pointer;
     }

@@ -3,14 +3,14 @@
         <div class="p-4 border shadow">
             <h4>Phân hạng vé</h4>
             <div class="row" v-for="(data, index) in props.ticketClasses" :key="index">
-                <div class="col-5">
+                <div class="col-4">
                     <label for="name" class="form-label">Tên hạng vé: </label>
                     <input type="text" class="form-control" id="name" v-model="data.name" :disabled="props.isLoading">
                     <small v-if="props.errors[`ticketClasses.${index}.name`]" class="text-danger">
                         {{ props.errors[`ticketClasses.${index}.name`][0] }}
                     </small>
                 </div>
-                <div class="col-5">
+                <div class="col-4">
                     <label for="price" class="form-label">Giá vé: </label>
                     <div class="input-group">
                         <input v-model="data.priceFormatted" type="text" class="form-control" id="price"
@@ -29,6 +29,17 @@
                         {{ props.errors[`ticketClasses.${index}.color`][0] }}
                     </small>
                 </div>
+                <div class="col-2 row justify-content-center align-items-center">
+                    <div>
+                        <button class="btn btn-small btn-danger rounded-circle p-0 m-0" width="20" height="20" @click="deleteTicketClass(index)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 16 16">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="row mt-2 justify-content-center">
                 <button class="btn btn-light border col-12" @click="addTicketClass">
@@ -45,9 +56,10 @@
     </div>
 </template>
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { watchEffect, computed, onMounted } from "vue";
 import { numberWithCommas } from "../../helpers/number";
 
+const emits = defineEmits("deleteTicketClass");
 const props = defineProps({
     ticketClasses: {
         type: Array,
@@ -108,10 +120,13 @@ const addTicketClass = () => {
     props.ticketClasses[props.ticketClasses.length - 1].priceFormatted = computedNumberFormatted(props.ticketClasses[props.ticketClasses.length - 1]);
 }
 
-onMounted(() => {
+const deleteTicketClass = (index) => {
+    emits("deleteTicketClass", index);
+}
+
+watchEffect(function () {
     props.ticketClasses.forEach(data => {
         data.priceFormatted = computedNumberFormatted(data);
     })
 });
-
 </script>

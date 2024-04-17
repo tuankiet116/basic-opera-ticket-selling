@@ -34,8 +34,8 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { ref, toRef } from "vue";
+<script setup>
+import { ref, watch } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import 'flatpickr/dist/flatpickr.css';
 import { Vietnamese } from 'flatpickr/dist/l10n/vn';
@@ -72,6 +72,12 @@ const config = ref({
     altInput: true,
     dateFormat: 'Y-m-d',
     locale: Vietnamese, // locale for this instance only          
+});
+
+watch(props, function(newValue) { 
+    title.value = newValue.title;
+    date.value = newValue.date;
+    description.value = newValue.description;
 });
 
 const selectImage = ($event) => {

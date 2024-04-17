@@ -43,11 +43,13 @@
                         <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
                         <td>{{ event.name }}</td>
                         <td>{{ convertDate(event.date) }}</td>
-                        <td class="text-wrap">{{ event.description }}</td>
+                        <td class="text-wrap text-truncate ">
+                            <p>{{ event.description }}</p>
+                        </td>
                         <td>
-                            <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id }}" type="button"
+                            <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
                                 class="btn btn-light mx-1 my-1 btn-sm">Cài đặt thông tin</router-link>
-                            <button type="button" class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</button>
+                            <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button" class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</router-link>
                             <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
                         </td>
                     </tr>

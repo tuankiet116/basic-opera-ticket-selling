@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import Hall1 from '../components/Seats/Hall1.vue';
-import Hall2 from '../components/Seats/Hall2.vue';
+import Hall1 from '../components/seats/Hall1.vue';
+import Hall2 from '../components/seats/Hall2.vue';
 import { ref } from "vue";
 
 const route = useRoute();
@@ -26,8 +26,8 @@ const selectHall = (hallId: string): void => {
     <div class="container text-center pt-5">
         <h1 class="fs-3 pt-5">Đặt vé sự kiện {{ "Fake" }}</h1>
         <div class="d-flex justify-content-center">
-            <button class="btn" :class="hall.id == hallSelected ? 'btn-primary' : 'btn-light'" v-for="hall in halls"
-                @click="selectHall(hall.id)">
+            <button class="btn mx-1" :class="hall.id == hallSelected ? 'btn-primary' : 'btn-light'" v-for="hall in halls"
+                @click="selectHall(hall.id)" :key="hall.id">
                 {{ hall.name }}
             </button>
         </div>

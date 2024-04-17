@@ -346,7 +346,8 @@ export const seats2: Array<RowConfig> = [
         walls: [
             {
                 start: 7,
-                size: 15
+                size: 15,
+                marginTop: 25
             }
         ],
         empty: [3, 6]

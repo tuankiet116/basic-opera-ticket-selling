@@ -25,7 +25,8 @@ class EventService
             $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
             data_set($data, "image_url", $filePath);
             $event = EventModel::create($data);
-            TicketClassModel::insert($data["ticketClasses"]);
+            $ticketClassesData = array_map(fn($data) => $data + ["event_id" => $event->id], $data["ticketClasses"]);
+            TicketClassModel::insert($ticketClassesData);
         } catch (Exception $e) {
             Log::error("Create Event: ", [
                 "data" => collect($data)->except("image"),
@@ -34,13 +35,12 @@ class EventService
             if (isset($filePath) && $filePath) Storage::disk("public")->delete($filePath);
             DB::rollBack();
             return null;
-        } finally {
-            DB::commit();
-            return $event;
         }
+        DB::commit();
+        return $event;
     }
 
-    public function edit(int $eventId): EventModel | null
+    public function edit($eventId): EventModel | null
     {
         $event = EventModel::with("ticketClasses")->find($eventId);
         if (!$event) return null;
@@ -59,7 +59,8 @@ class EventService
                 $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
                 data_set($data, "image_url", $filePath);
             }
-            $event->save($data);
+            $event->update($data);
+            $event->save();
 
             $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
             $ticketClasses->each(function ($ticketClass) use ($data) {
@@ -68,9 +69,13 @@ class EventService
                     $ticketClass->delete();
                 } else {
                     $ticketClass->update($dataTicket);
+                    $ticketClass->save();
                 }
             });
-            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->all();
+            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->map(function($ticketClass) use($eventId) {
+                $ticketClass["event_id"] = $eventId;
+                return $ticketClass;
+            })->all();
             if ($dataTicketInsertable) {
                 TicketClassModel::insert($dataTicketInsertable);
             }
@@ -82,9 +87,8 @@ class EventService
             if (isset($filePath) && $filePath) Storage::disk("public")->delete($filePath);
             DB::rollBack();
             return null;
-        } finally {
-            DB::commit();
-            return $event;
         }
+        DB::commit();
+        return $event;
     }
 }

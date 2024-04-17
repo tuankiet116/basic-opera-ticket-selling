@@ -13,6 +13,14 @@ export const createEventAPI = async (data: EventData) => {
     });
 }
 
+export const updateEventAPI = async (data: EventData, eventId) => {
+    return await axiosInstance.post(`/admin/event/update/${eventId}?_method=PUT`, data, {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
+}
+
 export const getEventAPI = async (eventId: number) => {
-    return await axiosInstance.get(`/admin/event/${eventId}`);
+    return await axiosInstance.get(`/admin/event/edit/${eventId}`);
 }

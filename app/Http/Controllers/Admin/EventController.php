@@ -32,7 +32,7 @@ class EventController extends Controller
         ]);
     }
 
-    public function edit(int $eventId)
+    public function edit($eventId)
     {
         $data = $this->eventService->edit($eventId);
         if (!$data) return $this->responseError([

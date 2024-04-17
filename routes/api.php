@@ -11,7 +11,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     Route::post('/logout', [AuthController::class, "logout"]);
     Route::prefix("/event")->group(function () {
         Route::post("/create", [EventController::class, "create"]);
-        Route::get("/{eventId}", [EventController::class, "edit"]);
+        Route::get("/edit/{eventId}", [EventController::class, "edit"]);
         Route::put("/update/{eventId}", [EventController::class, "update"]);
         Route::get("/list", [EventController::class, "listAll"]);
     });
