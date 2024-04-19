@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\SeatController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/admin/login', [AuthController::class, "login"]);
@@ -14,5 +15,9 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::get("/edit/{eventId}", [EventController::class, "edit"]);
         Route::put("/update/{eventId}", [EventController::class, "update"]);
         Route::get("/list", [EventController::class, "listAll"]);
+    });
+    Route::prefix("/seats")->group(function () {
+        Route::get("/get-ticket-class/{eventId}", [SeatController::class, "getSeatTicketClass"]);
+        Route::post("/set-ticket-class", [SeatController::class, "setSeatTicketClass"]);
     });
 });

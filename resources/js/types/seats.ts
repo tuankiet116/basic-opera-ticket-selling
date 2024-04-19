@@ -30,3 +30,12 @@ export type SeatFormatted = {
     width: number,
     height: number
 }
+
+export type SeatsTicketClassData = {
+    event_id: number,
+    ticket_class_id: number,
+    seats: Array<{
+        hall: number,
+        names: Array<string>
+    }>
+}

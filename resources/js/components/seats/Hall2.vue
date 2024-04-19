@@ -7,7 +7,8 @@
                     :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            class="border border-dark seat d-flex justify-content-center align-items-center"
+                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
                             :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
                             <span>{{ seat.name }}</span>
                         </div>
@@ -27,7 +28,8 @@
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                                class="border border-dark seat d-flex justify-content-center align-items-center"
+                                :class="{ 'selected': isSeatInSelected(seat.id) }"
+                                class="border border-dark seat d-flex justify-content-center align-items-center z-1"
                                 :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
                                 <span>{{ seat.name }}</span>
                             </div>
@@ -47,7 +49,8 @@
                     :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            class="border border-dark seat d-flex justify-content-center align-items-center"
+                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
                             :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
                             <span>{{ seat.name }}</span>
                         </div>
@@ -83,8 +86,15 @@ const seatsContainer = ref(null);
 const rows1 = ref(Array());
 const rows2 = ref(Array());
 const rows3 = ref(Array());
-const rowHeight = ref(50);
 const emits = defineEmits("selectSeat");
+
+const props = defineProps({
+    selected: {
+        type: Array,
+        default: []
+    }
+});
+
 onMounted(() => {
     rows1.value = renderSeats(seats1);
     rows2.value = renderSeats(seats2);
@@ -97,6 +107,10 @@ onMounted(() => {
         }, 1)
     });
 })
+
+const isSeatInSelected = (seatId) => {
+    return props.selected.find(v => v == seatId);
+}
 
 const caculateRowHeight = (row) => {
     let max = Math.max(...row.flatMap(s => {
@@ -116,5 +130,10 @@ const caculateRowHeight = (row) => {
     span {
         cursor: pointer;
     }
+}
+
+.selected {
+    background-color: #8888;
+    color: white;
 }
 </style>

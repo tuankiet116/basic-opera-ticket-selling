@@ -10,8 +10,9 @@
                     :style="`height: ${caculateRowHeight(row)}px`">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            class="border border-dark seat d-flex justify-content-center align-items-center"
-                            :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
+                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
+                            :style="setStyleSeatByTicketClass(seat)">
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else class="seat"
@@ -33,8 +34,9 @@
                     :style="`height: ${caculateRowHeight(row)}px`">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            class="border border-dark seat d-flex justify-content-center align-items-center"
-                            :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
+                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
+                            :style="setStyleSeatByTicketClass(seat)">
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else-if="seat.isWall" class="wall mx-1"
@@ -71,6 +73,17 @@ const rows1 = ref(Array());
 const rows2 = ref(Array());
 const emits = defineEmits("selectSeat");
 
+const props = defineProps({
+    selected: {
+        type: Array,
+        default: []
+    },
+    seatTicketClasses: {
+        type: Array,
+        default: []
+    }
+});
+
 onMounted(() => {
     rows1.value = renderSeats(seats1);
     rows2.value = renderSeats(seats2);
@@ -82,12 +95,27 @@ onMounted(() => {
     });
 });
 
+const isSeatInSelected = (seatId) => {
+    return props.selected.find(v => v == seatId);
+}
+
 const caculateRowHeight = (row) => {
     let max = Math.max(...row.flatMap(s => {
         if (s.isWall) return [];
         return (s.marginTop + s.height) / 1.2
     }))
     return max;
+}
+
+const setStyleSeatByTicketClass = (seat) => {
+    let style = `margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`;
+    let config = props.seatTicketClasses.find(ticketClass => {
+        return ticketClass.seat.name == seat.name && ticketClass.seat.hall == 1;
+    });
+    if (config) {
+        style += `background-color: ${config.ticket_class.color}`;
+    }
+    return style;
 }
 </script>
 
@@ -101,5 +129,10 @@ const caculateRowHeight = (row) => {
     span {
         cursor: pointer;
     }
+}
+
+.selected {
+    background-color: #8888 !important;
+    color: white;
 }
 </style>

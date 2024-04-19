@@ -4,7 +4,7 @@ import ListEvent from './pages/ListEvent.vue';
 import Dashboard from './pages/admin/Dashboard.vue';
 import LoginAdmin from './pages/admin/LoginAdmin.vue';
 import Events from './pages/admin/Events.vue';
-import CreateEvent from './pages/admin/CreateEvent.vue';
+import UpsertEvent from './pages/admin/UpsertEvent.vue';
 import SeatEvent from './pages/admin/SeatEvent.vue';
 
 export const routes = [
@@ -17,10 +17,10 @@ export const routes = [
     {
         path: '/admin', component: Dashboard, name: "admin", children: [
             { path: "", component: Events, name: 'admin-list-events' },
-            { path: "create-event", component: CreateEvent, name: 'admin-create-event' },
+            { path: "create-event", component: UpsertEvent, name: 'admin-create-event' },
             {
                 path: "event/:eventId", children: [
-                    { path: "edit", name: 'admin-edit-event', component: CreateEvent, props: { isEdit: true } },
+                    { path: "edit", name: 'admin-edit-event', component: UpsertEvent, props: { isEdit: true } },
                     { path: "seats", name: 'admin-edit-seats', component: SeatEvent },
                 ]
             }

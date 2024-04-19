@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Models\EventModel;
+use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -61,11 +62,12 @@ class EventService
             }
             $event->update($data);
             $event->save();
-
+            
             $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
-            $ticketClasses->each(function ($ticketClass) use ($data) {
+            $ticketClasses->each(function ($ticketClass) use ($data, $eventId) {
                 $dataTicket = collect($data['ticketClasses'])->where("id", $ticketClass->id)->first();
                 if (!$dataTicket) {
+                    EventSeatClassModel::where(["event_id" => $eventId, "ticket_class_id" => $ticketClass->id])->delete();
                     $ticketClass->delete();
                 } else {
                     $ticketClass->update($dataTicket);
