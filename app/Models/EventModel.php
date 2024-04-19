@@ -20,7 +20,8 @@ class EventModel extends Model
 
     public function scopeSearchBy(Builder $query, string $search) {
         if (!$search) return $query;
-        return $query->where("name", "like", "%$search%");
+        $search = strtolower($search);
+        return $query->where("LOWER(name)", "like", "%$search%");
     }
 
     public function ticketClasses() {

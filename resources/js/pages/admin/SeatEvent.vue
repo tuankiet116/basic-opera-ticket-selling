@@ -30,8 +30,9 @@
             <div class="row" v-if="mode == MODE_TICKET_CLASS_SETTING">
                 <small class="text-danger" v-if="errors.ticket_class_id">{{ errors.ticket_class_id[0] }}</small>
                 <div class="col-10 mx-0">
-                    <select class="form-select" v-model="ticketClassId" aria-label="Default select example">
-                        <option v-for="ticketclass in event.ticket_classes" :value="ticketclass.id">
+                    <select class="form-select" v-model="ticketClassId">
+                        <option v-for="ticketclass in event.ticket_classes" :key="ticketclass.id"
+                            :value="ticketclass.id">
                             {{ ticketclass.name }}
                         </option>
                     </select>
@@ -41,11 +42,7 @@
             <div class="row" v-if="mode == MODE_PRE_BOOKING">
                 <small class="text-danger" v-if="errors.ticket_class_id">{{ errors.ticket_class_id[0] }}</small>
                 <div class="col-10 mx-0">
-                    <select class="form-select" v-model="ticketClassId" aria-label="Default select example">
-                        <option v-for="ticketclass in event.ticket_classes" :value="ticketclass.id">
-                            {{ ticketclass.name }}
-                        </option>
-                    </select>
+                    <VueSelectInfinityLoad @fetchData="getClientsSpecial"></VueSelectInfinityLoad>
                 </div>
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Pre-Booking</button>
             </div>
@@ -55,6 +52,7 @@
 <script setup lang="ts">
 import Hall1 from "../../components/seats/Hall1.vue";
 import Hall2 from "../../components/seats/Hall2.vue";
+import VueSelectInfinityLoad from "../../components/VueSelectInfinityLoad.vue";
 import { ref, onMounted, toRef } from "vue";
 import { getEventAPI } from "../../api/admin/events";
 import { getTicketClassAPI, setTicketClassAPI } from "../../api/admin/seats";
@@ -72,6 +70,7 @@ let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
 let ticketClassId = ref(null);
 let seatTicketClasses = ref([]);
+let clientsSpecial = ref([]);
 let errors = ref({});
 let mode = ref(MODE_TICKET_CLASS_SETTING)
 let halls = [
@@ -116,6 +115,10 @@ const getEvent = async () => {
         default:
             console.log(response.data);
     }
+}
+
+const getClientsSpecial = () => {
+    
 }
 
 const getSeatTicketClass = async () => {

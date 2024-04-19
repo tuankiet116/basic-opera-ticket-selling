@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class ClientModel extends Model
 {
@@ -19,7 +20,21 @@ class ClientModel extends Model
         "isSpecial"
     ];
 
-    public function event() {
+    protected $casts = [
+        "isSpecial" => "boolean"
+    ];
+
+    public function scopeSearch(Builder $query, $search)
+    {
+        return $query->where("LOWER(name)", "LIKE", "%" . strtolower($search) . "%")
+            ->orWhere("LOWER(email)", "LIKE", "%" . strtolower($search) . "%")
+            ->orWhere("LOWER(phone_number)", "LIKE", "%" . strtolower($search) . "%")
+            ->join("events", "events.id", "=", "clients.event_id")
+            ->where("LOWER(events.name)", "LIKE", "%" . strtolower($search) . "%");
+    }
+
+    public function event()
+    {
         return $this->belongsTo(EventModel::class, "event_id", "id");
     }
 }
