@@ -39,7 +39,7 @@
                             No Data Available
                         </td>
                     </tr>
-                    <tr v-else v-for="(event, index) in events.data">
+                    <tr v-else v-for="(event, index) in events.data" :key="index">
                         <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
                         <td>{{ event.name }}</td>
                         <td>{{ convertDate(event.date) }}</td>
@@ -49,7 +49,8 @@
                         <td>
                             <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
                                 class="btn btn-light mx-1 my-1 btn-sm">Cài đặt thông tin</router-link>
-                            <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button" class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</router-link>
+                            <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button"
+                                class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</router-link>
                             <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
                         </td>
                     </tr>
@@ -57,7 +58,8 @@
             </table>
             <div class="row">
                 <div class="d-flex">
-                    <button class="btn btn-light ms-auto" v-for="page in events.lastPage">
+                    <button class="btn btn-light ms-auto" v-for="page in events.lastPage" :key="page"
+                        @click="pageNumber = page">
                         {{ page }}
                     </button>
                 </div>
@@ -79,13 +81,14 @@ let events = reactive({
     per_page: 0,
 });
 let searchString = ref("");
+let pageNumber = ref(1);
 
 onMounted(async () => {
     await getEvents();
 });
 
 const getEvents = async () => {
-    let response = await getListEvent(events.current_page, searchString.value);
+    let response = await getListEvent(pageNumber, searchString.value);
     switch (response.status) {
         case HttpStatusCode.Ok:
             events.data = response.data.data;

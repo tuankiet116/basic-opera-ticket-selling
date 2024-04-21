@@ -86,7 +86,7 @@ const seatsContainer = ref(null);
 const rows1 = ref(Array());
 const rows2 = ref(Array());
 const rows3 = ref(Array());
-const emits = defineEmits("selectSeat");
+const emits = defineEmits(["selectSeat"]);
 
 const props = defineProps({
     selected: {

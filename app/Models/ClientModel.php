@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientModel extends Model
 {
@@ -26,11 +26,13 @@ class ClientModel extends Model
 
     public function scopeSearch(Builder $query, $search)
     {
-        return $query->where("LOWER(name)", "LIKE", "%" . strtolower($search) . "%")
-            ->orWhere("LOWER(email)", "LIKE", "%" . strtolower($search) . "%")
-            ->orWhere("LOWER(phone_number)", "LIKE", "%" . strtolower($search) . "%")
-            ->join("events", "events.id", "=", "clients.event_id")
-            ->where("LOWER(events.name)", "LIKE", "%" . strtolower($search) . "%");
+        $search = $search ? strtolower($search) : "";
+        return $query->whereRaw("LOWER(clients.name) LIKE ?", ["%$search%"])
+            ->orwhereRaw("LOWER(clients.email) LIKE ?", ["%$search%"])
+            ->orwhereRaw("LOWER(clients.phone_number) LIKE ?", ["%$search%"])
+            ->join("events", "events.id", "=", "clients.event_id", "left")
+            ->whereRaw("LOWER(events.name) LIKE ?", ["%$search%"])
+            ->selectRaw("clients.*, events.name as event_name, events.id as event_id");
     }
 
     public function event()

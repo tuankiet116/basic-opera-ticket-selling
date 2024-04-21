@@ -59,7 +59,7 @@
 import { watchEffect, computed, onMounted } from "vue";
 import { numberWithCommas } from "../../helpers/number";
 
-const emits = defineEmits("deleteTicketClass");
+const emits = defineEmits(["deleteTicketClass"]);
 const props = defineProps({
     ticketClasses: {
         type: Array,

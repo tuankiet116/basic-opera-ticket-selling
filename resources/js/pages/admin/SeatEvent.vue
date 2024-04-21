@@ -59,6 +59,7 @@ import { getTicketClassAPI, setTicketClassAPI } from "../../api/admin/seats";
 import { useRoute } from "vue-router";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
+import { getSpecialClientsAPI } from "../../api/admin/clients";
 
 const route = useRoute();
 const toast = useToast();
@@ -117,8 +118,9 @@ const getEvent = async () => {
     }
 }
 
-const getClientsSpecial = () => {
-    
+const getClientsSpecial = async (search: string) => {
+    let response = await getSpecialClientsAPI(search);
+    clientsSpecial.value = response.data;
 }
 
 const getSeatTicketClass = async () => {

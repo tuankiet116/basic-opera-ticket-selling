@@ -14,7 +14,7 @@ import { ref, onMounted } from "vue";
 
 let observer = ref(null);
 let load = ref(null);
-const emits = defineEmits("fetchData");
+const emits = defineEmits(["fetchData"]);
 const props = defineProps({
     data: {
         type: Array,
@@ -42,8 +42,8 @@ const infiniteScroll = async ([{ isIntersecting, target }]) => {
     }
 }
 
-const fetchData = () => {
-    emits("fetchData");
+const fetchData = (search) => {
+    emits("fetchData", search);
 }
 </script>
 

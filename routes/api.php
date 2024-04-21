@@ -22,6 +22,10 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::post("/set-ticket-class", [SeatController::class, "setSeatTicketClass"]);
     });
     Route::prefix("/client")->group(function () {
-        Route::get("/special", [ClientController::class, "getSeatTicketClass"]);
+        Route::get("/list", [ClientController::class, "getClients"]);
+        Route::get("/special", [ClientController::class, "getClientsSpecial"]);
+        Route::post("/create", [ClientController::class, "createClientSpecial"]);
+        Route::put("/update/{clientId}", [ClientController::class, "updateClientSpecial"]);
+        Route::get("/edit/{clientId}", [ClientController::class, "edit"]);
     });
 });
