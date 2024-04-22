@@ -1,10 +1,14 @@
 <template>
-    <VueSelect :options="props.data" :filterable="true" @open="onOpen" @close="onClose" @search="fetchData">
-        <template #list-footer>
+    <VueSelect :options="props.list.data" :filterable="true" @open="onOpen" @close="onClose" @search="fetchData">
+        <template v-slot:option="option">
+            <span :class="option.name"></span>
+            {{ option.name }}
+        </template>
+        <!-- <template #list-footer>
             <li v-show="hasNextPage" ref="load" class="loader">
                 Đang tìm kiếm dữ liệu...
             </li>
-        </template>
+        </template> -->
     </VueSelect>
 </template>
 
@@ -16,9 +20,9 @@ let observer = ref(null);
 let load = ref(null);
 const emits = defineEmits(["fetchData"]);
 const props = defineProps({
-    data: {
-        type: Array,
-        default: []
+    list: {
+        type: Object,
+        default: {}
     }
 });
 

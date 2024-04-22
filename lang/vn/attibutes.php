@@ -7,7 +7,7 @@ return [
     ],
     "event-basic" => [
         "name" => "tên sự kiện",
-        "date" => "ngày công chiếu",
+        "date" => "ngày diễn",
         "desc" => "mô tả sự kiện",
         "image" => "ảnh sự kiện"
     ]

@@ -58,6 +58,9 @@
                         <th width="10%">Số điện thoại</th>
                         <th width="20%">Địa chỉ</th>
                         <th width="10%">Sự kiện đặt vé</th>
+                        <th width="20%" v-if="tab == TAB_SPECIAL_CLIENTS">
+                            Hành động
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,6 +76,11 @@
                         <td>{{ client.phone_number }}</td>
                         <td>{{ client.address }}</td>
                         <td>{{ client.event_name }}</td>
+                        <td v-if="tab == TAB_SPECIAL_CLIENTS">
+                            <router-link :to="{ name: 'admin-edit-client', params: { clientId: client.id } }" type="button"
+                                class="btn btn-light mx-1 my-1 btn-sm">Chỉnh sửa</router-link>
+                            <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

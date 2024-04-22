@@ -42,7 +42,7 @@
             <div class="row" v-if="mode == MODE_PRE_BOOKING">
                 <small class="text-danger" v-if="errors.ticket_class_id">{{ errors.ticket_class_id[0] }}</small>
                 <div class="col-10 mx-0">
-                    <VueSelectInfinityLoad @fetchData="getClientsSpecial"></VueSelectInfinityLoad>
+                    <VueSelectInfinityLoad @fetchData="getClientsSpecial" :list="clientsSpecial"></VueSelectInfinityLoad>
                 </div>
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Pre-Booking</button>
             </div>

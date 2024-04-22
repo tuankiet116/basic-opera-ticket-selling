@@ -30,7 +30,8 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <button v-if="props.isEdit" class="btn btn-primary col-2 mt-5" @click="updateClient">Cập nhật khách hàng</button>
+                <button v-if="props.isEdit" class="btn btn-primary col-2 mt-5" @click="updateClient">Cập nhật khách
+                    hàng</button>
                 <button v-else class="btn btn-primary col-2 mt-5" @click="createClient">Thêm khách hàng</button>
             </div>
         </div>
@@ -40,7 +41,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { regexPhoneNumberVietNam } from "../../helpers/number";
 import { useToast } from "vue-toastification";
-import { createClientAPI, getClientAPI } from "../../api/admin/clients";
+import { createClientAPI, getClientAPI, updateClientAPI } from "../../api/admin/clients";
 import { HttpStatusCode } from "axios";
 import { useRoute, useRouter } from "vue-router";
 const props = defineProps({
@@ -97,8 +98,16 @@ const getClient = async () => {
 }
 
 const updateClient = async () => {
-
+    let response = await updateClientAPI(route.params.clientId, client);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            toast.success("Cập nhật khách hàng thành công!");
+            router.push({ name: "admin-list-client" });
+            break;
+        case HttpStatusCode.UnprocessableEntity:
+            errors.value = response.data.errors;
+            break;
+        default:
+    }
 }
-
-
 </script>

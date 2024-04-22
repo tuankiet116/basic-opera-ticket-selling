@@ -10,7 +10,7 @@
                     <small v-if="props.errors.name" class="text-danger">{{ props.errors.name[0] }}</small>
                 </div>
                 <div class="col-6">
-                    <label for="event-date" class="form-label">Ngày công chiếu: </label>
+                    <label for="event-date" class="form-label">Ngày diễn: </label>
                     <flat-pickr id="event-date" v-model="date" class="form-control" :config="config"
                         @change="changeDate" />
                     <small v-if="props.errors.date" class="text-danger">{{ props.errors.date[0] }}</small>

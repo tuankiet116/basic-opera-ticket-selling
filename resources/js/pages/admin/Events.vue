@@ -27,10 +27,10 @@
                 <thead>
                     <tr>
                         <th width="10%">#</th>
-                        <th width="10%">Name</th>
-                        <th width="10%">Date</th>
-                        <th width="40%">Description</th>
-                        <th width="30%">Action</th>
+                        <th width="10%">Tên sự kiện</th>
+                        <th width="10%">Ngày diễn</th>
+                        <th width="40%">Mô tả</th>
+                        <th width="30%">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
