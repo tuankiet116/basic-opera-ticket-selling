@@ -7,10 +7,14 @@ use Illuminate\Support\Facades\Log;
 
 class ClientService
 {
-    public function getClientsSpecial(string $searchStr = "", $isSpecial = true)
+    public function getClients(string $searchStr = "", $isSpecial = true, $isPaginate = true)
     {
         return ClientModel::search($searchStr)
-            ->where("isSpecial", $isSpecial)->paginate(PAGINATE_NUMBER);
+            ->where("isSpecial", $isSpecial)->when($isPaginate, function($q) {
+                return $q->paginate(PAGINATE_NUMBER);
+            }, function($q) {
+                return $q->get();
+            });
     }
 
     public function createClient(array $data, $special = true)

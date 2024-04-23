@@ -21,7 +21,7 @@
                     <label for="event-description" class="form-label">Mô tả sự kiện</label>
                     <textarea class="form-control" type="textarea" id="event-description" v-model="description"
                         @change="changeDesc" :disabled="props.isLoading" />
-                    <small v-if="props.errors.desc" class="text-danger">{{ props.errors.desc[0] }}</small>
+                    <small v-if="props.errors.description" class="text-danger">{{ props.errors.description[0] }}</small>
                 </div>
                 <div class="col-6">
                     <label for="event-image" class="form-label">Ảnh sự kiện</label>

@@ -5,8 +5,8 @@ export const getListClientsAPI = async (search = "", page = 1) => {
     return await axiosInstance.get(`/admin/client/list?page=${page}&search=${search}`);
 }
 
-export const getSpecialClientsAPI = async (search = "", page = 1) => {
-    return await axiosInstance.get(`/admin/client/special?page=${page}&search=${search}`);
+export const getSpecialClientsAPI = async (search = "", page = 1, isPaginate = true) => {
+    return await axiosInstance.get(`/admin/client/special?page=${page}&search=${search}&isPaginate=${isPaginate}`);
 }
 
 export const getClientAPI = async (clientId: number) => {

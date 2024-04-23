@@ -58,10 +58,12 @@
             </table>
             <div class="row">
                 <div class="d-flex">
-                    <button class="btn btn-light ms-auto" v-for="page in events.lastPage" :key="page"
-                        @click="pageNumber = page">
-                        {{ page }}
-                    </button>
+                    <div class="ms-auto">
+                        <button class="btn btn-light m-1" :class="{ 'active': events.current_page == page }"
+                            v-for="page in events.last_page" :key="page" @click="changePage(page)">
+                            {{ page }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,7 +79,7 @@ import moment from "moment";
 let events = reactive({
     data: [],
     current_page: 1,
-    lastPage: 1,
+    last_page: 1,
     per_page: 0,
 });
 let searchString = ref("");
@@ -87,13 +89,18 @@ onMounted(async () => {
     await getEvents();
 });
 
+const changePage = async (page) => {
+    pageNumber.value = page;
+    await getEvents();
+}
+
 const getEvents = async () => {
-    let response = await getListEvent(pageNumber, searchString.value);
+    let response = await getListEvent(pageNumber.value, searchString.value);
     switch (response.status) {
         case HttpStatusCode.Ok:
             events.data = response.data.data;
             events.current_page = response.data.current_page;
-            events.lastPage = response.data.last_page;
+            events.last_page = response.data.last_page;
             events.per_page = response.data.per_page;
             break;
         default:

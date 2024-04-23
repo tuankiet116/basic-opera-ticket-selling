@@ -15,14 +15,15 @@ class ClientController extends Controller
     public function getClientsSpecial()
     {
         $searchStr = request()->get("search") ?? "";
-        $clients = $this->clientService->getClientsSpecial($searchStr, true)->toArray();
+        $isPaginate = request()->get("isPaginate") == "true" ? true : false;
+        $clients = $this->clientService->getClients($searchStr, true, $isPaginate)->toArray();
         return $this->responseSuccess($clients);
     }
 
     public function getClients()
     {
         $searchStr = request()->get("search") ?? "";
-        $clients = $this->clientService->getClientsSpecial($searchStr, false)->toArray();
+        $clients = $this->clientService->getClients($searchStr, false)->toArray();
         return $this->responseSuccess($clients);
     }
 

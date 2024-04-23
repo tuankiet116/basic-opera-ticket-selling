@@ -42,7 +42,13 @@
             <div class="row" v-if="mode == MODE_PRE_BOOKING">
                 <small class="text-danger" v-if="errors.ticket_class_id">{{ errors.ticket_class_id[0] }}</small>
                 <div class="col-10 mx-0">
-                    <VueSelectInfinityLoad @fetchData="getClientsSpecial" :list="clientsSpecial"></VueSelectInfinityLoad>
+                    <Multiselect placeholder="Chọn khách hàng" v-model="clientPreBooking" label="name" valueProp="id"
+                        openDirection="top" searchable :clear-on-search="true" :options="clientsSpecial">
+                        <template #option="data">
+                            {{ data.option.name }} {{ data.option.event_name ? `(${data.option.event_name})` : "" }}
+                        </template>
+                        <template #nooptions>Không có dữ liệu</template>
+                    </Multiselect>
                 </div>
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Pre-Booking</button>
             </div>
@@ -52,7 +58,6 @@
 <script setup lang="ts">
 import Hall1 from "../../components/seats/Hall1.vue";
 import Hall2 from "../../components/seats/Hall2.vue";
-import VueSelectInfinityLoad from "../../components/VueSelectInfinityLoad.vue";
 import { ref, onMounted, toRef } from "vue";
 import { getEventAPI } from "../../api/admin/events";
 import { getTicketClassAPI, setTicketClassAPI } from "../../api/admin/seats";
@@ -60,6 +65,7 @@ import { useRoute } from "vue-router";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import { getSpecialClientsAPI } from "../../api/admin/clients";
+import Multiselect from "@vueform/multiselect"
 
 const route = useRoute();
 const toast = useToast();
@@ -71,7 +77,8 @@ let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
 let ticketClassId = ref(null);
 let seatTicketClasses = ref([]);
-let clientsSpecial = ref([]);
+let clientsSpecial = ref({});
+let clientPreBooking = ref(null);
 let errors = ref({});
 let mode = ref(MODE_TICKET_CLASS_SETTING)
 let halls = [
@@ -88,6 +95,7 @@ let halls = [
 onMounted(async () => {
     await getEvent();
     await getSeatTicketClass();
+    await getClientsSpecial();
 })
 
 const selectHall = (hallId: string) => {
@@ -118,8 +126,8 @@ const getEvent = async () => {
     }
 }
 
-const getClientsSpecial = async (search: string) => {
-    let response = await getSpecialClientsAPI(search);
+const getClientsSpecial = async () => {
+    let response = await getSpecialClientsAPI("", 1, false);
     clientsSpecial.value = response.data;
 }
 
@@ -159,6 +167,7 @@ const setSeatTicketClass = async () => {
     }
 }
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss">
 .box-setting {
     background-color: white;
@@ -169,5 +178,9 @@ const setSeatTicketClass = async () => {
         outline: none;
         box-shadow: none;
     }
+}
+
+.multiselect.is-active::v-deep {
+    box-shadow: none;
 }
 </style>
