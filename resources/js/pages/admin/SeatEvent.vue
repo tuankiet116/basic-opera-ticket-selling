@@ -40,7 +40,6 @@
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Đặt hạng vé</button>
             </div>
             <div class="row" v-if="mode == MODE_PRE_BOOKING">
-                <small class="text-danger" v-if="errors.ticket_class_id">{{ errors.ticket_class_id[0] }}</small>
                 <div class="col-10 mx-0">
                     <Multiselect placeholder="Chọn khách hàng" v-model="clientPreBooking" label="name" valueProp="id"
                         openDirection="top" searchable :clear-on-search="true" :options="clientsSpecial">
@@ -50,7 +49,7 @@
                         <template #nooptions>Không có dữ liệu</template>
                     </Multiselect>
                 </div>
-                <button class="btn btn-primary col-2" @click="setSeatTicketClass">Pre-Booking</button>
+                <button class="btn btn-primary col-2" @click="preBooking">Pre-Booking</button>
             </div>
         </div>
     </div>
@@ -60,12 +59,13 @@ import Hall1 from "../../components/seats/Hall1.vue";
 import Hall2 from "../../components/seats/Hall2.vue";
 import { ref, onMounted, toRef } from "vue";
 import { getEventAPI } from "../../api/admin/events";
-import { getTicketClassAPI, setTicketClassAPI } from "../../api/admin/seats";
+import { getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../api/admin/seats";
 import { useRoute } from "vue-router";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import { getSpecialClientsAPI } from "../../api/admin/clients";
 import Multiselect from "@vueform/multiselect"
+import { PreBookingData } from "../../types/seats";
 
 const route = useRoute();
 const toast = useToast();
@@ -152,6 +152,46 @@ const setSeatTicketClass = async () => {
         ]
     };
     let response = await setTicketClassAPI(data);
+    errors.value = {};
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            seatTicketClasses.value = response.data;
+            seatSelectedHall1.value = [];
+            seatSelectedHall2.value = [];
+            break;
+        case HttpStatusCode.UnprocessableEntity:
+            errors.value = response.data.errors;
+            break;
+        default:
+            toast.error(response.data.message);
+            break;
+    }
+}
+
+const preBooking = async () => {
+    if (!seatSelectedHall2.value.length && !seatSelectedHall1.value.length) {
+        toast.error("Không có ghế được chọn pre-booking");
+        return;
+    }
+    if (!clientPreBooking.value) {
+        toast.error("Không có khách hàng để pre-booking");
+        return;
+    }
+    let data: PreBookingData = {
+        event_id: Number(route.params.eventId),
+        client_id: Number(clientPreBooking.value),
+        seats: [
+            {
+                hall: 1,
+                names: seatSelectedHall1.value
+            },
+            {
+                hall: 2,
+                names: seatSelectedHall2.value
+            }
+        ]
+    };
+    let response = await preBookinngAPI(data);
     switch (response.status) {
         case HttpStatusCode.Ok:
             seatTicketClasses.value = response.data;

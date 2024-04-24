@@ -59,4 +59,9 @@ class SeatService
         DB::commit();
         return $this->getSeatTicketClass($data["event_id"]);
     }
+
+    public function preBooking(array $data)
+    {
+        
+    }
 }

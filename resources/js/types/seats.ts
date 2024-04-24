@@ -39,3 +39,12 @@ export type SeatsTicketClassData = {
         names: Array<string>
     }>
 }
+
+export type PreBookingData = {
+    event_id: number,
+    client_id: number,
+    seats: Array<{
+        hall: number,
+        names: Array<string>
+    }>,
+}

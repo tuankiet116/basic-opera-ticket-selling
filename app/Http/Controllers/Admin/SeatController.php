@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PreBookingRequest;
 use App\Http\Requests\Admin\SetSeatTicketClassRequest;
 use App\Services\Admin\SeatService;
 
@@ -28,5 +29,11 @@ class SeatController extends Controller
         return $this->responseError([
             "message" => __("messages.errors.common")
         ]);
+    }
+
+    public function preBookingTicket(PreBookingRequest $request)
+    {
+        $data = $request->validated();
+        dd($data);
     }
 }
