@@ -7,9 +7,11 @@
                     :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                             class="border border-dark seat d-flex justify-content-center align-items-center z-1"
-                            :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
+                            :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            v-tooltip>
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -28,9 +30,11 @@
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                                :class="{ 'selected': isSeatInSelected(seat.id) }"
+                                :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1"
-                                :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
+                                :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                v-tooltip>
                                 <span>{{ seat.name }}</span>
                             </div>
                             <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -49,9 +53,11 @@
                     :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
-                            :class="{ 'selected': isSeatInSelected(seat.id) }"
+                            :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                             class="border border-dark seat d-flex justify-content-center align-items-center z-1"
-                            :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`">
+                            :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            v-tooltip>
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -80,6 +86,7 @@
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2, seats3 } from "../../config/hall2.ts";
 import { onMounted, ref } from 'vue';
+import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../../composable/hallComposable';
 
 const rows = ref(null);
 const seatsContainer = ref(null);
@@ -90,6 +97,14 @@ const emits = defineEmits(["selectSeat"]);
 
 const props = defineProps({
     selected: {
+        type: Array,
+        default: []
+    },
+    seatTicketClasses: {
+        type: Array,
+        default: []
+    },
+    bookings: {
         type: Array,
         default: []
     }
@@ -108,16 +123,16 @@ onMounted(() => {
     });
 })
 
-const isSeatInSelected = (seatId) => {
-    return props.selected.find(v => v == seatId);
-}
-
 const caculateRowHeight = (row) => {
     let max = Math.max(...row.flatMap(s => {
         if (s.isWall) return [];
         return s.marginTop + s.height
     }))
     return max;
+}
+
+const setStyleSeat = (seat) => {
+    return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 2)
 }
 </script>
 

@@ -48,3 +48,10 @@ export type PreBookingData = {
         names: Array<string>
     }>,
 }
+
+export type AdminBookingStatus = {
+    seat: string,
+    hall: number,
+    disable: boolean,
+    color: string
+}

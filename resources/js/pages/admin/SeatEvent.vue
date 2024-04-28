@@ -8,10 +8,12 @@
             </button>
         </div>
     </div>
-    <Hall1 class="mb-5 pb-5" v-if="hallSelected == 'fl_1-2'" :selected="seatSelectedHall1"
-        :seat-ticket-classes="seatTicketClasses" @selectSeat="selectSeat" />
-    <Hall2 class="mb-5 pb-5" v-else-if="hallSelected == 'fl_3-4'" :selected="seatSelectedHall2"
-        :seat-ticket-classes="seatTicketClasses" @selectSeat="selectSeat" />
+    <Hall1 class="mb-5 pb-5" v-if="hallSelected == 1" :selected="seatSelectedHall1"
+        :seat-ticket-classes="seatTicketClasses" :bookings="mode == MODE_PRE_BOOKING ? bookings : []"
+        @selectSeat="selectSeat" />
+    <Hall2 class="mb-5 pb-5" v-else-if="hallSelected == 2" :selected="seatSelectedHall2"
+        :seat-ticket-classes="seatTicketClasses" :bookings="mode == MODE_PRE_BOOKING ? bookings : []"
+        @selectSeat="selectSeat" />
     <div class="box position-fixed border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded"
         style="width: 40%;">
         <div class="row">
@@ -40,6 +42,21 @@
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Đặt hạng vé</button>
             </div>
             <div class="row" v-if="mode == MODE_PRE_BOOKING">
+                <div class="mb-2 row mx-0 p-0">
+                    <div class="col-10">
+                        <div class="d-flex">
+                            <span>Ghế đã đặt chỗ bởi khách hàng Online: </span>
+                            <div class="box-color-note" :style="`background-color: ${COLOR_SEAT_BOOKED_NON_SPECIAL}`" />
+                        </div>
+                        <div class="d-flex">
+                            <span>Ghế được đặt trước: </span>
+                            <div class="box-color-note" :style="`background-color: ${COLOR_SEAT_BOOKED_SPECIAL}`" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-light col btn-small" data-bs-toggle="modal" data-bs-target="#modal">
+                        Tình trạng vé
+                    </button>
+                </div>
                 <div class="col-10 mx-0">
                     <Multiselect placeholder="Chọn khách hàng" v-model="clientPreBooking" label="name" valueProp="id"
                         openDirection="top" searchable :clear-on-search="true" :options="clientsSpecial">
@@ -53,42 +70,71 @@
             </div>
         </div>
     </div>
+    <Modal modalId="modal" :modalTitle="'Tình trạng đặt vé khán phòng' + hallSelected">
+        <template #body>
+            <table class="table table-bordered border-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">Ghế</th>
+                        <th scope="col">Tên khách hàng</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Khách hàng Online</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="booking in getBookingSorted()">
+                        <td class="text-center">{{ booking.seat }}</td>
+                        <td class="text-center">{{ booking.client.name }}</td>
+                        <td class="text-center">{{ booking.client.phone_number }}</td>
+                        <td class="text-center">{{ booking.client.isSpecial ? "" : "V" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+        <template #footer>
+            <button class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+        </template>
+    </Modal>
 </template>
 <script setup lang="ts">
 import Hall1 from "../../components/seats/Hall1.vue";
 import Hall2 from "../../components/seats/Hall2.vue";
+import Modal from '../../components/Modal.vue';
 import { ref, onMounted, toRef } from "vue";
 import { getEventAPI } from "../../api/admin/events";
-import { getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../api/admin/seats";
+import { getBookingAPI, getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../api/admin/seats";
 import { useRoute } from "vue-router";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import { getSpecialClientsAPI } from "../../api/admin/clients";
 import Multiselect from "@vueform/multiselect"
-import { PreBookingData } from "../../types/seats";
+import { AdminBookingStatus, PreBookingData } from "../../types/seats";
 
 const route = useRoute();
 const toast = useToast();
 const MODE_TICKET_CLASS_SETTING = 'ticket-class-setting';
 const MODE_PRE_BOOKING = 'pre-booking';
+const COLOR_SEAT_BOOKED_NON_SPECIAL = "#4CB9E7";
+const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
 let event = ref({});
-let hallSelected = ref("fl_1-2");
+let hallSelected = ref(1);
 let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
 let ticketClassId = ref(null);
 let seatTicketClasses = ref([]);
 let clientsSpecial = ref({});
 let clientPreBooking = ref(null);
+let bookings = ref<Array<AdminBookingStatus>>();
 let errors = ref({});
 let mode = ref(MODE_TICKET_CLASS_SETTING)
 let halls = [
     {
         name: "Khán phòng 1",
-        id: "fl_1-2"
+        id: "1"
     },
     {
         name: "Khán phòng 2",
-        id: "fl_3-4"
+        id: "2"
     }
 ];
 
@@ -96,21 +142,27 @@ onMounted(async () => {
     await getEvent();
     await getSeatTicketClass();
     await getClientsSpecial();
+    await getBookings();
 })
 
-const selectHall = (hallId: string) => {
+const selectHall = (hallId: number) => {
     hallSelected.value = hallId;
+}
+
+const getBookingSorted = () => {
+    return bookings.value?.sort((a, b) => a.seat > b.seat ? 1 : -1);
 }
 
 const selectSeat = (seatName: never) => {
     let seatSelected = toRef(seatSelectedHall1);
-    if (hallSelected.value == "fl_3-4") {
+    if (hallSelected.value == 2) {
         seatSelected = toRef(seatSelectedHall2);
     }
     let currentSeat = seatSelected.value.findIndex(seat => seat == seatName);
+    let seatBooked = bookings.value?.find(book => book.hall == hallSelected.value && book.seat == seatName);
     if (currentSeat > -1) {
         seatSelected.value.splice(currentSeat, 1);
-    } else {
+    } else if (seatBooked && seatBooked.disable == false || !seatBooked) {
         seatSelected.value.push(seatName);
     }
 }
@@ -132,7 +184,7 @@ const getClientsSpecial = async () => {
 }
 
 const getSeatTicketClass = async () => {
-    let response = await getTicketClassAPI(route.params.eventId);
+    let response = await getTicketClassAPI(Number(route.params.eventId));
     seatTicketClasses.value = response.data;
 }
 
@@ -194,9 +246,9 @@ const preBooking = async () => {
     let response = await preBookinngAPI(data);
     switch (response.status) {
         case HttpStatusCode.Ok:
-            seatTicketClasses.value = response.data;
             seatSelectedHall1.value = [];
             seatSelectedHall2.value = [];
+            await getBookings();                                      
             break;
         case HttpStatusCode.UnprocessableEntity:
             errors.value = response.data.errors;
@@ -205,6 +257,19 @@ const preBooking = async () => {
             toast.error(response.data.message);
             break;
     }
+}
+
+const getBookings = async () => {
+    let response = await getBookingAPI(Number(route.params.eventId));
+    bookings.value = response.data.map(booking => {
+        return {
+            seat: booking.seat.name,
+            hall: booking.seat.hall,
+            color: booking.client.isSpecial ? COLOR_SEAT_BOOKED_SPECIAL : COLOR_SEAT_BOOKED_NON_SPECIAL,
+            client: booking.client,
+            disable: booking.client.isSpecial ? false : true
+        }
+    });
 }
 </script>
 <style src="@vueform/multiselect/themes/default.css"></style>
@@ -220,7 +285,12 @@ const preBooking = async () => {
     }
 }
 
-.multiselect.is-active::v-deep {
-    box-shadow: none;
+.multiselect.is-active {
+    box-shadow: none !important;
+}
+
+.box-color-note {
+    width: 20px;
+    height: 20px;
 }
 </style>

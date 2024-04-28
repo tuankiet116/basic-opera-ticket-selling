@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\InvalidBookingException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PreBookingRequest;
 use App\Http\Requests\Admin\SetSeatTicketClassRequest;
 use App\Services\Admin\SeatService;
+use Exception;
 
 class SeatController extends Controller
 {
@@ -34,6 +36,18 @@ class SeatController extends Controller
     public function preBookingTicket(PreBookingRequest $request)
     {
         $data = $request->validated();
-        dd($data);
+        $result = $this->seatService->preBooking($data);
+        if (!$result) {
+            return $this->responseError([
+                "message" => __("messages.errors.common")
+            ]);
+        }
+        return $this->responseSuccess();
+    }
+
+    public function getBookingStatus(int $eventId)
+    {
+        $result = $this->seatService->getBookingStatus($eventId);
+        return $this->responseSuccess($result->toArray());
     }
 }

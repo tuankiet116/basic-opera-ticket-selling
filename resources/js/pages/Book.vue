@@ -8,11 +8,11 @@ const route = useRoute();
 let halls = [
     {
         name: "Khán phòng 1",
-        id: "fl_1-2"
+        id: "1"
     },
     {
         name: "Khán phòng 2",
-        id: "fl_3-4"
+        id: "2"
     }
 ];
 let hallSelected = ref(halls[0].id);
@@ -32,6 +32,6 @@ const selectHall = (hallId: string): void => {
             </button>
         </div>
     </div>
-    <Hall1 v-if="hallSelected == 'fl_1-2'"/>
-    <Hall2 v-else-if="hallSelected == 'fl_3-4'"/>
+    <Hall1 v-if="hallSelected == '1'"/>
+    <Hall2 v-else-if="hallSelected == '2'"/>
 </template>

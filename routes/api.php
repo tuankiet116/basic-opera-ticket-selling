@@ -20,7 +20,8 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     Route::prefix("/seats")->group(function () {
         Route::get("/get-ticket-class/{eventId}", [SeatController::class, "getSeatTicketClass"]);
         Route::post("/set-ticket-class", [SeatController::class, "setSeatTicketClass"]);
-        Route::post("/pre-booking", [SeatController::class, "preBookingTicket"]);
+        Route::post("/pre-booking", [SeatController::class, "preBookingTicket"])->name("pre-booking");
+        Route::get("/booking/{eventId}", [SeatController::class, "getBookingStatus"]);
     });
     Route::prefix("/client")->group(function () {
         Route::get("/list", [ClientController::class, "getClients"]);

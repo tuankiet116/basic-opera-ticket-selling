@@ -10,6 +10,7 @@ import { createPinia } from 'pinia';
 import { useAuthenticateStore } from './pinia';
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
+import { popover, tooltip } from "./directives/bootstrap";
 
 const pinia = createPinia();
 const authenticatedStore = useAuthenticateStore(pinia);
@@ -51,4 +52,6 @@ let app = createApp(App)
         pauseOnFocusLoss: true,
     });
 app.directive("lazyload", lazyload);
+app.directive("popover", popover);
+app.directive("tooltip", tooltip);
 app.mount("#app");
