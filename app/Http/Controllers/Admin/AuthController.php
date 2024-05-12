@@ -27,7 +27,6 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         session()->put("language", "vn");
-        Log::debug("Set session " . session()->get("language"));
         return $this->responseSuccess($user->toArray());
     }
 

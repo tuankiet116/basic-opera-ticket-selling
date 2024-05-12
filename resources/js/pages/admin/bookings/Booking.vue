@@ -53,12 +53,16 @@
                     <span class="badge rounded-pill text-bg-danger" v-else>
                         Chưa thanh toán
                     </span>
-                    <span class="badge rounded-pill text-bg-info" v-if="booking.is_receive_in_opera">
+                    <span class="badge rounded-pill text-bg-info ms-2" v-if="booking.is_receive_in_opera">
                         Nhận vé tại nhà hát
                     </span>
                     <p class="mb-0 fs-5">Khách hàng: <strong>{{ booking.name }}</strong></p>
                     <p class="mb-0 fs-5">Email: <strong>{{ booking.email }}</strong></p>
                     <p class="mb-0 fs-5">Số điện thoại: <strong>{{ booking.phone_number }}</strong></p>
+                    <p class="mb-0 fs-5" v-if="!booking.is_receive_in_opera">
+                        Địa chỉ nhận vé: <strong>{{ booking.address }}
+                        </strong>
+                    </p>
                     <p class="mb-0 fs-5">Tổng tiền thanh toán: <strong>{{ numberWithCommas(booking.price) }}
                             vnd</strong></p>
                     <button class="btn btn-primary text-white position-absolute" data-bs-toggle="modal"
@@ -73,15 +77,22 @@
                 </div>
             </div>
         </div>
-        <InfiniteLoading v-if="bookingClients.next_page_url" @infinite="loadMore" distance="500"/>
+        <InfiniteLoading v-if="bookingClients.next_page_url" @infinite="loadMore" />
     </div>
 
     <Modal v-if="bookingSelected" modalId="modal" :modalTitle="'Thông tin đặt vé'">
         <template #body>
             <div>
-                <p class="mb-0">Khách hàng: <strong>{{ bookingSelected?.client?.name }}</strong></p>
-                <p class="mb-0">Email: <strong>{{ bookingSelected?.client?.email }}</strong></p>
-                <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.client?.phone_number }}</strong></p>
+                <p class="mb-0">Khách hàng: <strong>{{ bookingSelected?.name }}</strong></p>
+                <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
+                <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
+                <p class="mb-0">
+                    Địa chỉ nhận vé: 
+                    <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>
+                    <span class="badge rounded-pill text-bg-info ms-2" v-else>
+                        Nhận vé tại nhà hát
+                    </span>
+                </p>
                 <p class="mb-0">Tổng tiền thanh toán: <strong>{{ numberWithCommas(bookingSelected.price ?? 0) }}
                         vnd</strong></p>
             </div>
@@ -108,7 +119,8 @@
         </template>
         <template #footer>
             <button class="btn btn-info" @click="bookingSelected = {}" data-bs-dismiss="modal">Đóng</button>
-            <button class="btn btn-danger" @click="confirmBooked" data-bs-dismiss="modal">Xác nhận thanh toán thành
+            <button v-if="bookingSelected?.bookings && !bookingSelected.bookings[0].isBooked" class="btn btn-danger"
+                @click="confirmBooked" data-bs-dismiss="modal">Xác nhận thanh toán thành
                 công</button>
         </template>
     </Modal>
@@ -116,7 +128,7 @@
 <script setup>
     import InfiniteLoading from "v3-infinite-loading";
     import "v3-infinite-loading/lib/style.css";
-    import { ref, onMounted, computed } from "vue";
+    import { ref, onMounted, computed, onUnmounted } from "vue";
     import { useRoute } from "vue-router";
     import { getEventAPI } from "../../../api/admin/events";
     import { HttpStatusCode } from "axios";
@@ -159,19 +171,29 @@
     onMounted(async () => {
         await getEvent();
         await getBookings();
-        window.Echo.private(`admin.client-booking-event-${event.value.id}`).listen(
-            "AdminClientBookingTicket",
-            (e) => {
-                e.bookings.price = e.bookings.bookings.reduce((previous, current) => {
-                    return previous + current.ticket_class.price;
-                }, 0);
-                bookingClients.value.data = [e.bookings, ...bookingClients.value.data];
-                toast.info(e.bookings.name + " vừa mua vé!", {
-                    position: "top-center"
-                })
-            }
-        );
+        window.Echo.private(`admin.client-booking-event-${event.value.id}`)
+            .listen(
+                "AdminClientBookingTicket",
+                (e) => {
+                    e.bookings.price = e.bookings.bookings.reduce((previous, current) => {
+                        return previous + current.ticket_class.price;
+                    }, 0);
+                    bookingClients.value.data = [e.bookings, ...bookingClients.value.data];
+                    toast.info(e.bookings.name + " vừa mua vé!", {
+                        position: "top-center"
+                    })
+                }
+            ).listen("AdminRemoveBookingTicket", (e) => {
+                let clientId = e.client.id;
+                bookingClients.value.data = bookingClients.value.data.filter(bookingClient => {
+                    return bookingClient.id != clientId;
+                });
+            });
     })
+
+    onUnmounted(() => {
+        window.Echo.leave(`admin.client-booking-event-${event.value.id}`);
+    });
 
     const changeTab = (name) => { tab.value = name };
 
@@ -218,7 +240,7 @@
         let response = await acceptBookingAPI(bookingSelected.value.event_id, bookingSelected.value.id);
         switch (response.status) {
             case HttpStatusCode.Ok:
-                bookingClients.value.forEach(bookingClient => {
+                bookingClients.value.data.forEach(bookingClient => {
                     bookingClient.bookings.forEach(booking => {
                         booking.isBooked = true;
                         booking.isPending = false;

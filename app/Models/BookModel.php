@@ -33,4 +33,9 @@ class BookModel extends Model
     {
         return $this->belongsTo(SeatModel::class, "seat_id");
     }
+
+    public function event()
+    {
+        return $this->belongsTo(EventModel::class, "event_id");
+    }
 }

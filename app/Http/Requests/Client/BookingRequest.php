@@ -34,7 +34,7 @@ class BookingRequest extends FormRequest
             "email" => "required|string|email",
             "phone_number" => ["required", "string", "regex:/(84|0[3|5|7|8|9])+([0-9]{8})\b/"],
             "is_receive_in_opera" => "required|boolean",
-            "address" => "required_if:is_receive_in_opera,true|string",
+            "address" => "required_if:is_receive_in_opera,false",
             "bookings" => "array|required",
             "bookings.*.hall" => "required",
             "bookings.*.seats" => "array",

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\AdminRemoveBookingTicket;
 use App\Events\ClientRemoveBookingTicket;
 use App\Models\BookModel;
 use App\Models\ClientModel;
@@ -30,15 +31,22 @@ class CheckPendingBooking extends Command
      */
     public function handle()
     {
-        $timeToCheck = Carbon::now()->subMinutes(30)->format('Y-m-d H:i:s');
-        $bookingOverTime = BookModel::with(["client", "seat"])->where("start_pending", "<", $timeToCheck)
+        $timeToCheck = Carbon::now()->subMinutes(20)->format('Y-m-d H:i:s');
+        $bookingOverTime = BookModel::with(["client", "seat", "event"])->where("start_pending", "<", $timeToCheck)
             ->where("isPending", true)->get();
         if (sizeof($bookingOverTime)) {
             $clientIds = [];
             $bookingIds = [];
             $bookingInformation = [];
-            $seatRemoved = $bookingOverTime->pluck("seat");
-            $bookingOverTime->each(function ($booking) use (&$bookingInformation, &$clientIds, &$bookingIds) {
+            $eventSeats = [];
+            $bookingOverTime->each(function ($booking) use (&$bookingInformation, &$clientIds, &$bookingIds, &$eventSeats) {
+                if (isset($eventSeats[$booking->event->id])) {
+                    $eventSeats[$booking->event_id]["seats"][] = $booking->seat;
+                } else {
+                    $eventSeats[$booking->event_id]["client"] = $booking->client->toArray();
+                    $eventSeats[$booking->event_id]["event"] = $booking->event;
+                    $eventSeats[$booking->event_id]["seats"] = [$booking->seat];
+                }
                 $clientEmail = data_get($booking, "client.email");
                 $hall =  data_get($booking, "seat.hall");
                 $seatName = data_get($booking, "seat.name");
@@ -53,9 +61,12 @@ class CheckPendingBooking extends Command
                     $clientIds[] = data_get($booking, "client.id");
                 }
             });
+            foreach ($eventSeats as $eventSeat) {
+                ClientRemoveBookingTicket::dispatch($eventSeat["seats"], $eventSeat["event"]);
+                AdminRemoveBookingTicket::dispatch($eventSeat["client"], $eventSeat["event"]);
+            }
             BookModel::whereIn("id", $bookingIds)->delete();
             ClientModel::whereIn("id", $clientIds)->delete();
-            ClientRemoveBookingTicket::dispatch($seatRemoved->toArray());
             Log::info("Delete bookings overtime of clients: ", array_keys($bookingInformation));
         }
     }
