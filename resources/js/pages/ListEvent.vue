@@ -8,8 +8,7 @@
                         <div class="row shadow bg-white border-hg-bottom">
                             <div class="col-lg-4 col-md-5">
                                 <figure class="image__wrapper" v-lazyload>
-                                    <img class="image__item w-100"
-                                        :data-url="`/storage/${event.image_url}`"
+                                    <img class="image__item w-100" :data-url="`/storage/${event.image_url}`"
                                         alt="random image">
                                 </figure>
                             </div>
@@ -23,22 +22,44 @@
                         </div>
                     </router-link>
                 </div>
+                <div class="row">
+                    <div class="d-flex">
+                        <div class="ms-auto">
+                            <button class="btn btn-light m-1" :class="{ 'active': events.current_page == page }"
+                                v-for="page in events.last_page" :key="page" @click="changePage(page)">
+                                {{ page }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-import { getListEventAPI } from "../api/event";
+    import { ref, onMounted } from "vue";
+    import { getListEventAPI } from "../api/event";
 
-let events = ref([]);
+    let events = ref({
+        next_page_url: null,
+        current_page: 1,
+        data: [],
+        last_page: 1,
+    });
 
-onMounted(async () => {
-    await getListEvent();
-});
+    onMounted(async () => {
+        await getListEvent();
+    });
 
-const getListEvent = async () => {
-    let response = await getListEventAPI();
-    events.value = response.data;
-}
+    const getListEvent = async (page = 1) => {
+        let response = await getListEventAPI(page);
+        events.value.data = response.data.data;
+        events.value.next_page_url = response.data.next_page_url;
+        events.value.current_page = response.data.current_page;
+        events.value.last_page = response.data.last_page;
+    }
+
+    const changePage = async (page) => {
+        await getListEvent(page);
+    }
 </script>
