@@ -24,3 +24,7 @@ export const updateEventAPI = async (data: EventData, eventId) => {
 export const getEventAPI = async (eventId: number) => {
     return await axiosInstance.get(`/admin/event/edit/${eventId}`);
 }
+
+export const updateStatusAPI = async (eventId: number, data: { is_openning: boolean }) => {
+    return await axiosInstance.put(`/admin/event/status/${eventId}`, data);
+}

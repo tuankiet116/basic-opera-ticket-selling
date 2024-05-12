@@ -188,5 +188,5 @@ return [
     */
 
     'attributes' => [],
-
+    'recapcha' => "Recapcha không chính xác, vui lòng thử lại.",
 ];

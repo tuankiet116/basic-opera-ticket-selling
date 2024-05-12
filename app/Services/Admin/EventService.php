@@ -26,7 +26,7 @@ class EventService
             $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
             data_set($data, "image_url", $filePath);
             $event = EventModel::create($data);
-            $ticketClassesData = array_map(fn($data) => $data + ["event_id" => $event->id], $data["ticketClasses"]);
+            $ticketClassesData = array_map(fn ($data) => $data + ["event_id" => $event->id], $data["ticketClasses"]);
             TicketClassModel::insert($ticketClassesData);
         } catch (Exception $e) {
             Log::error("Create Event: ", [
@@ -62,7 +62,7 @@ class EventService
             }
             $event->update($data);
             $event->save();
-            
+
             $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
             $ticketClasses->each(function ($ticketClass) use ($data, $eventId) {
                 $dataTicket = collect($data['ticketClasses'])->where("id", $ticketClass->id)->first();
@@ -74,7 +74,7 @@ class EventService
                     $ticketClass->save();
                 }
             });
-            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->map(function($ticketClass) use($eventId) {
+            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->map(function ($ticketClass) use ($eventId) {
                 $ticketClass["event_id"] = $eventId;
                 return $ticketClass;
             })->all();
@@ -91,6 +91,15 @@ class EventService
             return null;
         }
         DB::commit();
+        return $event;
+    }
+
+    public function updateStatus(array $data, int $eventId)
+    {
+        $event = EventModel::find($eventId);
+        if (!$event) throw new NotFoundHttpException("Event not found");
+        $event->update($data);
+        $event->save();
         return $event;
     }
 }

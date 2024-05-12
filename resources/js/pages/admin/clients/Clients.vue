@@ -99,7 +99,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { getListClientsAPI, getSpecialClientsAPI } from "../../api/admin/clients.ts";
+import { getListClientsAPI, getSpecialClientsAPI } from "../../../api/admin/clients.ts";
 
 const TAB_SPECIAL_CLIENTS = "special-clients";
 const TAB_CLIENTS = "clients";

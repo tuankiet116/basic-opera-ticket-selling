@@ -1,21 +1,14 @@
 $primary: rgb(205, 153, 86);
+@import "bootstrap/scss/bootstrap";
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
-
-$utilities: map-merge($utilities,
-    ("font-size": map-merge(map-get($utilities, "font-size"),
-        (responsive: true),
-      ),
-    ));
-
 @import "bootstrap/scss/utilities/api";
-@import 'bootstrap/scss/bootstrap';
 
 body {
-  font-family: '__Montserrat_26bb97', '__Montserrat_Fallback_26bb97';
+  font-family: "__Montserrat_26bb97", "__Montserrat_Fallback_26bb97";
   min-height: 100vh;
 }
 
@@ -54,4 +47,43 @@ a {
 .form-control:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+input:focus {
+  box-shadow: none !important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .box-setting {
+    bottom: 0 !important;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .box-setting {
+    bottom: 0 !important;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .box-setting {
+    bottom: 20px !important;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .box-setting {
+    bottom: 20px !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .box-setting {
+    bottom: 20px !important;
+  }
 }

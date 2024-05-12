@@ -1,0 +1,267 @@
+
+  2024-05-10 12:04:29 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 12:04:29 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 12:04:29 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 12:04:29 App\Events\AdminClientBookingTicket ........ 8.15ms DONE
+  2024-05-10 12:04:29 App\Events\ClientBookingTicket ............ 14.83ms DONE
+  2024-05-10 12:04:32 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-10 13:31:08 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:31:11 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:31:11 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:31:11 App\Events\ClientBookingTicket ............ 15.79ms DONE
+  2024-05-10 13:31:11 App\Events\AdminClientBookingTicket ....... 16.62ms DONE
+  2024-05-10 13:31:12 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-10 13:33:21 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:33:23 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:33:23 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:33:23 App\Events\AdminClientBookingTicket ....... 10.30ms DONE
+  2024-05-10 13:33:23 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:33:23 App\Events\ClientBookingTicket ............. 6.89ms DONE
+  2024-05-10 13:34:53 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:34:53 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:34:53 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:34:53 App\Events\AdminClientBookingTicket ....... 17.10ms DONE
+  2024-05-10 13:34:53 App\Events\ClientBookingTicket ............ 14.46ms DONE
+  2024-05-10 13:34:54 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:36:33 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:36:35 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:36:35 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:36:35 App\Events\AdminClientBookingTicket ........ 6.57ms DONE
+  2024-05-10 13:36:35 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:36:35 App\Events\ClientBookingTicket ............. 5.67ms DONE
+  2024-05-10 13:37:08 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:37:08 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:37:08 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:37:08 App\Events\AdminClientBookingTicket ....... 17.84ms DONE
+  2024-05-10 13:37:08 App\Events\ClientBookingTicket ............ 16.00ms DONE
+  2024-05-10 13:37:09 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:44:54 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:44:56 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:44:56 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:44:56 App\Events\AdminClientBookingTicket ....... 10.24ms DONE
+  2024-05-10 13:44:56 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:44:56 App\Events\ClientBookingTicket ............. 4.91ms DONE
+  2024-05-10 13:45:47 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:45:47 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:45:47 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:45:47 App\Events\AdminClientBookingTicket ....... 15.76ms DONE
+  2024-05-10 13:45:47 App\Events\ClientBookingTicket ............ 16.07ms DONE
+  2024-05-10 13:45:48 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-10 13:46:02 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 13:46:02 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 13:46:02 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 13:46:02 App\Events\AdminClientBookingTicket ....... 10.08ms DONE
+  2024-05-10 13:46:02 App\Events\ClientBookingTicket ............ 15.81ms DONE
+  2024-05-10 13:46:05 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-10 14:14:30 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-10 14:14:31 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-10 14:14:31 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-10 14:14:31 App\Events\ClientBookingTicket ............. 9.90ms DONE
+  2024-05-10 14:14:31 App\Events\AdminClientBookingTicket ....... 14.24ms DONE
+  2024-05-10 14:14:34 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-11 04:31:59 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 04:31:59 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 04:31:59 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 04:31:59 App\Events\ClientBookingTicket ............ 17.76ms DONE
+  2024-05-11 04:31:59 App\Events\AdminClientBookingTicket ....... 20.65ms DONE
+  2024-05-11 04:32:02 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-11 04:36:59 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 04:36:59 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 04:36:59 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 04:36:59 App\Events\AdminClientBookingTicket ....... 17.29ms DONE
+  2024-05-11 04:36:59 App\Events\ClientBookingTicket ............ 16.94ms DONE
+  2024-05-11 04:37:02 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-11 12:06:42 App\Mail\AskingPayment  2024-05-11 12:06:42 App\Events\ClientBookingTicket ......................... RUNNING
+ ................. RUNNING
+  2024-05-11 12:06:42 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 12:06:42 App\Events\ClientBookingTicket ............ 27.02ms DONE
+  2024-05-11 12:06:42 App\Events\AdminClientBookingTicket ....... 28.91ms DONE
+  2024-05-11 12:06:55 App\Mail\AskingPayment ........................ 12s DONE
+  2024-05-11 12:07:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 12:07:39 App\Mail\AskingPayment .........................  2024-05-11 12:07:39 App\Events\AdminClientBookingTicket RUNNING
+ ............ RUNNING
+  2024-05-11 12:07:39 App\Events\ClientBookingTicket ............ 22.71ms DONE
+  2024-05-11 12:07:39 App\Events\AdminClientBookingTicket ....... 23.67ms DONE
+  2024-05-11 12:07:55 App\Mail\AskingPayment ........................ 15s DONE
+  2024-05-11 12:09:24 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 12:09:24 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 12:09:25 App\Events\AdminClientBookingTicket ....... 18.16ms DONE
+  2024-05-11 12:09:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 12:09:25 App\Events\ClientBookingTicket ............ 15.65ms DONE
+  2024-05-11 12:09:32 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 12:09:34 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 12:09:34 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 12:09:34 App\Events\ClientBookingTicket ............. 6.50ms DONE
+  2024-05-11 12:09:34 App\Events\AdminClientBookingTicket ....... 16.15ms DONE
+  2024-05-11 12:09:38 App\Mail\AskingPayment ........................ 13s DONE
+  2024-05-11 12:09:45 App\Mail\AskingPayment ........................ 12s DONE
+  2024-05-11 13:52:31 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 13:52:31 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 13:52:31 App\Events\AdminClientBookingTicket ....... 17.22ms DONE
+  2024-05-11 13:52:31 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 13:52:31 App\Events\ClientBookingTicket ............. 5.80ms DONE
+  2024-05-11 13:52:34 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-11 14:40:47 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-11 14:40:47 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-11 14:40:47 App\Events\AdminClientBookingTicket ....... 16.75ms DONE
+  2024-05-11 14:40:47 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-11 14:40:47 App\Events\ClientBookingTicket ............. 8.70ms DONE
+  2024-05-11 14:40:50 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 02:19:36 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 02:19:37 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 02:19:37 App\Events\AdminClientBookingTicket ....... 19.49ms DONE
+  2024-05-12 02:19:37 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 02:19:37 App\Events\ClientBookingTicket ............. 5.68ms DONE
+  2024-05-12 02:19:40 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 02:25:36 App\Mail\PaymentSuccess ........................ RUNNING
+  2024-05-12 02:25:39 App\Mail\PaymentSuccess ........................ 3s DONE
+  2024-05-12 02:30:30 App\Mail\PaymentSuccess ........................ RUNNING
+  2024-05-12 02:30:33 App\Mail\PaymentSuccess ........................ 3s DONE
+  2024-05-12 02:31:24 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 02:31:24 App\Mail\AskingPayment .........................  2024-05-12 02:31:24 App\Events\AdminClientBookingTicket RUNNING
+ ............ RUNNING
+  2024-05-12 02:31:24 App\Events\ClientBookingTicket ............ 18.94ms DONE
+  2024-05-12 02:31:24 App\Events\AdminClientBookingTicket ....... 17.67ms DONE
+  2024-05-12 02:31:27 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-12 02:31:41 App\Mail\PaymentSuccess ........................ RUNNING
+  2024-05-12 02:31:44 App\Mail\PaymentSuccess ........................ 2s DONE
+  2024-05-12 10:01:48 App\Mail\AskingPayment .........................  2024-05-12 10:01:48 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 10:01:48 App\Events\ClientBookingTicket ................. RUNNING
+ RUNNING
+  2024-05-12 10:01:48 App\Events\AdminClientBookingTicket ....... 19.94ms DONE
+  2024-05-12 10:01:48 App\Events\ClientBookingTicket ............ 20.44ms DONE
+  2024-05-12 10:01:52 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 10:24:03 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 10:24:04 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 10:24:04 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 10:24:04 App\Events\ClientBookingTicket ............ 27.72ms DONE
+  2024-05-12 10:24:04 App\Events\AdminClientBookingTicket ....... 25.88ms DONE
+  2024-05-12 10:24:06 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 10:25:04 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 10:25:04 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 10:25:04 App\Events\ClientBookingTicket ............ 14.64ms DONE
+  2024-05-12 10:25:04 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 10:25:04 App\Events\AdminClientBookingTicket ....... 26.70ms DONE
+  2024-05-12 10:25:05 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 11:06:19 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 11:06:19 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 11:06:19 App\Events\AdminClientBookingTicket ....... 32.52ms DONE
+  2024-05-12 11:06:19 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 11:06:19 App\Events\ClientBookingTicket ............ 10.58ms DONE
+  2024-05-12 11:06:22 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 11:23:56 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 11:23:56 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 11:23:56 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 11:23:56 App\Events\AdminClientBookingTicket ....... 33.45ms DONE
+  2024-05-12 11:23:56 App\Events\ClientBookingTicket ............ 37.16ms DONE
+  2024-05-12 11:23:59 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 11:29:39 App\Mail\PaymentSuccess ........................ RUNNING
+  2024-05-12 11:29:43 App\Mail\PaymentSuccess ........................ 3s DONE
+  2024-05-12 12:03:45 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:03:45 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:03:45 App\Events\AdminClientBookingTicket ....... 21.91ms DONE
+  2024-05-12 12:03:45 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:03:45 App\Events\ClientBookingTicket ............. 5.67ms DONE
+  2024-05-12 12:03:48 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-12 12:04:23 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:04:23 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:04:23 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:04:23 App\Events\AdminClientBookingTicket ....... 22.48ms DONE
+  2024-05-12 12:04:23 App\Events\ClientBookingTicket ............ 24.13ms DONE
+  2024-05-12 12:04:26 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:26:31 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:26:31 App\Events\ClientBookingTicket .................  2024-05-12 12:26:31 App\Events\AdminClientBookingTicket RUNNING
+ ............ RUNNING
+  2024-05-12 12:26:31 App\Events\ClientBookingTicket ............ 28.06ms DONE
+  2024-05-12 12:26:31 App\Events\AdminClientBookingTicket ....... 27.84ms DONE
+  2024-05-12 12:26:34 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:26:55 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:26:55 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:26:55 App\Events\AdminClientBookingTicket ....... 11.81ms DONE
+  2024-05-12 12:26:55 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:26:55 App\Events\ClientBookingTicket ............ 27.32ms DONE
+  2024-05-12 12:26:58 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:29:08 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:29:08 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:29:08 App\Events\AdminClientBookingTicket ....... 12.97ms DONE
+  2024-05-12 12:29:08 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:29:08 App\Events\ClientBookingTicket ............. 5.30ms DONE
+  2024-05-12 12:29:11 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:29:31 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:29:31 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:29:31 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:29:31 App\Events\AdminClientBookingTicket ....... 14.09ms DONE
+  2024-05-12 12:29:31 App\Events\ClientBookingTicket ............ 14.97ms DONE
+  2024-05-12 12:29:34 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-12 12:30:36 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:30:36 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:30:36 App\Events\AdminClientBookingTicket ....... 14.81ms DONE
+  2024-05-12 12:30:36 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:30:36 App\Events\ClientBookingTicket ............. 6.30ms DONE
+  2024-05-12 12:30:39 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-12 12:31:12 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:31:12 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:31:12 App\Events\AdminClientBookingTicket ....... 13.73ms DONE
+  2024-05-12 12:31:12 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:31:12 App\Events\ClientBookingTicket ............. 5.95ms DONE
+  2024-05-12 12:31:15 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:31:35 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:31:35 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:31:35 App\Events\AdminClientBookingTicket ........ 7.72ms DONE
+  2024-05-12 12:31:35 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:31:35 App\Events\ClientBookingTicket ............. 6.04ms DONE
+  2024-05-12 12:31:37 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 12:34:03 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:34:03 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:34:03 App\Events\AdminClientBookingTicket ....... 10.69ms DONE
+  2024-05-12 12:34:03 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:34:03 App\Events\ClientBookingTicket ............. 5.73ms DONE
+  2024-05-12 12:34:06 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-12 12:34:47 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:34:48 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:34:48 App\Events\AdminClientBookingTicket ........ 7.42ms DONE
+  2024-05-12 12:34:48 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:34:48 App\Events\ClientBookingTicket ............. 5.31ms DONE
+  2024-05-12 12:34:51 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:35:00 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:35:00 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:35:00 App\Events\AdminClientBookingTicket ........ 6.31ms DONE
+  2024-05-12 12:35:01 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:35:01 App\Events\ClientBookingTicket ............. 6.89ms DONE
+  2024-05-12 12:35:02 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 12:35:56 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:35:56 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:35:56 App\Events\AdminClientBookingTicket ....... 13.50ms DONE
+  2024-05-12 12:35:56 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:35:56 App\Events\ClientBookingTicket ............. 6.75ms DONE
+  2024-05-12 12:35:59 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 12:36:51 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:36:52 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:36:52 App\Events\AdminClientBookingTicket ........ 8.03ms DONE
+  2024-05-12 12:36:52 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:36:52 App\Events\ClientBookingTicket ............ 12.36ms DONE
+  2024-05-12 12:36:52 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 12:37:44 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:37:46 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:37:46 App\Events\AdminClientBookingTicket ........ 5.71ms DONE
+  2024-05-12 12:37:46 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:37:46 App\Events\ClientBookingTicket ............. 5.31ms DONE
+  2024-05-12 12:37:46 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 12:39:02 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 12:39:02 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 12:39:02 App\Events\AdminClientBookingTicket ........ 7.03ms DONE
+  2024-05-12 12:39:02 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 12:39:02 App\Events\ClientBookingTicket ............. 4.72ms DONE
+  2024-05-12 12:39:03 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-12 15:22:59 App\Events\AdminClientBookingTicket  2024-05-12 15:22:59 App\Mail\AskingPayment ......................... RUNNING
+ ............ RUNNING
+  2024-05-12 15:22:59 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 15:22:59 App\Events\AdminClientBookingTicket ....... 14.88ms DONE
+  2024-05-12 15:22:59 App\Events\ClientBookingTicket ............ 18.42ms DONE
+  2024-05-12 15:23:03 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-12 15:25:51 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-12 15:25:51 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-12 15:25:51 App\Events\AdminClientBookingTicket ........ 8.73ms DONE
+  2024-05-12 15:25:51 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-12 15:25:51 App\Events\ClientBookingTicket ............. 5.90ms DONE
+  2024-05-12 15:25:54 App\Mail\AskingPayment ......................... 3s DONE

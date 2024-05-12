@@ -188,5 +188,5 @@ return [
     */
 
     'attributes' => [],
-
+    'recapcha' => "Recapcha is invalid, please try again.",
 ];

@@ -39,9 +39,9 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { regexPhoneNumberVietNam } from "../../helpers/number";
+import { regexPhoneNumberVietNam } from "../../../helpers/number";
 import { useToast } from "vue-toastification";
-import { createClientAPI, getClientAPI, updateClientAPI } from "../../api/admin/clients";
+import { createClientAPI, getClientAPI, updateClientAPI } from "../../../api/admin/clients";
 import { HttpStatusCode } from "axios";
 import { useRoute, useRouter } from "vue-router";
 const props = defineProps({

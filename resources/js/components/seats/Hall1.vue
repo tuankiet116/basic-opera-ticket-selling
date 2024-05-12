@@ -70,7 +70,7 @@
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2 } from "../../config/hall1";
 import { onMounted, ref } from 'vue';
-import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../../composable/hallComposable';
+import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../composable/hallComposable';
 
 const rows = ref(null);
 const seatsContainer = ref(null);

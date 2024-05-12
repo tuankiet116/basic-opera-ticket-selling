@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
+import { PreBookingData } from "./types/seats";
 
 export const useAuthenticateStore = defineStore("authentication", () => {
     const isAdminLoggedIn = ref(false);
@@ -7,4 +8,17 @@ export const useAuthenticateStore = defineStore("authentication", () => {
         isAdminLoggedIn.value = isLoggedIn;
     }
     return { isAdminLoggedIn, setAdminLoggedIn };
+});
+
+export const useStoreBooking = defineStore("storeBooking", () => {
+    const seatBooking: Ref<Array<any>> = ref([]);
+    const eventBooking: Ref<number | null> = ref(null);
+    function setBooking(seats: Array<{
+        hall: number,
+        names: Array<string>
+    }>, eventId: number) {
+        seatBooking.value = seats;
+        eventBooking.value = eventId;
+    }
+    return { seatBooking, setBooking, eventBooking };
 });

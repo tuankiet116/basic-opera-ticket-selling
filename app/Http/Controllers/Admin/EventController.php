@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateEventRequest;
 use App\Http\Requests\Admin\UpdateEventRequest;
+use App\Http\Requests\Admin\UpdateEventStatusRequest;
 use App\Services\Admin\EventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,5 +53,15 @@ class EventController extends Controller
         return $this->responseError([
             "message" => __("messages.errors.common")
         ]);
+    }
+
+    public function updateStatus(int $eventId, UpdateEventStatusRequest $request)
+    {
+        $data = $request->validated();
+        $event = $this->eventService->updateStatus($data, $eventId);
+        if (!$event) return $this->responseError([
+            "message" => __("messages.errors.common")
+        ]);
+        return $this->responseSuccess($event->toArray());
     }
 }

@@ -19,7 +19,7 @@
             <div class="row mt-3">
                 <div class="col-6">
                     <label for="event-description" class="form-label">Mô tả sự kiện</label>
-                    <textarea class="form-control" type="textarea" id="event-description" v-model="description"
+                    <textarea class="form-control" ref="textareaDescription" type="textarea" id="event-description" v-model="description"
                         @change="changeDesc" :disabled="props.isLoading" />
                     <small v-if="props.errors.description" class="text-danger">{{ props.errors.description[0] }}</small>
                 </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import 'flatpickr/dist/flatpickr.css';
 import { Vietnamese } from 'flatpickr/dist/l10n/vn';
@@ -73,6 +73,7 @@ const config = ref({
     dateFormat: 'Y-m-d',
     locale: Vietnamese, // locale for this instance only          
 });
+const textareaDescription = ref(null);
 
 watch(props, function(newValue) { 
     title.value = newValue.title;

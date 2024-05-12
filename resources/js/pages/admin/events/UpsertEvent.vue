@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import EventInfo from "../../components/admin/EventInfo.vue";
-import TicketClass from "../../components/admin/TicketClass.vue";
+import EventInfo from "../../../components/admin/EventInfo.vue";
+import TicketClass from "../../../components/admin/TicketClass.vue";
 import { reactive, ref, onMounted } from "vue";
-import { EventData } from "../../types/event";
-import { createEventAPI, getEventAPI, updateEventAPI } from "../../api/admin/events";
+import { EventData } from "../../../types/event";
+import { createEventAPI, getEventAPI, updateEventAPI } from "../../../api/admin/events";
 import moment from "moment";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";

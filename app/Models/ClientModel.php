@@ -17,11 +17,13 @@ class ClientModel extends Model
         "email",
         "phone_number",
         "address",
-        "isSpecial"
+        "isSpecial",
+        "is_reveive_in_opera",
     ];
 
     protected $casts = [
-        "isSpecial" => "boolean"
+        "isSpecial" => "boolean",
+        "is_reveive_in_opera" => "boolean",
     ];
 
     public function scopeSearch(Builder $query, $search)

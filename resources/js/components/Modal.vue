@@ -28,3 +28,9 @@ const props = defineProps({
     }
 })
 </script>
+<style scoped>
+.modal-dialog {
+    width: fit-content;
+    max-width: fit-content;
+}
+</style>

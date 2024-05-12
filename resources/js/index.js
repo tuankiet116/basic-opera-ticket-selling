@@ -11,6 +11,8 @@ import { useAuthenticateStore } from './pinia';
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
 import { popover, tooltip } from "./directives/bootstrap";
+import { VueReCaptcha } from 'vue-recaptcha-v3';
+import "./echo.js";
 
 const pinia = createPinia();
 const authenticatedStore = useAuthenticateStore(pinia);
@@ -50,6 +52,11 @@ let app = createApp(App)
         pauseOnHover: true,
         draggable: true,
         pauseOnFocusLoss: true,
+    }).use(VueReCaptcha, {
+        siteKey: '6Lf5Z8wpAAAAAPR2ikZrfMVoxTw6YgGX6QDt3szj',
+        loaderOptions: {
+            useRecaptchaNet: true
+        }
     });
 app.directive("lazyload", lazyload);
 app.directive("popover", popover);

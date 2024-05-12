@@ -26,17 +26,18 @@
             <table class="table table-group-divider">
                 <thead>
                     <tr>
-                        <th width="10%">#</th>
+                        <th width="5%">#</th>
                         <th width="10%">Tên sự kiện</th>
-                        <th width="10%">Ngày diễn</th>
+                        <th width="5%">Ngày diễn</th>
                         <th width="40%">Mô tả</th>
-                        <th width="30%">Hành động</th>
+                        <th width="15%">Trạng thái</th>
+                        <th width="25%">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-if="!events.data.length">
                         <td colspan="5" class="text-center">
-                            No Data Available
+                            Không có dữ liệu hợp lệ
                         </td>
                     </tr>
                     <tr v-else v-for="(event, index) in events.data" :key="index">
@@ -45,6 +46,13 @@
                         <td>{{ convertDate(event.date) }}</td>
                         <td class="text-wrap text-truncate ">
                             <p>{{ event.description }}</p>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="flexSwitchCheckDisabled">Mở bán vé</label>
+                                <input class="form-check-input" @change="updateOpenningStatus(event.id, !event.is_openning)"
+                                    type="checkbox" role="switch" id="flexSwitchCheckDisabled" :checked="event.is_openning">
+                            </div>
                         </td>
                         <td>
                             <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
@@ -72,9 +80,10 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { getListEvent } from "../../api/admin/events";
+import { getListEvent, updateStatusAPI } from "../../../api/admin/events";
 import { HttpStatusCode } from "axios";
 import moment from "moment";
+import { useToast } from "vue-toastification";
 
 let events = reactive({
     data: [],
@@ -84,6 +93,7 @@ let events = reactive({
 });
 let searchString = ref("");
 let pageNumber = ref(1);
+const toast = useToast();
 
 onMounted(async () => {
     await getEvents();
@@ -110,5 +120,21 @@ const getEvents = async () => {
 
 const convertDate = (date) => {
     return moment(date).format("DD/MM/yyyy")
+}
+
+const updateOpenningStatus = async (eventId, status) => {
+    let response = await updateStatusAPI(eventId, {
+        is_openning: status
+    });
+    if (response.status == HttpStatusCode.Ok) {
+        let event = events.data.find(e => e.id == eventId);
+        if (status) {
+            toast.success(`Sự kiện '${event.name}' mở bán vé thành công`);
+        } else {
+            toast.success(`Sự kiện '${event.name}' đóng bán vé thành công`);
+        }
+    } else {
+        toast.error(`Sự kiện '${event.name}' lỗi cập nhật trạng thái bán vé.`);
+    }
 }
 </script>

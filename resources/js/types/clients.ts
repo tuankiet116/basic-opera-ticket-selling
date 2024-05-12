@@ -4,3 +4,17 @@ export type ClientData = {
     address: string,
     email: string
 };
+
+export type BookingData = {
+    event_id: number,
+    name: string,
+    email: string,
+    phone_number: string,
+    is_receive_in_opera: boolean,
+    address: string,
+    bookings: Array<{
+        hall: number,
+        seats: Array<string>
+    }>,
+    "g-recaptcha-response": string
+}

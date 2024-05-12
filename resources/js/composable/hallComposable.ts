@@ -1,5 +1,5 @@
 import { Tooltip } from "bootstrap";
-import { SeatFormatted } from "../js/types/seats";
+import { SeatFormatted } from "../types/seats";
 
 export const setStyleSeatByTicketClass = (seat: SeatFormatted, seatTicketClasses: any, bookings: Array<any>, hallId: number) => {
     let style = `margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`;
@@ -8,9 +8,10 @@ export const setStyleSeatByTicketClass = (seat: SeatFormatted, seatTicketClasses
     });
     let booking = bookingStatus(seat, bookings, hallId);
     if (booking) {
-        style += `background-color: ${booking.color}`;
+        if (booking.textcolor) style += `color: ${booking.textcolor};`;
+        style += `background-color: ${booking.color};`;
     } else if (config) {
-        style += `background-color: ${config.ticket_class.color}`;
+        style += `background-color: ${config.ticket_class.color};`;
     }
     return style;
 }
