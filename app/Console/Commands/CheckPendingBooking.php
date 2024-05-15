@@ -68,6 +68,7 @@ class CheckPendingBooking extends Command
             BookModel::whereIn("id", $bookingIds)->delete();
             ClientModel::whereIn("id", $clientIds)->delete();
             Log::info("Delete bookings overtime of clients: ", array_keys($bookingInformation));
+            Log::info("Delete clients id of booking overtime: ", $clientIds);
         }
     }
 }
