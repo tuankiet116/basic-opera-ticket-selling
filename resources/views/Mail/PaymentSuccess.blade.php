@@ -43,28 +43,28 @@
         </thead>
         <tbody>
           @php
-            $price = 0;
+          $price = 0;
           @endphp
           @foreach ($bookings as $hall => $booking)
-            @foreach ($booking as $seat)
-              <tr>
-                <td style="border: 1px solid black; text-align:center;">
-                  <b>{{ $hall }}</b>
-                </td>
-                <td style="border: 1px solid black; text-align:center;">
-                  <b>{{ $seat['seat'] }}</b>
-                </td>
-                <td style="border: 1px solid black; text-align:center;">
-                  <b>{{ $seat['class'] }}</b>
-                </td>
-                <td style="border: 1px solid black; text-align:center;">
-                  <b>{{ number_format($seat['price']) }} vnd</b>  
-                </td>
-              </tr>
-              @php
-                $price += $seat['price'];
-              @endphp
-            @endforeach
+          @foreach ($booking as $seat)
+          <tr>
+            <td style="border: 1px solid black; text-align:center;">
+              <b>{{ $hall }}</b>
+            </td>
+            <td style="border: 1px solid black; text-align:center;">
+              <b>{{ $seat['seat'] }}</b>
+            </td>
+            <td style="border: 1px solid black; text-align:center;">
+              <b>{{ $seat['class'] }}</b>
+            </td>
+            <td style="border: 1px solid black; text-align:center;">
+              <b>{{ number_format($seat['price']) }} vnd</b>
+            </td>
+          </tr>
+          @php
+          $price += $seat['price'];
+          @endphp
+          @endforeach
           @endforeach
           <tr>
             <td style="border: 1px solid black; text-align:center;">Tổng cộng/Total</td>
@@ -110,8 +110,7 @@
     <table>
       <tr>
         <td>
-          <img style="width:121px;height:90px"
-            src="https://lh7-us.googleusercontent.com/Q9KyFUkfSIw_-ZUVGDnyPsirhVHyQyvckffhVuL1gwL9fbLXpkOIW601O-PeJGnBj2djeIo2WW-yylc9UFyfoE5ZMEqF7nwzfiSTLzGalSRYJMcey0NwfCryKmPd-X9CU5CBS49MN3KFFeMhwZBMCZk">
+          <img style="width:121px;height:90px" src="{{ Vite::asset('resources/images/image.png') }}">
         </td>
         <td>
           <p dir="ltr"><strong>HO GUOM OPERA</strong></p>
@@ -121,8 +120,7 @@
           </p>
           <p dir="ltr">
             <span>
-              <strong>Email:</strong> <a href="mailto:musicalseasons@hoguomopera.com"
-                target="_blank">musicalseasons@hoguomopera.com</a>
+              <strong>Email:</strong> <a href="mailto:musicalseasons@hoguomopera.com" target="_blank">musicalseasons@hoguomopera.com</a>
             </span>
           </p>
           <p dir="ltr">

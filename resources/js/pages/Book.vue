@@ -16,7 +16,7 @@
         class="box position-fixed border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-md-4 col-12 start-0 end-0 m-auto">
         <div class="row">
             <div class="col-12">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="d-flex justify-content-center flex-wrap">
                     <div class="d-flex" v-for="ticketClass in ticketClasses">
                         <div>{{ ticketClass.name }}</div>
                         <div class="mx-1" :style="'background-color: ' + ticketClass.color"

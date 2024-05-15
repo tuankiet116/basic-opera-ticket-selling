@@ -111,7 +111,7 @@
     <tbody>
       <tr>
         <td><br>
-          <p dir="ltr"><img src="{{ asset('images/image.png') }}" width="134.86458333333331" height="90"></p>
+          <p dir="ltr"><img src="{{ Vite::asset('resources/images/image.png') }}" width="134.86458333333331" height="90"></p>
         </td>
         <td>
           <p dir="ltr">
