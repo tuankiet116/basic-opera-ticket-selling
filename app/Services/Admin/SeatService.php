@@ -2,8 +2,11 @@
 
 namespace App\Services\Admin;
 
+use App\Events\ClientBookingTicket;
+use App\Events\ClientRemoveBookingTicket;
 use App\Exceptions\InvalidBookingException;
 use App\Models\BookModel;
+use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\SeatModel;
 use Exception;
@@ -66,27 +69,43 @@ class SeatService
         return $this->getSeatTicketClass($data["event_id"]);
     }
 
-    public function preBooking(array $data): bool
+    public function preBooking(array $data, bool $isCancel = false): bool
     {
-        $seatIds = SeatModel::where(function (Builder $query) use ($data) {
+        $event = EventModel::find($data["event_id"]);
+        $seats = SeatModel::where(function (Builder $query) use ($data) {
             foreach ($data["seats"] as $seats) {
                 $query = $query->orWhere(function (Builder $query) use ($seats) {
                     return $query->whereIn("name", data_get($seats, "names"))->where("hall",  data_get($seats, "hall"));
                 });
             }
             return $query;
-        })->get()->pluck("id")->toArray();
+        })->get();
+        $seatIds = $seats->pluck("id")->toArray();
         $books = $this->getBooksWithClientNonSpecial($seatIds, $data["event_id"]);
 
         if (sizeof($books)) throw new InvalidBookingException($books->pluck("seat_id")->toArray());
         DB::beginTransaction();
         try {
             foreach ($seatIds as $id) {
-                BookModel::updateOrCreate([
-                    "event_id" => $data["event_id"],
-                    "seat_id" => $id
-                ], ["client_id" => $data["client_id"]]);
+                if ($isCancel) {
+                    BookModel::where([
+                        "event_id" => $data["event_id"],
+                        "seat_id" => $id
+                    ])->delete();
+                } else {
+                    BookModel::updateOrCreate([
+                        "event_id" => $data["event_id"],
+                        "seat_id" => $id
+                    ], ["client_id" => $data["client_id"]]);
+                }
             }
+
+            $seats = array_chunk($seats->all(), CHUNK_SIZE_BROADCAST);
+            foreach ($seats as $seatsChunk) {
+                if ($isCancel) ClientRemoveBookingTicket::dispatch($seatsChunk, $event);
+                else ClientBookingTicket::dispatch($seatsChunk, $event);
+            }
+            
         } catch (Exception $e) {
             Log::error("Pre Booking: ", [
                 "data" => $data,

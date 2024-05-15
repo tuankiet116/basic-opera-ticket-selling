@@ -41,7 +41,7 @@
                 </div>
                 <button class="btn btn-primary col-2" @click="setSeatTicketClass">Đặt hạng vé</button>
             </div>
-            <div class="row" v-if="mode == MODE_PRE_BOOKING">
+            <div class="row justify-content-center" v-if="mode == MODE_PRE_BOOKING">
                 <div class="mb-2 row mx-0 p-0">
                     <div class="col-10">
                         <div class="d-flex">
@@ -53,7 +53,7 @@
                             <div class="box-color-note" :style="`background-color: ${COLOR_SEAT_BOOKED_SPECIAL}`" />
                         </div>
                     </div>
-                    <button type="button" class="btn btn-light col btn-small" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-light col btn-sm" data-bs-toggle="modal"
                         data-bs-target="#modal">
                         Tình trạng vé
                     </button>
@@ -67,7 +67,10 @@
                         <template #nooptions>Không có dữ liệu</template>
                     </Multiselect>
                 </div>
-                <button class="btn btn-primary col-2" @click="preBooking">Pre-Booking</button>
+                <button class="btn btn-primary col-2 btn-sm" @click="preBooking()">Pre-Booking</button>
+                <button class="btn btn-danger col-12 btn-sm mt-2" @click="preBooking(true)">
+                    Hủy Pre-Booking các ghế đang chọn
+                </button>
             </div>
         </div>
     </div>
@@ -221,12 +224,12 @@
         }
     }
 
-    const preBooking = async () => {
+    const preBooking = async (isCancel = false) => {
         if (!seatSelectedHall2.value.length && !seatSelectedHall1.value.length) {
             toast.error("Không có ghế được chọn pre-booking");
             return;
         }
-        if (!clientPreBooking.value) {
+        if (!isCancel && !clientPreBooking.value) {
             toast.error("Không có khách hàng để pre-booking");
             return;
         }
@@ -242,7 +245,8 @@
                     hall: 2,
                     names: seatSelectedHall2.value
                 }
-            ]
+            ],
+            isCancel: isCancel
         };
         let response = await preBookinngAPI(data);
         switch (response.status) {

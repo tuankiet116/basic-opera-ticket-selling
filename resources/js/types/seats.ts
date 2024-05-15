@@ -47,6 +47,7 @@ export type PreBookingData = {
         hall: number,
         names: Array<string>
     }>,
+    isCancel: boolean
 }
 
 export type AdminBookingStatus = {

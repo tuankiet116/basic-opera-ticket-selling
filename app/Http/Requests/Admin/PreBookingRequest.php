@@ -24,14 +24,17 @@ class PreBookingRequest extends FormRequest
     {
         return [
             "event_id" => "required|exists:events,id",
-            "client_id" => [
-                "required",
-                Rule::exists("clients", "id")->where("isSpecial", true)
-            ],
+            "client_id" => function () {
+                if ($this->isCancel) return [];
+                return [
+                    Rule::exists("clients", "id")->where("isSpecial", true)
+                ];
+            },
             "seats" => "array",
             "seats.*.hall" => "required",
             "seats.*.names" => "array",
             "seats.*.names.*" => "string|required",
+            "isCancel" => "boolean",
         ];
     }
 }

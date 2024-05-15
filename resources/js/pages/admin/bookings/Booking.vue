@@ -47,7 +47,7 @@
         <div class="mt-5">
             <div class="card w-75 mb-2 mx-auto" v-for="booking in bookingsGroupedByTab">
                 <div class="card-body position-relative">
-                    <span class="badge rounded-pill text-bg-success" v-if="booking.bookings[0].isBooked">
+                    <span class="badge rounded-pill text-bg-success" v-if="booking.bookings.length && booking.bookings[0].isBooked">
                         Đã thanh toán
                     </span>
                     <span class="badge rounded-pill text-bg-danger" v-else>
@@ -119,7 +119,7 @@
         </template>
         <template #footer>
             <button class="btn btn-info" @click="bookingSelected = {}" data-bs-dismiss="modal">Đóng</button>
-            <button v-if="bookingSelected?.bookings && !bookingSelected.bookings[0].isBooked" class="btn btn-danger"
+            <button v-if="bookingSelected?.bookings && bookingSelected?.bookings.length && !bookingSelected.bookings[0].isBooked" class="btn btn-danger"
                 @click="confirmBooked" data-bs-dismiss="modal">Xác nhận thanh toán thành
                 công</button>
         </template>
@@ -159,10 +159,10 @@
                 case TAB_ALL:
                     return bookingClient;
                 case TAB_PAID:
-                    if (bookingClient.bookings[0].isBooked) return bookingClient;
+                    if (bookingClient.bookings.length && bookingClient.bookings[0].isBooked) return bookingClient;
                     return [];
                 case TAB_UNPAID:
-                    if (!bookingClient.bookings[0].isBooked) return bookingClient;
+                    if (bookingClient.bookings.length && !bookingClient.bookings[0].isBooked) return bookingClient;
                     return [];
             }
         })
@@ -175,13 +175,22 @@
             .listen(
                 "AdminClientBookingTicket",
                 (e) => {
-                    e.bookings.price = e.bookings.bookings.reduce((previous, current) => {
+                    let bookingClient = e.bookings;
+                    bookingClient.price = bookingClient.bookings.reduce((previous, current) => {
                         return previous + current.ticket_class.price;
                     }, 0);
-                    bookingClients.value.data = [e.bookings, ...bookingClients.value.data];
-                    toast.info(e.bookings.name + " vừa mua vé!", {
-                        position: "top-center"
-                    })
+
+                    //Kiểm tra đã tồn tại booking client hay chưa? nếu có rồi thì tăng price và thêm bookings cho booking client
+                    let index = bookingClients.value.data.findIndex(bc => bc.id == bookingClient.id);
+                    if (index > -1) {
+                        bookingClients.value.data[index].bookings.push(...bookingClient.bookings);
+                        bookingClients.value.data[index].price += bookingClient.price;
+                    } else {
+                        bookingClients.value.data = [bookingClient, ...bookingClients.value.data];
+                        toast.info(bookingClient.name + " vừa mua vé!", {
+                            position: "top-center"
+                        })
+                    }
                 }
             ).listen("AdminRemoveBookingTicket", (e) => {
                 let clientId = e.client.id;

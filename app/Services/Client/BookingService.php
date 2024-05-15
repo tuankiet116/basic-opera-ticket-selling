@@ -10,7 +10,6 @@ use App\Models\ClientModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\SeatModel;
-use App\Models\TicketClassModel;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -36,8 +35,8 @@ class BookingService
             $bookings = data_get($data, "bookings");
             $seatsBooking = [];
             $dataBookingSendMail = [];
-            $dataBookings = $client->toArray();
-            $dataBookings["bookings"] = [];
+            $dataClient = $client->toArray();
+            $dataBookings = [];
             foreach ($bookings as $booking) {
                 $seats = SeatModel::whereIn("name", data_get($booking, "seats"))->where("hall", data_get($booking, "hall"))->get();
                 $dataBookingSendMail[$booking["hall"]] = [];
@@ -56,8 +55,8 @@ class BookingService
                     if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
                     $bookingCreated["seat"] = $seat;
                     $bookingCreated["ticket_class"] = $ticketClass->ticketClass->toArray();
-                    
-                    $dataBookings["bookings"][] = $bookingCreated;
+
+                    $dataBookings[] = $bookingCreated;
                     array_push($dataBookingSendMail[$booking["hall"]], [
                         "class" => $ticketClass->ticketClass->name,
                         "seat" => $seat["name"],
@@ -68,8 +67,17 @@ class BookingService
             $event = EventModel::find($data["event_id"]);
 
             Mail::to($client)->queue(new AskingPayment($event, $client, $dataBookingSendMail));
-            AdminClientBookingTicket::dispatch($dataBookings, $event);
-            ClientBookingTicket::dispatch($seatsBooking, $event);
+
+            // Chunk data before dispatch to broadcasr to avoid memory leaks and large amounts of data
+            foreach (array_chunk($seatsBooking, CHUNK_SIZE_BROADCAST) as $seatsBookingChunk) {
+                ClientBookingTicket::dispatch($seatsBookingChunk, $event);
+            }
+
+            $dataAdminBookingTicket = [...$dataClient];
+            foreach (array_chunk($dataBookings, CHUNK_SIZE_BROADCAST) as $dataBookingsChunk) {
+                $dataAdminBookingTicket["bookings"] = $dataBookingsChunk;
+                AdminClientBookingTicket::dispatch($dataAdminBookingTicket, $event);
+            }
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
             if ($errorCode == 1062) {

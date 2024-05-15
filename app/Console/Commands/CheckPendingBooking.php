@@ -62,7 +62,9 @@ class CheckPendingBooking extends Command
                 }
             });
             foreach ($eventSeats as $eventSeat) {
-                ClientRemoveBookingTicket::dispatch($eventSeat["seats"], $eventSeat["event"]);
+                foreach (array_chunk($eventSeat["seats"], CHUNK_SIZE_BROADCAST) as $seats) {
+                    ClientRemoveBookingTicket::dispatch($seats, $eventSeat["event"]);
+                }
                 AdminRemoveBookingTicket::dispatch($eventSeat["client"], $eventSeat["event"]);
             }
             BookModel::whereIn("id", $bookingIds)->delete();

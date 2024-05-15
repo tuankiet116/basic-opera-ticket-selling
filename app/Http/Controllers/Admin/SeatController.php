@@ -36,7 +36,7 @@ class SeatController extends Controller
     public function preBookingTicket(PreBookingRequest $request)
     {
         $data = $request->validated();
-        $result = $this->seatService->preBooking($data);
+        $result = $this->seatService->preBooking($data, $data["isCancel"]);
         if (!$result) {
             return $this->responseError([
                 "message" => __("messages.errors.common")

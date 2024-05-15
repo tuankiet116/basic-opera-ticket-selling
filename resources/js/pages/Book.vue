@@ -33,7 +33,7 @@
                 </div>
                 <h4>Số ghế đang đặt:</h4>
                 <div class="col-12">
-                    <p>
+                    <p style="word-break: break-all;">
                         <span class="fw-bold">Khán phòng 1: </span>
                         <span v-if="seatSelectedHall1.length" v-for="(seat, index) in seatSelectedHall1">
                             {{ seat + (index == seatSelectedHall1.length - 1 ? "" : ",") }}
@@ -125,7 +125,7 @@
             "ClientBookingTicket",
             (e) => {
                 let seats = e.seats.map((seat) => {
-                    selectSeat(seat.name, seat.hall);
+                    selectSeat(seat.name, seat.hall, true);
                     return creatBookingItem(seat.name, seat.hall);
                 });
                 bookings.value.push(...seats);
@@ -148,7 +148,7 @@
         hallSelected.value = hallId;
     };
 
-    const selectSeat = (seatName, hall = null) => {
+    const selectSeat = (seatName, hall = null, isBooked = false) => {
         let seatSelected = toRef(seatSelectedHall1);
         if (hall && hall == 2 || hallSelected.value == 2) {
             seatSelected = toRef(seatSelectedHall2);
@@ -162,10 +162,11 @@
                 ticketclass.seat.name == seatName &&
                 ticketclass.seat.hall == hallSelected.value
         );
+
         if (currentSeat > -1) {
             seatSelected.value.splice(currentSeat, 1);
             total.value -= isSeatValid.ticket_class.price;
-        } else if (!seatBooked && isSeatValid) {
+        } else if (!seatBooked && isSeatValid && !isBooked) {
             total.value += isSeatValid.ticket_class.price;
             seatSelected.value.push(seatName);
         }

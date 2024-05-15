@@ -43,3 +43,5 @@ if (!defined("CONFIG_HALL_2")) define("CONFIG_HALL_2", [
     ["row" => "H", "start" => 1, "end" => 10],
     ["row" => "I", "start" => 12, "end" => 17],
 ]);
+
+if (!defined("CHUNK_SIZE_BROADCAST")) define("CHUNK_SIZE_BROADCAST", 5);
