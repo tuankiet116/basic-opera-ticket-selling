@@ -116,11 +116,19 @@
     let event = ref({});
     let total = ref(0);
     let eventId = route.params.eventId;
+    const storeBookings = useStoreBooking();
 
     onMounted(async () => {
         await getTicketClass();
         await getEvent();
         await getBookingStatus();
+        const seatsBookings = storeBookings.seatBooking;
+        for (let i = 0; i < seatsBookings.length; i++) {
+            let bookings = seatsBookings[i];
+            for (let j = 0; j < bookings.seats.length; j++) {
+                selectSeat(bookings.seats[j], bookings.hall);
+            }
+        }
         window.Echo.channel(`client-booking-event-${event.value.id}`).listen(
             "ClientBookingTicket",
             (e) => {
@@ -213,7 +221,7 @@
             toast.error("Vui lòng chọn ghế");
             return;
         }
-        useStoreBooking().setBooking(selected, eventId);
+        storeBookings.setBooking(selected, eventId);
         if (!seatSelectedHall1.value.length && !seatSelectedHall2.value.length) {
             toast.error("Vui lòng chọn ghế");
             return;

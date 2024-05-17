@@ -1,114 +1,1394 @@
-  2024-05-12 16:15:16 App\Events\AdminRemoveBookingTicket ............ RUNNING
-  2024-05-12 16:15:16 App\Events\ClientRemoveBookingTicket ........... RUNNING
-  2024-05-12 16:15:16 App\Events\AdminRemoveBookingTicket ....... 14.99ms DONE
-  2024-05-12 16:15:16 App\Events\ClientRemoveBookingTicket ...... 15.55ms DONE
-  2024-05-12 16:16:28 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:16:28 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:16:28 App\Events\AdminClientBookingTicket ....... 17.02ms DONE
-  2024-05-12 16:16:28 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:16:28 App\Events\ClientBookingTicket ............. 6.61ms DONE
-  2024-05-12 16:16:31 App\Mail\AskingPayment ......................... 2s DONE
-  2024-05-12 16:16:31 App\Events\ClientRemoveBookingTicket ........... RUNNING
-  2024-05-12 16:16:31 App\Events\AdminRemoveBookingTicket ............ RUNNING
-  2024-05-12 16:16:31 App\Events\ClientRemoveBookingTicket ...... 32.86ms DONE
-  2024-05-12 16:16:31 App\Events\AdminRemoveBookingTicket ....... 29.64ms DONE
-  2024-05-12 16:16:50 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:16:50 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:16:50 App\Events\AdminClientBookingTicket ....... 11.66ms DONE
-  2024-05-12 16:16:50 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:16:50 App\Events\ClientBookingTicket ............. 5.41ms DONE
-  2024-05-12 16:16:51 App\Mail\AskingPayment ......................... 1s DONE
-  2024-05-12 16:17:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
-  2024-05-12 16:17:01 App\Events\AdminRemoveBookingTicket ............ RUNNING
-  2024-05-12 16:17:01 App\Events\ClientRemoveBookingTicket ...... 10.19ms DONE
-  2024-05-12 16:17:01 App\Events\AdminRemoveBookingTicket ........ 6.17ms DONE
-  2024-05-12 16:18:49 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:18:49 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:18:49 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:18:49 App\Events\AdminClientBookingTicket ....... 14.46ms DONE
-  2024-05-12 16:18:49 App\Events\ClientBookingTicket ............ 12.53ms DONE
-  2024-05-12 16:18:53 App\Mail\AskingPayment ......................... 3s DONE
-  2024-05-12 16:18:54 App\Events\ClientRemoveBookingTicket ........... RUNNING
-  2024-05-12 16:18:54 App\Events\ClientRemoveBookingTicket ...... 13.23ms DONE
-  2024-05-12 16:18:54 App\Events\AdminRemoveBookingTicket ............ RUNNING
-  2024-05-12 16:18:54 App\Events\AdminRemoveBookingTicket ........ 6.52ms DONE
-  2024-05-12 16:19:06 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:19:07 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:19:07 App\Events\AdminClientBookingTicket ....... 12.80ms DONE
-  2024-05-12 16:19:07 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:19:07 App\Events\ClientBookingTicket ............. 7.54ms DONE
-  2024-05-12 16:19:08 App\Mail\AskingPayment ......................... 1s DONE
-  2024-05-12 16:28:37 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:28:38 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:28:38 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:28:38 App\Events\AdminClientBookingTicket ........ 7.80ms DONE
-  2024-05-12 16:28:38 App\Events\ClientBookingTicket ............ 12.81ms DONE
-  2024-05-12 16:28:41 App\Mail\AskingPayment ......................... 3s DONE
-  2024-05-12 16:40:03 App\Events\ClientRemoveBookingTicket  2024-05-12 16:40:03 App\Events\AdminRemoveBookingTicket ............ RUNNING
- ........... RUNNING
-  2024-05-12 16:40:03 App\Events\ClientRemoveBookingTicket ....... 9.84ms DONE
-  2024-05-12 16:40:03 App\Events\AdminRemoveBookingTicket ....... 13.70ms DONE
-  2024-05-12 16:48:40 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:48:40 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:48:40 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:48:40 App\Events\ClientBookingTicket ............. 7.20ms DONE
-  2024-05-12 16:48:40 App\Events\AdminClientBookingTicket ........ 9.00ms DONE
-  2024-05-12 16:48:43 App\Mail\AskingPayment ......................... 2s DONE
-  2024-05-12 16:49:04 App\Events\ClientRemoveBookingTicket ........... RUNNING
-  2024-05-12 16:49:04 App\Events\ClientRemoveBookingTicket ....... 7.07ms DONE
-  2024-05-12 16:49:04 App\Events\AdminRemoveBookingTicket ............ RUNNING
-  2024-05-12 16:49:04 App\Events\AdminRemoveBookingTicket ........ 6.09ms DONE
-  2024-05-12 16:50:25 App\Mail\AskingPayment ......................... RUNNING
-  2024-05-12 16:50:25 App\Events\AdminClientBookingTicket ............ RUNNING
-  2024-05-12 16:50:25 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:50:25 App\Events\AdminClientBookingTicket ....... 13.29ms DONE
-  2024-05-12 16:50:25 App\Events\ClientBookingTicket ............ 16.79ms DONE
-  2024-05-12 16:50:26 App\Mail\AskingPayment ......................... 1s DONE
-  2024-05-12 16:50:31 App\Events\AdminClientBookingTicket ............  2024-05-12 16:50:31 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 16:53:39 App\Mail\AskingPayment  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+ ......................... RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket ............ 26.87ms DONE
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket  2024-05-15 16:53:39 App\Events\ClientBookingTicket ............ 29.15ms DONE
+ ............  2024-05-15 16:53:39 App\Events\ClientBookingTicket ............ 29.88ms DONE
+ 29.65ms  2024-05-15 16:53:39 App\Events\ClientBookingTicket ............ 30.06ms DONE
+  2024-05-15 16:53:39 App\Events\ClientBookingTicket DONE
+ ............ 30.40ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ....... 23.87ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ....... 19.79ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ....... 11.49ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ....... 12.03ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ....... 26.66ms DONE
+  2024-05-15 16:53:39 App\Events\AdminClientBookingTicket ........ 8.76ms DONE
+  2024-05-15 16:53:42 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 16:54:41 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 16:54:41 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 16:54:41 App\Events\AdminRemoveBookingTicket ....... 27.46ms DONE
+  2024-05-15 16:54:41 App\Events\ClientRemoveBookingTicket ...... 21.32ms DONE
+  2024-05-15 16:57:05 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ............ 14.16ms DONE
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ............. 5.56ms DONE
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket  2024-05-15 16:57:05 App\Events\ClientBookingTicket ................. RUNNING
+ ................. RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ............ 21.97ms DONE
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket  2024-05-15 16:57:05 App\Events\ClientBookingTicket ............ 22.05ms ............ 21.98ms DONE
+ DONE
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\ClientBookingTicket ............. 7.30ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ........ 7.74ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ........ 6.17ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ....... 34.49ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ........ 8.39ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ........ 5.56ms DONE
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:57:05 App\Events\AdminClientBookingTicket ........ 4.75ms DONE
+  2024-05-15 16:57:09 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 16:58:30 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 16:58:30 App\Events\ClientRemoveBookingTicket ...... 14.57ms DONE
+  2024-05-15 16:58:30 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 16:58:30 App\Events\AdminRemoveBookingTicket ........ 5.22ms DONE
+  2024-05-15 16:58:51 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 16:58:51 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:58:51 App\Events\ClientBookingTicket ............. 9.53ms DONE
+  2024-05-15 16:58:51 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 16:58:51 App\Events\ClientBookingTicket ............. 5.64ms DONE
+  2024-05-15 16:58:51 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:58:51 App\Events\AdminClientBookingTicket ........ 5.52ms DONE
+  2024-05-15 16:58:51 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 16:58:51 App\Events\AdminClientBookingTicket ........ 5.81ms DONE
+  2024-05-15 16:58:54 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:00:03 App\Events\AdminRemoveBookingTicket  2024-05-15 17:00:03 App\Events\ClientRemoveBookingTicket ........... ............ RUNNING
  RUNNING
-  2024-05-12 16:50:31 App\Events\AdminClientBookingTicket ....... 10.28ms DONE
-  2024-05-12 16:50:31 App\Events\ClientBookingTicket ................. RUNNING
-  2024-05-12 16:50:31 App\Events\ClientBookingTicket ............. 6.11ms DONE
-  2024-05-12 16:50:34 App\Mail\AskingPayment ......................... 3s DONE
-  2024-05-12 16:53:28 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:53:31 App\Mail\PaymentSuccess ........................ 2s DONE
-  2024-05-12 16:53:49 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:53:53 App\Mail\PaymentSuccess ........................ 3s DONE
-  2024-05-12 16:54:10 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:10 App\Mail\PaymentSuccess ................... 17.21ms FAIL
-  2024-05-12 16:54:20 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:20 App\Mail\PaymentSuccess .................... 7.89ms FAIL
-  2024-05-12 16:54:31 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:31 App\Mail\PaymentSuccess ................... 10.35ms FAIL
-  2024-05-12 16:54:31 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:31 App\Mail\PaymentSuccess ................... 12.32ms FAIL
-  2024-05-12 16:54:37 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:37 App\Mail\PaymentSuccess .................... 9.10ms FAIL
-  2024-05-12 16:54:41 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:41 App\Mail\PaymentSuccess ................... 12.66ms FAIL
-  2024-05-12 16:54:47 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:47 App\Mail\PaymentSuccess .................... 6.26ms FAIL
-  2024-05-12 16:54:52 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:52 App\Mail\PaymentSuccess ................... 10.76ms FAIL
-  2024-05-12 16:54:55 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:55 App\Mail\PaymentSuccess .................... 7.36ms FAIL
-  2024-05-12 16:54:58 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:54:58 App\Mail\PaymentSuccess ................... 15.92ms FAIL
-  2024-05-12 16:55:05 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:05 App\Mail\PaymentSuccess .................... 7.87ms FAIL
-  2024-05-12 16:55:07 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:07 App\Mail\PaymentSuccess ................... 24.29ms FAIL
-  2024-05-12 16:55:16 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:16 App\Mail\PaymentSuccess ................... 11.82ms FAIL
-  2024-05-12 16:55:17 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:17 App\Mail\PaymentSuccess ................... 11.08ms FAIL
-  2024-05-12 16:55:17 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:17 App\Mail\PaymentSuccess .................... 8.31ms FAIL
-  2024-05-12 16:55:28 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:28 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:28 App\Mail\PaymentSuccess ................... 10.47ms FAIL
-  2024-05-12 16:55:28 App\Mail\PaymentSuccess ................... 11.35ms FAIL
-  2024-05-12 16:55:38 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:38 App\Mail\PaymentSuccess .................... 7.08ms FAIL
-  2024-05-12 16:55:55 App\Mail\PaymentSuccess ........................ RUNNING
-  2024-05-12 16:55:59 App\Mail\PaymentSuccess ........................ 3s DONE
+  2024-05-15 17:00:03 App\Events\AdminRemoveBookingTicket ........ 9.43ms DONE
+  2024-05-15 17:00:03 App\Events\ClientRemoveBookingTicket ...... 11.20ms DONE
+  2024-05-15 17:00:21 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ............. 6.10ms DONE
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ............. 7.26ms DONE
+  2024-05-15 17:00:21 App\Events\ClientBookingTicket ............. 7.71ms DONE
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ........ 6.31ms DONE
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ........ 5.30ms DONE
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:00:21 App\Events\AdminClientBookingTicket ........ 5.83ms DONE
+  2024-05-15 17:00:24 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-15 17:02:03 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:02:03 App\Events\ClientRemoveBookingTicket ....... 8.16ms DONE
+  2024-05-15 17:02:03 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:02:03 App\Events\AdminRemoveBookingTicket ........ 6.37ms DONE
+  2024-05-15 17:02:18 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:02:18 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:02:18 App\Events\ClientBookingTicket ............. 6.64ms DONE
+  2024-05-15 17:02:18 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:02:18 App\Events\AdminClientBookingTicket ........ 4.30ms DONE
+  2024-05-15 17:02:19 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-15 17:04:03 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:04:03 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:04:03 App\Events\ClientRemoveBookingTicket ....... 9.78ms DONE
+  2024-05-15 17:04:03 App\Events\AdminRemoveBookingTicket ........ 9.87ms DONE
+  2024-05-15 17:15:29 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:15:29 App\Events\ClientBookingTicket  2024-05-15 17:15:29 App\Events\AdminClientBookingTicket ............ RUNNING
+ ................. RUNNING
+  2024-05-15 17:15:29 App\Events\ClientBookingTicket ............ 13.99ms DONE
+  2024-05-15 17:15:29 App\Events\AdminClientBookingTicket ....... 14.38ms DONE
+  2024-05-15 17:15:33 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:16:14 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:16:14 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:16:14 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:16:14 App\Events\AdminClientBookingTicket ....... 13.83ms DONE
+  2024-05-15 17:16:14 App\Events\ClientBookingTicket ............ 15.84ms DONE
+  2024-05-15 17:16:18 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:17:02 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:17:02 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:17:02 App\Events\ClientRemoveBookingTicket ...... 17.47ms DONE
+  2024-05-15 17:17:02 App\Events\AdminRemoveBookingTicket ....... 15.42ms DONE
+  2024-05-15 17:17:32 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:17:32 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:17:32 App\Events\ClientBookingTicket ............. 9.17ms DONE
+  2024-05-15 17:17:32 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:17:32 App\Events\AdminClientBookingTicket  2024-05-15 17:17:32 App\Events\AdminClientBookingTicket ............ RUNNING
+ ............ RUNNING
+  2024-05-15 17:17:32 App\Events\AdminClientBookingTicket ....... 10.27ms DONE
+  2024-05-15 17:17:32 App\Events\ClientBookingTicket  2024-05-15 17:17:32 App\Events\AdminClientBookingTicket ....... 11.73ms ............ 13.44ms DONE
+ DONE
+  2024-05-15 17:17:36 App\Mail\AskingPayment ......................... 4s DONE
+  2024-05-15 17:18:01 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:18:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:18:01 App\Events\AdminRemoveBookingTicket ........ 6.37ms DONE
+  2024-05-15 17:18:01 App\Events\ClientRemoveBookingTicket ....... 6.28ms DONE
+  2024-05-15 17:20:11 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:20:11 App\Events\ClientRemoveBookingTicket ....... 6.29ms DONE
+  2024-05-15 17:20:11 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:20:11 App\Events\ClientRemoveBookingTicket ....... 5.25ms DONE
+  2024-05-15 17:20:11 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:20:11 App\Events\AdminRemoveBookingTicket ........ 6.42ms DONE
+  2024-05-15 17:20:51 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:20:51 App\Events\ClientBookingTicket  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ............ ................. RUNNING
+ RUNNING
+  2024-05-15 17:20:51 App\Events\ClientBookingTicket ............ 10.03ms DONE
+  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ....... 11.10ms DONE
+  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ........ 7.65ms DONE
+  2024-05-15 17:20:51 App\Events\AdminClientBookingTicket ........ 6.12ms DONE
+  2024-05-15 17:20:54 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:22:03 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:22:03 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:22:03 App\Events\ClientRemoveBookingTicket ...... 10.30ms DONE
+  2024-05-15 17:22:03 App\Events\AdminRemoveBookingTicket ....... 12.11ms DONE
+  2024-05-15 17:32:15 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket  2024-05-15 17:32:15 App\Mail\AskingPayment ......................... ............ RUNNING
+ RUNNING
+  2024-05-15 17:32:15 App\Events\ClientBookingTicket ............ 18.90ms DONE
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket ....... 18.59ms DONE
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket ........ 5.83ms DONE
+  2024-05-15 17:32:15 App\Events\AdminClientBookingTicket ........ 5.60ms DONE
+  2024-05-15 17:32:18 App\Mail\AskingPayment ......................... 2s DONE
+  2024-05-15 17:33:16 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:33:16 App\Events\ClientRemoveBookingTicket ...... 18.56ms DONE
+  2024-05-15 17:33:16 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:33:16 App\Events\AdminRemoveBookingTicket ........ 5.96ms DONE
+  2024-05-15 17:33:28 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:33:29 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:33:29 App\Events\ClientBookingTicket ............. 6.75ms DONE
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ........ 6.51ms DONE
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ....... 10.74ms DONE
+  2024-05-15 17:33:29 App\Events\AdminClientBookingTicket ........ 7.59ms DONE
+  2024-05-15 17:33:32 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:33:54 App\Mail\PaymentSuccess ........................ RUNNING
+  2024-05-15 17:33:58 App\Mail\PaymentSuccess ........................ 3s DONE
+  2024-05-15 17:38:25 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ............ 14.78ms DONE
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ............. 7.29ms DONE
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ............. 4.50ms DONE
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ............. 5.99ms DONE
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:38:25 App\Events\ClientBookingTicket ............ 11.97ms DONE
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ....... 14.58ms DONE
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ........ 7.85ms DONE
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ........ 5.76ms DONE
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ........ 6.31ms DONE
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:38:25 App\Events\AdminClientBookingTicket ........ 6.52ms DONE
+  2024-05-15 17:38:29 App\Mail\AskingPayment ......................... 4s DONE
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ....... 5.79ms DONE
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ....... 5.57ms DONE
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ....... 5.37ms DONE
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ....... 6.08ms DONE
+  2024-05-15 17:39:01 App\Events\ClientRemoveBookingTicket ....... 5.64ms DONE
+  2024-05-15 17:39:01 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:39:01 App\Events\AdminRemoveBookingTicket ........ 6.31ms DONE
+  2024-05-15 17:40:22 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:40:23 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:40:23 App\Events\ClientBookingTicket ............ 11.53ms DONE
+  2024-05-15 17:40:23 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:40:23 App\Events\AdminClientBookingTicket ........ 4.51ms DONE
+  2024-05-15 17:40:26 App\Mail\AskingPayment ......................... 3s DONE
+  2024-05-15 17:41:02 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:41:02 App\Events\ClientRemoveBookingTicket ...... 10.57ms DONE
+  2024-05-15 17:41:02 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:41:02 App\Events\AdminRemoveBookingTicket ........ 5.32ms DONE
+  2024-05-15 17:41:17 App\Mail\AskingPayment ......................... RUNNING
+  2024-05-15 17:41:17 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 17:41:17 App\Events\ClientBookingTicket ............. 4.62ms DONE
+  2024-05-15 17:41:17 App\Events\AdminClientBookingTicket ............ RUNNING
+  2024-05-15 17:41:17 App\Events\AdminClientBookingTicket ........ 4.67ms DONE
+  2024-05-15 17:41:18 App\Mail\AskingPayment ......................... 1s DONE
+  2024-05-15 17:42:02 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 17:42:02 App\Events\ClientRemoveBookingTicket ....... 6.38ms DONE
+  2024-05-15 17:42:02 App\Events\AdminRemoveBookingTicket ............ RUNNING
+  2024-05-15 17:42:02 App\Events\AdminRemoveBookingTicket ........ 6.78ms DONE
+  2024-05-15 18:27:31 App\Events\ClientBookingTicket ................. RUNNING
+  2024-05-15 18:27:31 App\Events\ClientBookingTicket ............ 19.42ms DONE
+  2024-05-15 18:28:41 App\Events\ClientRemoveBookingTicket ........... RUNNING
+  2024-05-15 18:28:41 App\Events\ClientRemoveBookingTicket ...... 16.27ms DONE
+
+   INFO  Starting server on 0.0.0.0:8080 (localhost).  
+
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+   RuntimeException 
+
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+  Failed to listen on "tcp://0.0.0.0:8080":
+
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+   RuntimeException 
+
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+   RuntimeException 
+
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+      Illuminate\Foundation\Application::handleCommand()
+
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+      Illuminate\Foundation\Application::handleCommand()
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+
+   RuntimeException 
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+   RuntimeException 
+
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+   RuntimeException 
+
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   RuntimeException 
+
+  Failed to listen on "tcp://0.0.0.0:8080": Address already in use (EADDRINUSE)
+
+  at /home/tuankiet/ticket-hgo/vendor/react/socket/src/TcpServer.php:184
+    180▕                 // @link https://3v4l.org/3qOBl
+    181▕                 $errno = SocketServer::errno($errstr);
+    182▕             }
+    183▕ 
+  ➜ 184▕             throw new \RuntimeException(
+    185▕                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
+    186▕                 $errno
+    187▕             );
+    188▕         }
+
+      [2m+16 vendor frames [22m
+
+  17  /home/tuankiet/ticket-hgo/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
