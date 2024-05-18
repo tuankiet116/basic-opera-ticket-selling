@@ -42,7 +42,11 @@
                     </tr>
                     <tr v-else v-for="(event, index) in events.data" :key="index">
                         <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
-                        <td>{{ event.name }}</td>
+                        <td>
+                            <router-link :to="{ name: 'book-ticket', params: { eventId: event.id } }">
+                                <strong>{{ event.name }}</strong>
+                            </router-link>
+                        </td>
                         <td>{{ convertDate(event.date) }}</td>
                         <td class="text-wrap text-truncate ">
                             <p>{{ event.description }}</p>
@@ -50,8 +54,9 @@
                         <td>
                             <div class="form-check form-switch">
                                 <label class="form-check-label" for="flexSwitchCheckDisabled">Mở bán vé</label>
-                                <input class="form-check-input" @change="updateOpenningStatus(event.id, !event.is_openning)"
-                                    type="checkbox" role="switch" id="flexSwitchCheckDisabled" :checked="event.is_openning">
+                                <input class="form-check-input"
+                                    @change="updateOpenningStatus(event.id, !event.is_openning)" type="checkbox"
+                                    role="switch" id="flexSwitchCheckDisabled" :checked="event.is_openning">
                             </div>
                         </td>
                         <td>

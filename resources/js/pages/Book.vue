@@ -12,8 +12,8 @@
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
     <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeat" :selected="seatSelectedHall2"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
-    <div
-        class="box position-fixed border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-md-4 col-12 start-0 end-0 m-auto">
+    <div ref="boxBooking"
+        class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-md-4 col-12 start-0 end-0 m-auto">
         <div class="row">
             <div class="col-12">
                 <div class="d-flex justify-content-center flex-wrap">
@@ -33,17 +33,27 @@
                 </div>
                 <h4>Số ghế đang đặt:</h4>
                 <div class="col-12">
-                    <p style="word-break: break-all;">
+                    <p style="word-break: break-all">
                         <span class="fw-bold">Khán phòng 1: </span>
-                        <span v-if="seatSelectedHall1.length" v-for="(seat, index) in seatSelectedHall1">
-                            {{ seat + (index == seatSelectedHall1.length - 1 ? "" : ",") }}
+                        <span v-if="seatSelectedHall1.length" v-for="(seat, index) in seatSelectedHall1" :key="seat">
+                            {{
+                                seat +
+                                (index == seatSelectedHall1.length - 1
+                                    ? ""
+                                    : ",")
+                            }}
                         </span>
                         <span v-else>Không có ghế nào</span>
                     </p>
-                    <p>
+                    <p style="word-break: break-all">
                         <span class="fw-bold">Khán phòng 2: </span>
                         <span v-if="seatSelectedHall2.length" v-for="(seat, index) in seatSelectedHall2">
-                            {{ seat + (index == seatSelectedHall2.length - 1 ? "" : ",") }}
+                            {{
+                                seat +
+                                (index == seatSelectedHall2.length - 1
+                                    ? ""
+                                    : ",")
+                            }}
                         </span>
                         <span v-else>Không có ghế nào</span>
                     </p>
@@ -67,45 +77,33 @@
 </template>
 
 <script setup>
-    import {
-        useRoute,
-        useRouter
-    } from "vue-router";
+    import { useRoute, useRouter } from "vue-router";
     import Hall1 from "../components/seats/Hall1.vue";
     import Hall2 from "../components/seats/Hall2.vue";
-    import {
-        ref,
-        toRef,
-        onMounted,
-        onUnmounted
-    } from "vue";
+    import { ref, toRef, onMounted, onUnmounted } from "vue";
     import {
         getBookingsAPI,
         getEventAPI,
         getTicketClassesByEventAPI,
     } from "../api/event";
-    import {
-        numberWithCommas
-    } from "../helpers/number";
-    import {
-        useStoreBooking
-    } from "../pinia";
-    import {
-        useToast
-    } from "vue-toastification";
+    import { numberWithCommas } from "../helpers/number";
+    import { useStoreBooking } from "../pinia";
+    import { useToast } from "vue-toastification";
 
     const BOOKED_COLOR = "black";
     const route = useRoute();
     const router = useRouter();
     const toast = useToast();
-    let halls = [{
-        name: "Khán phòng 1",
-        id: 1,
-    },
-    {
-        name: "Khán phòng 2",
-        id: 2,
-    },
+    let boxBooking = ref(null);
+    let halls = [
+        {
+            name: "Khán phòng 1",
+            id: 1,
+        },
+        {
+            name: "Khán phòng 2",
+            id: 2,
+        },
     ];
     let hallSelected = ref(halls[0].id);
     let seatSelectedHall1 = ref([]);
@@ -129,23 +127,34 @@
                 selectSeat(bookings.seats[j], bookings.hall);
             }
         }
-        window.Echo.channel(`client-booking-event-${event.value.id}`).listen(
-            "ClientBookingTicket",
-            (e) => {
+
+        const observer = new IntersectionObserver(
+            ([e]) => {
+                console.log(e.intersectionRatio);
+                //e.target.classList.toggle("is-pinned", e.intersectionRatio < 1)
+            },
+            { threshold: 1 }
+        );
+        observer.observe(boxBooking.value);
+
+        window.Echo.channel(`client-booking-event-${event.value.id}`)
+            .listen("ClientBookingTicket", (e) => {
                 let seats = e.seats.map((seat) => {
                     selectSeat(seat.name, seat.hall, true);
                     return creatBookingItem(seat.name, seat.hall);
                 });
                 bookings.value.push(...seats);
-            }
-        ).listen("ClientRemoveBookingTicket", (e) => {
-            let seats = e.seats;
-            for (let i = 0; i < seats.length; i++) {
-                let seat = seats[i];
-                let index = bookings.value.findIndex((book) => book.seat == seat.name && book.hall == seat.hall);
-                if (index > -1) bookings.value.splice(index, 1);
-            }
-        });
+            })
+            .listen("ClientRemoveBookingTicket", (e) => {
+                let seats = e.seats;
+                for (let i = 0; i < seats.length; i++) {
+                    let seat = seats[i];
+                    let index = bookings.value.findIndex(
+                        (book) => book.seat == seat.name && book.hall == seat.hall
+                    );
+                    if (index > -1) bookings.value.splice(index, 1);
+                }
+            });
     });
 
     onUnmounted(() => {
@@ -158,7 +167,7 @@
 
     const selectSeat = (seatName, hall = null, isBooked = false) => {
         let seatSelected = toRef(seatSelectedHall1);
-        if (hall && hall == 2 || hallSelected.value == 2) {
+        if ((hall && hall == 2) || hallSelected.value == 2) {
             seatSelected = toRef(seatSelectedHall2);
         }
         let currentSeat = seatSelected.value.findIndex((seat) => seat == seatName);
@@ -208,14 +217,15 @@
     };
 
     const confirm = () => {
-        let selected = [{
-            hall: 1,
-            seats: seatSelectedHall1.value,
-        },
-        {
-            hall: 2,
-            seats: seatSelectedHall2.value,
-        },
+        let selected = [
+            {
+                hall: 1,
+                seats: seatSelectedHall1.value,
+            },
+            {
+                hall: 2,
+                seats: seatSelectedHall2.value,
+            },
         ];
         if (!selected.length) {
             toast.error("Vui lòng chọn ghế");
@@ -227,7 +237,7 @@
             return;
         } else {
             router.push({
-                name: "client-form"
+                name: "client-form",
             });
         }
     };

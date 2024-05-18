@@ -21,7 +21,7 @@ export const routes = [
             {
                 path: '/book/:eventId', component: Book, name: 'book-ticket', beforeEnter: async (to, from, next) => {
                     if (!to.params.eventId.match("^\\d+$") || !getEventAPI(to.params.eventId)) {
-                        next("/erorr/notfound");
+                        next("/error/notfound");
                     }
                     else {
                         next();
@@ -57,6 +57,6 @@ export const routes = [
         ]
     },
     { path: '/admin/login', component: LoginAdmin, name: "admin-login" },
-    { path: '/erorr/notfound', component: NotFound, name: "not-found" },
+    { path: '/error/notfound', component: NotFound, name: "not-found" },
     { path: "/:pathMatch(.*)*", component: NotFound }
 ]
