@@ -34,6 +34,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::post("/create", [ClientController::class, "createClientSpecial"]);
         Route::put("/update/{clientId}", [ClientController::class, "updateClientSpecial"]);
         Route::get("/edit/{clientId}", [ClientController::class, "edit"]);
+        Route::delete("/delete/{clientId}", [ClientController::class, "delete"]);
     });
     Route::prefix("/bookings")->group(function () {
         Route::get("/list/{eventId}", [AdminBookingController::class, "getBookings"]);

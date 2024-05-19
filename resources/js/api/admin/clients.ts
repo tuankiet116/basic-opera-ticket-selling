@@ -20,3 +20,7 @@ export const updateClientAPI = async (clientId: number, data: ClientData) => {
 export const createClientAPI = async (data: ClientData) => {
     return await axiosInstance.post(`/admin/client/create`, data);
 }
+
+export const deleteClientAPI = async (clientId: number) => {
+    return await axiosInstance.delete(`/admin/client/delete/${clientId}`);
+}

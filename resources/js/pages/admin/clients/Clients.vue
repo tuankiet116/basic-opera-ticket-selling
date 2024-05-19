@@ -65,8 +65,8 @@
                 </thead>
                 <tbody>
                     <tr v-if="!clients.data?.length">
-                        <td colspan="5" class="text-center">
-                            No Data Available
+                        <td :colspan="tab == TAB_SPECIAL_CLIENTS ? 7 : 6" class="text-center">
+                            Không có dữ liệu hợp lệ
                         </td>
                     </tr>
                     <tr v-else v-for="(client, index) in clients.data" :key="client.id">
@@ -79,7 +79,7 @@
                         <td v-if="tab == TAB_SPECIAL_CLIENTS">
                             <router-link :to="{ name: 'admin-edit-client', params: { clientId: client.id } }"
                                 type="button" class="btn btn-light mx-1 my-1 btn-sm">Chỉnh sửa</router-link>
-                            <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                            <button @click="deleteSpecialClient(client)" type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -99,7 +99,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { getListClientsAPI, getSpecialClientsAPI } from "../../../api/admin/clients.ts";
+import { deleteClientAPI, getListClientsAPI, getSpecialClientsAPI } from "../../../api/admin/clients.ts";
 
 const TAB_SPECIAL_CLIENTS = "special-clients";
 const TAB_CLIENTS = "clients";
@@ -158,6 +158,14 @@ const changeTab = (tabName) => {
         clients.value = listClientsSpecial.value;
     } else {
         clients.value = listClients.value;
+    }
+}
+
+const deleteSpecialClient = async (client) => {
+    let isConfirm = confirm(`Bạn muốn xóa ${client.name} ra khỏi danh sách khách hàng đặc biệt? Đồng nghĩa các chỗ được đặt trước sẽ được mở khóa.`);
+    if (isConfirm) {
+        let response = await deleteClientAPI(client.id);
+        
     }
 }
 </script>

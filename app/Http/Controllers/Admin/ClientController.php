@@ -55,4 +55,11 @@ class ClientController extends Controller
         ]);
         return $this->responseSuccess($client->toArray());
     }
+
+    public function delete(int $clientId)
+    {
+        $result = $this->clientService->deleteClient($clientId);
+        if ($result) return $this->responseSuccess();
+        return $this->responseError();
+    }
 }
