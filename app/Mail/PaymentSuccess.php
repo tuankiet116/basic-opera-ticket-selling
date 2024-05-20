@@ -44,7 +44,7 @@ class PaymentSuccess extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Success',
+            subject: 'Thanh toán thành công|Payment Success',
         );
     }
 

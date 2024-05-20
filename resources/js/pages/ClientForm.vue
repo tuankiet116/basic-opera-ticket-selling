@@ -27,6 +27,11 @@
                     <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
                 </div>
                 <div class="mb-3">
+                    <label for="id_number" class="form-label">Căn cước công dân/Hộ chiếu:</label>
+                    <input type="text" class="form-control" id="id_number" v-model="client.id_number">
+                    <small v-if="errors.id_number" class="text-danger">{{ errors.id_number[0] }}</small>
+                </div>
+                <div class="mb-3">
                     <label for="email" class="form-label">Địa chỉ Email của bạn:</label>
                     <input type="email" class="form-control" id="email" v-model="client.email">
                     <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
@@ -79,7 +84,8 @@
         name: "",
         email: "",
         phone_number: "",
-        address: ""
+        address: "",
+        id_number: "",
     });
 
     onMounted(() => {

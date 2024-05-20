@@ -15,7 +15,8 @@
     <div
         class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
         <div class="row position-relative">
-            <button class="position-absolute btn btn-light top-0 w-fit col-1 end-0 flex justify-content-center align-items-center"
+            <button
+                class="position-absolute btn btn-light top-0 col-1 end-0 d-flex justify-content-center align-items-center p-1 w-fit"
                 @click="isZoomOutBox = !isZoomOutBox">
                 <svg v-if="!isZoomOutBox" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-dash-square" viewBox="0 0 16 16">
@@ -31,9 +32,10 @@
                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>
             </button>
-            <div class="col-12 mt-2" :class="{'mt-5': isZoomOutBox}">
+            <h5 class="fw-bold">Thông tin đặt vé</h5>
+            <div class="col-12 mt-2 ">
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
-                    <div class="d-flex" v-for="ticketClass in ticketClasses">
+                    <div class="d-flex" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
                         <div>{{ ticketClass.name }}</div>
                         <div class="mx-1" :style="'background-color: ' + ticketClass.color"
                             style="width: 20px; height: 20px"></div>
@@ -47,7 +49,6 @@
                             style="width: 20px; height: 20px"></div>
                     </div>
                 </div>
-                <h4 v-if="!isZoomOutBox">Số ghế đang đặt:</h4>
                 <div v-if="!isZoomOutBox" class="col-12">
                     <p style="word-break: break-all">
                         <span class="fw-bold">Khán phòng 1: </span>
@@ -105,6 +106,7 @@ import {
 import { numberWithCommas } from "../helpers/number";
 import { useStoreBooking } from "../pinia";
 import { useToast } from "vue-toastification";
+import { HttpStatusCode } from "axios";
 
 const BOOKED_COLOR = "black";
 const route = useRoute();
@@ -204,11 +206,13 @@ const getTicketClass = async () => {
 
 const getEvent = async () => {
     let response = await getEventAPI(Number(eventId));
+    if (response.status != HttpStatusCode.Ok) router.push("/error/notfound");
     event.value = response.data;
 };
 
 const getBookingStatus = async () => {
     let response = await getBookingsAPI(Number(eventId));
+    if (response.status != HttpStatusCode.Ok) router.push("/error/notfound");
     bookings.value = response.data.map((booking) =>
         creatBookingItem(booking.seat.name, booking.seat.hall)
     );

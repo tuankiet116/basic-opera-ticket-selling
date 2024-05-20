@@ -28,8 +28,8 @@ class AskingPayment extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Thông tin thanh toán vé Hòa nhạc “Four Seasons” ngày 21.04.2024 tại Nhà hát Hồ Gươm 
-            | Payment information for ticket(s) of the “Four Seasons” Concert on April 21st, 2024 at Ho Guom Opera",
+            subject: "Thông tin thanh toán vé “" . $this->event->name . "” ngày " . date('d-m-Y', strtotime($this->event->date)) . " tại Nhà hát Hồ Gươm 
+            | Payment information for ticket(s) of the “" . $this->event->name . "” Concert on " . date('F j, Y', strtotime($this->event->date)) . " at Ho Guom Opera",
         );
     }
 

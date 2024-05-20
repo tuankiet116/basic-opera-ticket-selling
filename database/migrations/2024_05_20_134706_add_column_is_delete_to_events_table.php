@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->string("id_number")->nullable();
+        Schema::table('events', function (Blueprint $table) {
+            $table->boolean("is_delete")->default(false);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('id_number');
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropColumn('is_delete');
         });
     }
 };

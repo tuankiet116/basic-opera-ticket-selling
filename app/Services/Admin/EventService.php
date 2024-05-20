@@ -43,14 +43,14 @@ class EventService
 
     public function edit($eventId): EventModel | null
     {
-        $event = EventModel::with("ticketClasses")->find($eventId);
+        $event = EventModel::with("ticketClasses")->unDeleted()->find($eventId);
         if (!$event) return null;
         return $event;
     }
 
     public function update(array $data, int $eventId)
     {
-        $event = EventModel::find($eventId);
+        $event = EventModel::unDeleted()->find($eventId);
         if (!$event) throw new NotFoundHttpException("Event not found");
         DB::beginTransaction();
         try {
@@ -96,10 +96,19 @@ class EventService
 
     public function updateStatus(array $data, int $eventId)
     {
-        $event = EventModel::find($eventId);
+        $event = EventModel::unDeleted()->find($eventId);
         if (!$event) throw new NotFoundHttpException("Event not found");
         $event->update($data);
         $event->save();
         return $event;
+    }
+
+    public function deleteEvent(int $eventId)
+    {
+        $event = EventModel::unDeleted()->find($eventId);
+        if (!$event) throw new NotFoundHttpException("Delete event not availabled");
+        $event->update(["is_delete" => true]);
+        $event->save();
+        return true;
     }
 }

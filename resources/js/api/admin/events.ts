@@ -28,3 +28,7 @@ export const getEventAPI = async (eventId: number) => {
 export const updateStatusAPI = async (eventId: number, data: { is_openning: boolean }) => {
     return await axiosInstance.put(`/admin/event/status/${eventId}`, data);
 }
+
+export const deleteEventAPI = async (eventId: number) => {
+    return await axiosInstance.delete(`/admin/event/delete/${eventId}`);
+}

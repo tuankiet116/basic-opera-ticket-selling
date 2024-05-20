@@ -27,7 +27,10 @@ class UpdateBookingStatusRequest extends FormRequest
                 "required",
                 Rule::exists("clients", "id")->where("event_id", $this->get("event_id"))
             ],
-            "event_id" => "required|exists:events,id"
+            "event_id" => [
+                "required",
+                Rule::exists("events", "id")->where("is_delete", false)
+            ]
         ];
     }
 }

@@ -64,7 +64,7 @@
                                 class="btn btn-light mx-1 my-1 btn-sm">Cài đặt thông tin</router-link>
                             <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button"
                                 class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</router-link>
-                            <button type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                            <button type="button" @click="removeEvent(event)" class="btn btn-danger mx-1 btn-sm">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -85,7 +85,7 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { getListEvent, updateStatusAPI } from "../../../api/admin/events";
+import { deleteEventAPI, getListEvent, updateStatusAPI } from "../../../api/admin/events";
 import { HttpStatusCode } from "axios";
 import moment from "moment";
 import { useToast } from "vue-toastification";
@@ -140,6 +140,19 @@ const updateOpenningStatus = async (eventId, status) => {
         }
     } else {
         toast.error(`Sự kiện '${event.name}' lỗi cập nhật trạng thái bán vé.`);
+    }
+}
+
+const removeEvent = async (event) => {
+    let isConfirm = confirm(`Sự kiện "${event.name}" bị xóa sẽ vô hiệu hóa. Bạn chắc chắn chứ?`);
+    if (isConfirm) {
+        let response = await deleteEventAPI(event.id);
+        if (response.status == HttpStatusCode.Ok) {
+            toast.success(`Sự kiện '${event.name}' đã bị xóa thành công`);
+            events.data = events.data.filter((e) => {
+                return e.id != event.id;
+            })
+        }
     }
 }
 </script>

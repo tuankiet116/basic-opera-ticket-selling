@@ -30,6 +30,7 @@ class BookingService
                 "is_receive_in_opera" => data_get($data, "is_receive_in_opera"),
                 "address" => data_get($data, "address"),
                 "event_id" => data_get($data, "event_id"),
+                "id_number" => data_get($data, "id_number"),
                 "isSpecial" => false
             ]);
             $bookings = data_get($data, "bookings");

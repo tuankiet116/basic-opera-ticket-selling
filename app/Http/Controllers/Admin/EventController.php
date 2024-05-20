@@ -64,4 +64,11 @@ class EventController extends Controller
         ]);
         return $this->responseSuccess($event->toArray());
     }
+
+    public function delete(int $eventId)
+    {
+        $result = $this->eventService->deleteEvent($eventId);
+        if ($result) return $this->responseSuccess();
+        return $this->responseError();
+    }
 }

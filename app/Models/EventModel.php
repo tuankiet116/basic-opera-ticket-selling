@@ -18,23 +18,30 @@ class EventModel extends Model
         "description",
         "image_url",
         "is_openning",
+        "is_delete",
     ];
 
     protected $casts = [
         "date" => "date",
         "is_openning" => "boolean",
+        "is_delete" => "boolean",
     ];
 
     public function scopeSearchBy(Builder $query, string $search)
     {
-        if (!$search) return $query;
+        if (!$search) return $query->where("is_delete", false);
         $search = strtolower($search);
-        return $query->whereRaw("LOWER(name) LIKE ?", ["%$search%"]);
+        return $query->whereRaw("LOWER(name) LIKE ?", ["%$search%"])->where("is_delete", false);
     }
 
     public function scopeAvailable(Builder $query)
     {
-        return $query->where("is_openning", true);
+        return $query->where("is_openning", true)->where("is_delete", false);
+    }
+
+    public function scopeUnDeleted(Builder $query)
+    {
+        return $query->where("is_delete", false);
     }
 
     public function ticketClasses()

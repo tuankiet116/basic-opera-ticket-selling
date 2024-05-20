@@ -27,7 +27,7 @@ class BookingRequest extends FormRequest
             "event_id" => [
                 "required",
                 Rule::exists("events", "id")->where(function (Builder $query) {
-                    return $query->where("is_openning", true);
+                    return $query->where("is_delete", false)->where("is_openning", true);
                 })
             ],
             "name" => "required|string",
@@ -35,6 +35,7 @@ class BookingRequest extends FormRequest
             "phone_number" => ["required", "string", "regex:/(84|0[3|5|7|8|9])+([0-9]{8})\b/"],
             "is_receive_in_opera" => "required|boolean",
             "address" => "required_if:is_receive_in_opera,false",
+            "id_number" => "required|numeric",
             "bookings" => "array|required",
             "bookings.*.hall" => "required",
             "bookings.*.seats" => "array",

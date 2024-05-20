@@ -19,6 +19,7 @@ class ClientModel extends Model
         "address",
         "isSpecial",
         "is_receive_in_opera",
+        "id_number",
     ];
 
     protected $casts = [

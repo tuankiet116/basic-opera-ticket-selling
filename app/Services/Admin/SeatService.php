@@ -72,6 +72,7 @@ class SeatService
     public function preBooking(array $data, bool $isCancel = false): bool
     {
         $event = EventModel::find($data["event_id"]);
+        if (!$event || $event->is_delete) return false;
         $seats = SeatModel::where(function (Builder $query) use ($data) {
             foreach ($data["seats"] as $seats) {
                 $query = $query->orWhere(function (Builder $query) use ($seats) {

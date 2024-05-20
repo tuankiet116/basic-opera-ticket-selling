@@ -21,6 +21,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::put("/update/{eventId}", [EventController::class, "update"]);
         Route::get("/list", [EventController::class, "listAll"]);
         Route::put("/status/{eventId}", [EventController::class, "updateStatus"]);
+        Route::delete("/delete/{eventId}", [EventController::class, "delete"]);
     });
     Route::prefix("/seats")->group(function () {
         Route::get("/get-ticket-class/{eventId}", [SeatController::class, "getSeatTicketClass"]);
