@@ -79,7 +79,8 @@
                         <td v-if="tab == TAB_SPECIAL_CLIENTS">
                             <router-link :to="{ name: 'admin-edit-client', params: { clientId: client.id } }"
                                 type="button" class="btn btn-light mx-1 my-1 btn-sm">Chỉnh sửa</router-link>
-                            <button @click="deleteSpecialClient(client)" type="button" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                            <button @click="deleteSpecialClient(client)" type="button"
+                                class="btn btn-danger mx-1 btn-sm">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -100,6 +101,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { deleteClientAPI, getListClientsAPI, getSpecialClientsAPI } from "../../../api/admin/clients.ts";
+import { HttpStatusCode } from "axios";
+import { useToast } from "vue-toastification";
 
 const TAB_SPECIAL_CLIENTS = "special-clients";
 const TAB_CLIENTS = "clients";
@@ -109,6 +112,7 @@ const props = defineProps({
         default: false,
     }
 });
+const toast = useToast();
 let listClients = ref({});
 let listClientsSpecial = ref({});
 let clients = ref({});
@@ -165,7 +169,15 @@ const deleteSpecialClient = async (client) => {
     let isConfirm = confirm(`Bạn muốn xóa ${client.name} ra khỏi danh sách khách hàng đặc biệt? Đồng nghĩa các chỗ được đặt trước sẽ được mở khóa.`);
     if (isConfirm) {
         let response = await deleteClientAPI(client.id);
-        
+        switch (response.status) {
+            case HttpStatusCode.Ok:
+                toast.success("Khách hàng đặc biệt đã được xóa.");
+                clients.value.data = clients.value.data.filter(c => c.id != client.id);
+                break;
+            default:
+                toast.error("Xảy ra lỗi không thể xóa khách hàng đặc biệt");
+                break;
+        }
     }
 }
 </script>

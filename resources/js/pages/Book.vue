@@ -15,7 +15,7 @@
     <div
         class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
         <div class="row position-relative">
-            <button class="position-absolute btn btn-light top-0 w-fit col-1 end-0"
+            <button class="position-absolute btn btn-light top-0 w-fit col-1 end-0 flex justify-content-center align-items-center"
                 @click="isZoomOutBox = !isZoomOutBox">
                 <svg v-if="!isZoomOutBox" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-dash-square" viewBox="0 0 16 16">

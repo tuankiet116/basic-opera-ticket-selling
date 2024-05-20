@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import Cookies from "js-cookie";
+import { useStoreLoading } from "../pinia";
 
 export const axiosInstance = axios.create({
     baseURL: '/api',
@@ -7,11 +8,14 @@ export const axiosInstance = axios.create({
     withXSRFToken: true
 });
 
+
 // Request interceptor. Runs before your request reaches the server
 const onRequest = (config) => {
+    const storeLoading = useStoreLoading();
     // If http method is `post | put | delete` and XSRF-TOKEN cookie is 
     // not present, call '/sanctum/csrf-cookie' to set CSRF token, then 
     // proceed with the initial response
+    storeLoading.setIsLoading(true);
     if ((
         config.method == 'post' ||
         config.method == 'put' ||
@@ -33,11 +37,19 @@ const setCSRFToken = () => {
 }
 
 const onResponseRejected = async (axiosResponse) => {
+    const storeLoading = useStoreLoading();
+    storeLoading.setIsLoading(false);
     return axiosResponse.response;
+}
+
+const onResponseSuccess = async (axiosResponse) => {
+    const storeLoading = useStoreLoading();
+    storeLoading.setIsLoading(false);
+    return axiosResponse;
 }
 
 // attach your interceptor
 axiosInstance.interceptors.request.use(onRequest, null);
-axiosInstance.interceptors.response.use(null, onResponseRejected);
+axiosInstance.interceptors.response.use(onResponseSuccess, onResponseRejected);
 
 export default axiosInstance;

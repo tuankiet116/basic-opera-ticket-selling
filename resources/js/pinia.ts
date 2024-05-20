@@ -22,3 +22,11 @@ export const useStoreBooking = defineStore("storeBooking", () => {
     }
     return { seatBooking, setBooking, eventBooking };
 });
+
+export const useStoreLoading = defineStore("storeLoading", () => {
+    const isLoading: Ref<boolean> = ref(false);
+    function setIsLoading(value: boolean) {
+        isLoading.value = value;
+    }
+    return { isLoading, setIsLoading };
+})
