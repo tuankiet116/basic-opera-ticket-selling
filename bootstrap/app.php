@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\CheckPendingBooking;
+use App\Console\Commands\RemoveClientInvalid;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
@@ -23,4 +24,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })->withSchedule(function (Schedule $schedule) {
         $schedule->command(CheckPendingBooking::class)->everyMinute();
+        $schedule->command(RemoveClientInvalid::class)->everyTenMinutes();
     })->create();

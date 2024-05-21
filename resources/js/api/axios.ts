@@ -12,10 +12,12 @@ export const axiosInstance = axios.create({
 // Request interceptor. Runs before your request reaches the server
 const onRequest = (config) => {
     const storeLoading = useStoreLoading();
+    const currentLang = localStorage.getItem("hgo-lang");
     // If http method is `post | put | delete` and XSRF-TOKEN cookie is 
     // not present, call '/sanctum/csrf-cookie' to set CSRF token, then 
     // proceed with the initial response
     storeLoading.setIsLoading(true);
+    config.headers = { ...config.headers, "Language": currentLang };
     if ((
         config.method == 'post' ||
         config.method == 'put' ||

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pulse\Facades\Pulse;
 
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Pulse::user(fn ($user) => [
             'name' => $user->name,
             'extra' => $user->email,
-            'avatar' => asset("/resources/images/image.png"),
+            'avatar' => Vite::asset("/resources/images/image.png"),
         ]);
     }
 }

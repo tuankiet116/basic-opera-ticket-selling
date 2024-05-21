@@ -13,6 +13,9 @@ import "vue-toastification/dist/index.css";
 import { popover, tooltip } from "./directives/bootstrap";
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 import "./echo.js";
+import { createI18n } from 'vue-i18n';
+import * as VI from "./lang/vi.json";
+import * as EN from "./lang/en.json";
 
 const pinia = createPinia();
 const authenticatedStore = useAuthenticateStore(pinia);
@@ -44,7 +47,19 @@ router.beforeEach(async (to, from, next) => {
     }
 });
 
+const i18n = createI18n({
+    locale: 'vi',
+    fallbackLocale: 'en',
+    messages: {
+        en: EN,
+        vi: VI
+    },
+    legacy: false,
+    globalInjection: true
+});
+
 let app = createApp(App)
+    .use(i18n)
     .use(router).use(pinia).use(Toast, {
         timeout: 3000,
         position: "top-right",

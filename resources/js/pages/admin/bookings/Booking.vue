@@ -45,7 +45,7 @@
             </ul>
         </div>
         <div class="mt-5">
-            <div class="card w-75 mb-2 mx-auto" v-for="booking in bookingsGroupedByTab">
+            <div class="card w-75 mb-2 mx-auto" v-for="booking in bookingsGroupedByTab" :key="booking.id">
                 <div class="card-body position-relative">
                     <span class="badge rounded-pill text-bg-success" v-if="booking.bookings.length && booking.bookings[0].isBooked">
                         Đã thanh toán
@@ -59,6 +59,7 @@
                     <p class="mb-0 fs-5">Khách hàng: <strong>{{ booking.name }}</strong></p>
                     <p class="mb-0 fs-5">Email: <strong>{{ booking.email }}</strong></p>
                     <p class="mb-0 fs-5">Số điện thoại: <strong>{{ booking.phone_number }}</strong></p>
+                    <p class="mb-0 fs-5">CCCD/Hộ chiếu: <strong>{{ booking.id_number }}</strong></p>
                     <p class="mb-0 fs-5" v-if="!booking.is_receive_in_opera">
                         Địa chỉ nhận vé: <strong>{{ booking.address }}
                         </strong>
@@ -84,6 +85,7 @@
         <template #body>
             <div>
                 <p class="mb-0">Khách hàng: <strong>{{ bookingSelected?.name }}</strong></p>
+                <p class="mb-0">CCCD/Hộ chiếu: <strong>{{ bookingSelected?.id_number }}</strong></p>
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
                 <p class="mb-0">
@@ -93,7 +95,7 @@
                         Nhận vé tại nhà hát
                     </span>
                 </p>
-                <p class="mb-0">Tổng tiền thanh toán: <strong>{{ numberWithCommas(bookingSelected.price ?? 0) }}
+                <p class="mb-0">Tổng tiền thanh toán: <strong class="p-1 bg-primary">{{ numberWithCommas(bookingSelected.price ?? 0) }}
                         vnd</strong></p>
             </div>
             <br />
@@ -108,7 +110,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="booking in bookingSelected.bookings">
+                    <tr v-for="booking in bookingSelected.bookings" :key="booking.id">
                         <td class="text-center">{{ booking.seat.hall }}</td>
                         <td class="text-center">{{ booking.seat.name }}</td>
                         <td class="text-center">{{ booking.ticket_class.name }}</td>

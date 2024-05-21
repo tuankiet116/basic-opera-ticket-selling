@@ -17,7 +17,7 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = match ($preferredLanguage = session("language", "vn")) {
+        $locale = match ($preferredLanguage = $request->header("Language", "vi")) {
             '*' => app()->getLocale(), // Any locale, so use application default
             default => $preferredLanguage,
         };
