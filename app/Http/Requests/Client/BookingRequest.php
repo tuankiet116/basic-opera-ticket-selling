@@ -6,6 +6,8 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+use function App\Helpers\trans_format;
+
 class BookingRequest extends FormRequest
 {
     /**
@@ -47,13 +49,20 @@ class BookingRequest extends FormRequest
     public function attributes()
     {
         return [
-            "event_id" => ucfirst(__("attributes.bookings.event")),
-            "name" => ucfirst(__("attributes.bookings.name")),
-            "email" => ucfirst(__("attributes.bookings.email")),
-            "phone_number" => ucfirst(__("attributes.bookings.phone_number")),
-            "is_receive_in_opera" => ucfirst(__("attributes.bookings.is_receive_in_opera")),
-            "address" => ucfirst(__("attributes.bookings.address")),
-            "id_number" => ucfirst(__("attributes.bookings.id_number")),
+            "event_id" => trans_format("attributes.bookings.event"),
+            "name" => trans_format("attributes.bookings.name"),
+            "email" => trans_format("attributes.bookings.email"),
+            "phone_number" => trans_format("attributes.bookings.phone_number"),
+            "is_receive_in_opera" => trans_format("attributes.bookings.is_receive_in_opera"),
+            "address" => trans_format("attributes.bookings.address"),
+            "id_number" => trans_format("attributes.bookings.id_number"),
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "address.required_if" => __("messages.booking.address_must_present")
         ];
     }
 }

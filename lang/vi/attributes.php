@@ -18,7 +18,7 @@ return [
         "phone_number" => "Số điện thoại",
         "is_receive_in_opera" => "Có nhận tại nhà hát",
         "address" => "Địa chỉ",
-        "id_number" => "CCCD/Hộ chiếu",
+        "id_number" => "Căn cước công dân / Hộ chiếu",
         "bookings" => "Bookings"
     ]
 ];

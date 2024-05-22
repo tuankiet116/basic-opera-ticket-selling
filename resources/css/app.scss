@@ -8,15 +8,17 @@ $primary: rgb(205, 153, 86);
 @import "bootstrap/scss/utilities/api";
 
 body {
-  font-family: "__Montserrat_26bb97", "__Montserrat_Fallback_26bb97";
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
   min-height: 100vh;
 }
 
 .text-truncate-custom {
-  -webkit-line-clamp: 3;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+  width: 100%;
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 a {
@@ -49,7 +51,8 @@ a {
   box-shadow: none !important;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   box-shadow: none !important;
 }
 

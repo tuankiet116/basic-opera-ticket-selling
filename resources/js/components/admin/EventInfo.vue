@@ -20,7 +20,7 @@
                 <div class="col-6">
                     <label for="event-description" class="form-label">Mô tả sự kiện</label>
                     <textarea class="form-control" ref="textareaDescription" type="textarea" id="event-description" v-model="description"
-                        @change="changeDesc" :disabled="props.isLoading" />
+                        @change="changeDesc" :disabled="props.isLoading" style="height: 400px;"/>
                     <small v-if="props.errors.description" class="text-danger">{{ props.errors.description[0] }}</small>
                 </div>
                 <div class="col-6">

@@ -1,8 +1,8 @@
 <template>
     <div class="container text-center pt-5">
-        <h1 class="fs-3 pt-5">Đặt vé sự kiện {{ event.name }}</h1>
+        <h1 class="fs-3 pt-5">{{ $t("booking_page.booking_for") }} {{ event.name }}</h1>
         <div class="d-flex justify-content-center">
-            <button class="btn mx-1" :class="hall.id == hallSelected ? 'btn-primary' : 'btn-light'"
+            <button class="btn mx-1" :class="hall.id == hallSelected ? 'btn-primary text-white' : 'btn-light'"
                 v-for="hall in halls" @click="selectHall(hall.id)" :key="hall.id">
                 {{ hall.name }}
             </button>
@@ -32,7 +32,7 @@
                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>
             </button>
-            <h5 class="fw-bold">Thông tin đặt vé</h5>
+            <h5 class="fw-medium">{{ $t("booking_page.booking_info") }}</h5>
             <div class="col-12 mt-2 ">
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
                     <div class="d-flex" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
@@ -44,14 +44,14 @@
                         <span class="mx-1">|</span>
                     </div>
                     <div class="d-flex">
-                        <div>Đã đặt</div>
+                        <div>{{ $t("booking_page.booked") }}</div>
                         <div class="mx-1" :style="'background-color: ' + BOOKED_COLOR"
                             style="width: 20px; height: 20px"></div>
                     </div>
                 </div>
                 <div v-if="!isZoomOutBox" class="col-12">
                     <p style="word-break: break-all">
-                        <span class="fw-bold">Khán phòng 1: </span>
+                        <span class="fw-medium">{{ $t("booking_page.hall") }} 1: </span>
                         <span v-if="seatSelectedHall1.length" v-for="(seat, index) in seatSelectedHall1" :key="seat">
                             {{
                                 seat +
@@ -60,10 +60,10 @@
                                     : ",")
                             }}
                         </span>
-                        <span v-else>Không có ghế nào</span>
+                        <span v-else>{{ $t("booking_page.booking_none") }}</span>
                     </p>
                     <p style="word-break: break-all">
-                        <span class="fw-bold">Khán phòng 2: </span>
+                        <span class="fw-medium">{{ $t("booking_page.hall") }} 2: </span>
                         <span v-if="seatSelectedHall2.length" v-for="(seat, index) in seatSelectedHall2">
                             {{
                                 seat +
@@ -72,20 +72,20 @@
                                     : ",")
                             }}
                         </span>
-                        <span v-else>Không có ghế nào</span>
+                        <span v-else>{{ $t("booking_page.booking_none") }}</span>
                     </p>
                 </div>
                 <div class="row">
                     <div class="col-8 row align-items-center">
                         <div>
-                            <span class="fw-bold fs-5">
-                                Tổng tiền phải thanh toán:
+                            <span class="fw-medium fs-5">
+                                {{ $t("booking_page.total") }}:
                             </span>
                             <span class="fs-5">{{ numberWithCommas(total) }} vnđ</span>
                         </div>
                     </div>
                     <button type="button" class="btn btn-primary text-white col-4" @click="confirm">
-                        Xác nhận thanh toán
+                        {{ $t("booking_page.confirm_payment") }}
                     </button>
                 </div>
             </div>

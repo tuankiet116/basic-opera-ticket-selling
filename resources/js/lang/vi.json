@@ -1,3 +1,8 @@
 {
-    "title": "Đặt vé"
+    "title": "Đặt vé",
+    "error_404": {
+        "title": "Không tìm thấy trang",
+        "go_home": "Về trang chủ",
+        "content": "Xin lỗi! Không thể tìm thấy trang bạn đang tìm. Có lẽ trang bạn yêu cầu đã bị di chuyển hoặc bị xóa. Cũng có thể bạn đã mắc một lỗi đánh máy nhỏ khi nhập địa chỉ. Hãy chuyển đến trang chính."
+    }
 }

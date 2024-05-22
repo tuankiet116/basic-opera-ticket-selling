@@ -1,3 +1,21 @@
 {
-    "title": "Booking Tickets"
+    "title": "Booking Tickets",
+    "404": {
+        "title": "Page Not Found",
+        "go_home": "Go Home",
+        "content": "Sorry! The page you are looking for can not be found. Perhaps the page you requested was moved or deleted. It is also possible that you made a small typo when entering the address. Go to the main page."
+    },
+    "events": {
+        "title": "List Events",
+        "booking": "Booking ticket now"
+    },
+    "booking_page": {
+        "booking_for": "Booking ticket for",
+        "booking_info": "Booking information",
+        "booked": "Booked ticket",
+        "hall": "Hall",
+        "booking_none": "None",
+        "total": "Estimated total",
+        "confirm_payment": "Confirm payment"
+    }
 }

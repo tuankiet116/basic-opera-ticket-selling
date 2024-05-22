@@ -48,8 +48,8 @@
                             </router-link>
                         </td>
                         <td>{{ convertDate(event.date) }}</td>
-                        <td class="text-wrap text-truncate ">
-                            <p>{{ event.description }}</p>
+                        <td>
+                            <p class="text-wrap text-truncate-custom m-0">{{ event.description }}</p>
                         </td>
                         <td>
                             <div class="form-check form-switch">
