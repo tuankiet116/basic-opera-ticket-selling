@@ -32,7 +32,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->id;
         });
 
-        Pulse::user(fn ($user) => [
+        Gate::define('viewLogViewer', function (User $user) {
+            return $user->id;
+        });
+
+        Pulse::user(fn (User $user) => [
             'name' => $user->name,
             'extra' => $user->email,
             'avatar' => Vite::asset("resources/images/image.png"),

@@ -43,4 +43,17 @@ class BookingRequest extends FormRequest
             "g-recaptcha-response" => "recaptcha"
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "event_id" => ucfirst(__("attributes.bookings.event")),
+            "name" => ucfirst(__("attributes.bookings.name")),
+            "email" => ucfirst(__("attributes.bookings.email")),
+            "phone_number" => ucfirst(__("attributes.bookings.phone_number")),
+            "is_receive_in_opera" => ucfirst(__("attributes.bookings.is_receive_in_opera")),
+            "address" => ucfirst(__("attributes.bookings.address")),
+            "id_number" => ucfirst(__("attributes.bookings.id_number")),
+        ];
+    }
 }
