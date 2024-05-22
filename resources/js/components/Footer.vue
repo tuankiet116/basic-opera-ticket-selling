@@ -3,12 +3,12 @@
         <hr />
         <div class="row justify-content-center">
             <div class="text-start col-auto">
-                <h1 class="fs-3">NHÀ HÁT HỒ GƯƠM</h1>
+                <h1 class="fs-3">{{ $t("footer.title") }}</h1>
                 <p>
                     <svg width="20px" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
                     </svg>
-                    Địa chỉ: 40-40A Hàng Bài (Hoàn Kiếm, Hà Nội)
+                    {{ $t("footer.address") }}: 40-40A Hàng Bài (Hoàn Kiếm, Hà Nội)
                 </p>
                 <p>
                     <svg width="20px" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -16,7 +16,7 @@
                             d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z">
                         </path>
                     </svg>
-                    Điện thoại:  <a href="tel:082.558.3888">082.558.3888</a>
+                    {{ $t("footer.phone_number") }}: <a href="tel:082.558.3888">082.558.3888</a>
                 </p>
                 <div class="row">
                     <div class="col-auto">
@@ -25,12 +25,12 @@
                                 d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z">
                             </path>
                         </svg>
-                        E-mail: 
+                        E-mail:
                     </div>
                     <div class="col-auto">
                         <p>
                             <a href="mailto:musicalseasons@hoguomopera.com">musicalseasons@hoguomopera.com</a>
-                            <br/>
+                            <br />
                             <a href="mailto:live.hoguomopera@gmail.com">live.hoguomopera@gmail.com</a>
                         </p>
                     </div>
@@ -46,6 +46,6 @@
             </div>
         </div>
         <hr />
-        <p>@ Bản quyền thuộc về Hồ Gươm Opera</p>
+        <p>{{ $t("footer.copy_right") }}</p>
     </div>
 </template>

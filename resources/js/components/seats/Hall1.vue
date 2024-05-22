@@ -1,9 +1,9 @@
 <template>
     <div class="mt-5 row justify-content-center mx-2">
-        <div class="stage col-10 col-md-6 border border-dark py-5">
-            <p class="text-center fs-4 h-100 m-0">Khu vực sân khấu</p>
-        </div>
         <div id="rows" class="container-md overflow-x-auto container-fluid p-0 m-0" ref="rows">
+            <div class="stage col-10 m-auto col-md-6 border border-dark py-5 rounded">
+                <p class="text-center fs-4 h-100 m-0">{{ $t("seat.stage") }}</p>
+            </div>
             <div id="seats-container" ref="seatsContainer"
                 class="row p-0 justify-content-center mt-5 seats-container mx-auto" style="width: 1250px;">
                 <div v-for="(row, index) in rows1" :key="index" class="row p-0 justify-content-center flex-nowrap"
@@ -11,7 +11,7 @@
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
                             :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
-                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                             :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                             v-tooltip>
@@ -25,11 +25,11 @@
                 <div class="row p-0 justify-content-between flex-nowrap my-2" style="width: 100%;">
                     <div class="border border-dark d-flex justify-content-center align-items-center col-1"
                         style="height: 60px;">
-                        <span>Cửa số 3</span>
+                        <span>{{ $t("seat.door") }} 3</span>
                     </div>
                     <div class="border border-dark d-flex justify-content-center align-items-center col-1"
                         style="height: 60px;">
-                        <span>Cửa số 4</span>
+                        <span>{{ $t("seat.door") }} 4</span>
                     </div>
                 </div>
                 <div v-for="(row, index) in rows2" class="row justify-content-center flex-nowrap" :key="index"
@@ -37,7 +37,7 @@
                     <template v-for="seat in row" :key="seat.id">
                         <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
                             :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
-                            class="border border-dark seat d-flex justify-content-center align-items-center z-1"
+                            class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                             :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                             v-tooltip>
@@ -54,11 +54,11 @@
                 <div class="row p-0 justify-content-around flex-nowrap my-2" style="width: 100%;">
                     <div class="border border-dark d-flex justify-content-center align-items-center col-1"
                         style="height: 60px;">
-                        <span>Cửa số 1</span>
+                        <span>{{ $t("seat.door") }} 1</span>
                     </div>
                     <div class="border border-dark d-flex justify-content-center align-items-center col-1"
                         style="height: 60px;">
-                        <span>Cửa số 2</span>
+                        <span>{{ $t("seat.door") }} 2</span>
                     </div>
                 </div>
             </div>

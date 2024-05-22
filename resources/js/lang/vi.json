@@ -4,5 +4,51 @@
         "title": "Không tìm thấy trang",
         "go_home": "Về trang chủ",
         "content": "Xin lỗi! Không thể tìm thấy trang bạn đang tìm. Có lẽ trang bạn yêu cầu đã bị di chuyển hoặc bị xóa. Cũng có thể bạn đã mắc một lỗi đánh máy nhỏ khi nhập địa chỉ. Hãy chuyển đến trang chính."
+    },
+    "events": {
+        "title": "Danh sách sự kiện",
+        "booking": "Đặt vé ngay"
+    },
+    "booking_page": {
+        "booking_for": "Đặt vé cho",
+        "booking_info": "Thông tin đặt vé",
+        "booked": "Ghế đã đặt",
+        "hall": "Khán phòng",
+        "booking_none": "Không có",
+        "total": "Tổng tiền",
+        "confirm_payment": "Xác nhận đặt vé",
+        "pls_select_seat": "Vui lòng chọn ghế"
+    },
+    "form_contact": {
+        "title": "Điền thông tin liên hệ",
+        "receive_address": "Bạn muốn nhận vé ở đâu?",
+        "at_opera_house": "Tại nhà hát Hồ Gươm",
+        "at_your_address": "Tại địa chỉ của tôi",
+        "name": "Họ và tên",
+        "id_number": "Căn cước công dân/Hộ chiếu",
+        "email": "Địa chỉ Email",
+        "phone_number": "Số điện thoại",
+        "address": "Địa chỉ nhận vé",
+        "back": "Quay lại",
+        "confirm": "Xác nhận thông tin",
+        "event_closed": "Sự kiện đã đóng."
+    },
+    "seat": {
+        "stage": "Sân khấu",
+        "door": "Cửa số"
+    },
+    "success": {
+        "title": "Xin chúc mừng, bạn đã đặt vé thành công",
+        "content": "Chúng tôi đã gửi email thông tin thanh toán đến hòm thư của bạn.",
+        "content_0": "Ghế sẽ được <strong>tạm giữ</strong> khi bạn hoàn tất bước đặt chỗ và chỉ được xác nhận sau khi bạn hoàn tất thanh toán trong vòng <strong>15 phút</strong> kể từ khi nhận được email thông tin thanh toán.",
+        "content_1": "Sau <strong>15 phút</strong>, nếu Ban tổ chức không nhận được thanh toán, ghế sẽ trở lại trạng thái trống.",
+        "content_2": "Nếu sau <strong>15 phút</strong> bạn vẫn chưa nhận được email xác nhận, vui lòng kiểm tra hòm thư spam hoặc liên hệ với chúng tôi để được hỗ trợ. ",
+        "hotline": "(Hotline: 082 558 3888)"
+    },
+    "footer": {
+        "title": "NHÀ HÁT HỒ GƯƠM",
+        "address": "Địa chỉ",
+        "phone_number": "Điện thoại",
+        "copy_right": "© Ho Guom Opera. All rights reserved."
     }
 }

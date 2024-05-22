@@ -37,7 +37,7 @@
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
                     <div class="d-flex" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
                         <div>{{ ticketClass.name }}</div>
-                        <div class="mx-1" :style="'background-color: ' + ticketClass.color"
+                        <div class="mx-1 rounded" :style="'background-color: ' + ticketClass.color"
                             style="width: 20px; height: 20px"></div>
                         <span>:
                             {{ numberWithCommas(ticketClass.price) }} vnđ</span>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="d-flex">
                         <div>{{ $t("booking_page.booked") }}</div>
-                        <div class="mx-1" :style="'background-color: ' + BOOKED_COLOR"
+                        <div class="mx-1 rounded" :style="'background-color: ' + BOOKED_COLOR"
                             style="width: 20px; height: 20px"></div>
                     </div>
                 </div>
@@ -107,11 +107,13 @@ import { numberWithCommas } from "../helpers/number";
 import { useStoreBooking } from "../pinia";
 import { useToast } from "vue-toastification";
 import { HttpStatusCode } from "axios";
+import { useI18n } from "vue-i18n";
 
 const BOOKED_COLOR = "black";
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
+const { t } = useI18n();
 let halls = [
     {
         name: "Khán phòng 1",
@@ -239,12 +241,12 @@ const confirm = () => {
         },
     ];
     if (!selected.length) {
-        toast.error("Vui lòng chọn ghế");
+        toast.error(t("booking_page.pls_select_seat"));
         return;
     }
     storeBookings.setBooking(selected, eventId);
     if (!seatSelectedHall1.value.length && !seatSelectedHall2.value.length) {
-        toast.error("Vui lòng chọn ghế");
+        toast.error(t("booking_page.pls_select_seat"));
         return;
     } else {
         router.push({

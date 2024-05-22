@@ -1,6 +1,6 @@
 {
     "title": "Booking Tickets",
-    "404": {
+    "error_404": {
         "title": "Page Not Found",
         "go_home": "Go Home",
         "content": "Sorry! The page you are looking for can not be found. Perhaps the page you requested was moved or deleted. It is also possible that you made a small typo when entering the address. Go to the main page."
@@ -16,6 +16,39 @@
         "hall": "Hall",
         "booking_none": "None",
         "total": "Estimated total",
-        "confirm_payment": "Confirm payment"
+        "confirm_payment": "Booking confirmation",
+        "pls_select_seat": "Please select your seat"
+    },
+    "form_contact": {
+        "title": "Your contact information",
+        "receive_address": "Where do you want to receive your tickets?",
+        "at_opera_house": "At Ho Guom Opera",
+        "at_your_address": "At your specified address",
+        "name": "Full name",
+        "id_number": "ID Card/Passport Number",
+        "email": "Email address",
+        "phone_number": "Phone number",
+        "address": "Address",
+        "back": "Back",
+        "confirm": "Confirm",
+        "event_closed": "Event is closed."
+    },
+    "seat": {
+        "stage": "Stage",
+        "door": "Door"
+    },
+    "success": {
+        "title": "Congratulations! You have successfully booked your ticket. ",
+        "content": "We have sent a payment information email to your inbox. ",
+        "content_0": "The seat will be <strong>temporarily reserved</strong> once you complete the booking process and will only be confirmed after you complete the payment within <strong>15 minutes</strong> of receiving the payment information email.",
+        "content_1": "After <strong>15 minutes</strong>, if the Organizer does not receive payment, the seat will return to an available status.",
+        "content_2": "If you still haven't received a confirmation email after <strong>15 minutes</strong>, please check your spam folder or contact us for assistance.",
+        "hotline": "(Hotline: 082 558 3888)"
+    },
+    "footer": {
+        "title": "Ho Guom Opera",
+        "address": "Address",
+        "phone_number": "Phone",
+        "copy_right": "© Ho Guom Opera. All rights reserved."
     }
 }
