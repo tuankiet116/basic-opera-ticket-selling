@@ -24,5 +24,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })->withSchedule(function (Schedule $schedule) {
         $schedule->command(CheckPendingBooking::class)->everyMinute();
-        $schedule->command(RemoveClientInvalid::class)->everyTenMinutes();
+        $schedule->command(RemoveClientInvalid::class)->everyMinute();
     })->create();
