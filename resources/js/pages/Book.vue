@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-center">
             <button class="btn mx-1" :class="hall.id == hallSelected ? 'btn-primary text-white' : 'btn-light'"
                 v-for="hall in halls" @click="selectHall(hall.id)" :key="hall.id">
-                {{ hall.name }}
+                {{ $t("booking_page.hall") }} {{ hall.name }}
             </button>
         </div>
     </div>
@@ -52,26 +52,30 @@
                 <div v-if="!isZoomOutBox" class="col-12">
                     <p style="word-break: break-all">
                         <span class="fw-medium">{{ $t("booking_page.hall") }} 1: </span>
-                        <span v-if="seatSelectedHall1.length" v-for="(seat, index) in seatSelectedHall1" :key="seat">
-                            {{
-                                seat +
-                                (index == seatSelectedHall1.length - 1
-                                    ? ""
-                                    : ",")
-                            }}
-                        </span>
+                        <template v-if="seatSelectedHall1.length">
+                            <span v-for="(seat, index) in seatSelectedHall1" :key="seat">
+                                {{
+                                    seat +
+                                    (index == seatSelectedHall1.length - 1
+                                        ? ""
+                                        : ",")
+                                }}
+                            </span>
+                        </template>
                         <span v-else>{{ $t("booking_page.booking_none") }}</span>
                     </p>
                     <p style="word-break: break-all">
                         <span class="fw-medium">{{ $t("booking_page.hall") }} 2: </span>
-                        <span v-if="seatSelectedHall2.length" v-for="(seat, index) in seatSelectedHall2">
-                            {{
-                                seat +
-                                (index == seatSelectedHall2.length - 1
-                                    ? ""
-                                    : ",")
-                            }}
-                        </span>
+                        <template v-if="seatSelectedHall2.length">
+                            <span v-for="(seat, index) in seatSelectedHall2" :key="index">
+                                {{
+                                    seat +
+                                    (index == seatSelectedHall2.length - 1
+                                        ? ""
+                                        : ",")
+                                }}
+                            </span>
+                        </template>
                         <span v-else>{{ $t("booking_page.booking_none") }}</span>
                     </p>
                 </div>
@@ -116,11 +120,11 @@ const toast = useToast();
 const { t } = useI18n();
 let halls = [
     {
-        name: "Khán phòng 1",
+        name: "1",
         id: 1,
     },
     {
-        name: "Khán phòng 2",
+        name: "2",
         id: 2,
     },
 ];

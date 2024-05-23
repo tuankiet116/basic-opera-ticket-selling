@@ -1,11 +1,12 @@
 <template>
-    <div class="mt-5 row justify-content-center mx-2">
+    <div class="minimap position-fixed p-2"></div>
+    <div class="row justify-content-center mx-2 mb-md-5 mb-2">
         <div id="rows" class="container-md overflow-x-auto container-fluid p-0 m-0" ref="rows">
-            <div class="stage col-10 m-auto col-md-6 border border-dark py-5 rounded">
-                <p class="text-center fs-4 h-100 m-0">{{ $t("seat.stage") }}</p>
-            </div>
             <div id="seats-container" ref="seatsContainer"
                 class="row p-0 justify-content-center mt-5 seats-container mx-auto" style="width: 1250px;">
+                <div class="stage col-10 m-auto col-md-6 border border-dark py-5 rounded mb-2">
+                    <p class="text-center fs-4 h-100 m-0">{{ $t("seat.stage") }}</p>
+                </div>
                 <div v-for="(row, index) in rows1" :key="index" class="row p-0 justify-content-center flex-nowrap"
                     :style="`height: ${caculateRowHeight(row)}px`">
                     <template v-for="seat in row" :key="seat.id">
@@ -71,6 +72,7 @@ import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2 } from "../../config/hall1";
 import { onMounted, ref } from 'vue';
 import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../composable/hallComposable';
+import Minimap from 'js-minimap';
 
 const rows = ref(null);
 const seatsContainer = ref(null);
@@ -100,12 +102,20 @@ const setStyleSeat = (seat) => {
 onMounted(() => {
     rows1.value = renderSeats(seats1);
     rows2.value = renderSeats(seats2);
-    window.addEventListener('load', function () {
-        setTimeout(function () {
-            let scrollposition = seatsContainer.value.offsetWidth / 2 - rows.value.offsetWidth / 2;
-            rows.value.scroll(scrollposition, 0);
-        }, 1)
-    });
+    setTimeout(async function () {
+        let scrollposition = seatsContainer.value.offsetWidth / 2 - rows.value.offsetWidth / 2;
+        rows.value.scroll(scrollposition, 0);
+        const container = document.querySelector('#rows') // any container you want to generate a minimap for
+        const target = document.querySelector('.minimap') // the container of the minimap
+        const minimap = new Minimap({
+            container,
+            target,
+            width: 100,
+            observe: false, // default true
+            throttle: 30, // default 30
+        })
+        
+    }, 1)
 });
 
 const caculateRowHeight = (row) => {
@@ -132,5 +142,26 @@ const caculateRowHeight = (row) => {
 .selected {
     background-color: #8888 !important;
     color: white;
+}
+
+.minimap-preview {
+    background-color: white;
+    border: solid 1px black;
+}
+
+.minimap {
+    z-index: 10;
+    top: 70px;
+    display: none;
+
+    @media screen and (max-width: 748px) {
+        top: 50px !important;
+        display: block;
+    }
+
+    @media screen and (max-width: 556px) {
+        top: 70px !important;
+        display: block;
+    }
 }
 </style>

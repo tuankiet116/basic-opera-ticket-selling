@@ -1,4 +1,5 @@
 <template>
+    <div class="minimap position-fixed p-2"></div>
     <div class="mt-5 row justify-content-center w-100 m-0">
         <div id="rows" class="container-md overflow-x-auto container-fluid h-100" ref="rows">
             <div id="seats-container" ref="seatsContainer"
@@ -10,8 +11,7 @@
                             :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                             class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                             :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            v-tooltip>
+                            data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -33,8 +33,7 @@
                                 :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                v-tooltip>
+                                data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
                                 <span>{{ seat.name }}</span>
                             </div>
                             <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -56,8 +55,7 @@
                             :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                             class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                             :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            v-tooltip>
+                            data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
                             <span>{{ seat.name }}</span>
                         </div>
                         <div v-else-if="seat.isWall" class="seat mx-1 wall"
@@ -94,6 +92,7 @@ const rows1 = ref(Array());
 const rows2 = ref(Array());
 const rows3 = ref(Array());
 const emits = defineEmits(["selectSeat"]);
+import Minimap from 'js-minimap';
 
 const props = defineProps({
     selected: {
@@ -115,12 +114,19 @@ onMounted(() => {
     rows2.value = renderSeats(seats2);
     rows3.value = renderSeats(seats3);
 
-    window.addEventListener('load', function () {
-        setTimeout(function () {
-            let scrollposition = seatsContainer.value.offsetWidth / 2 - rows.value.offsetWidth / 2;
-            rows.value.scroll(scrollposition, 0);
-        }, 1)
-    });
+    setTimeout(function () {
+        let scrollposition = seatsContainer.value.offsetWidth / 2 - rows.value.offsetWidth / 2;
+        rows.value.scroll(scrollposition, 0);
+        const container = document.querySelector('#rows') // any container you want to generate a minimap for
+        const target = document.querySelector('.minimap') // the container of the minimap
+        const minimap = new Minimap({
+            container,
+            target,
+            width: 100,
+            observe: false, // default true
+            throttle: 200, // default 30
+        })
+    }, 1)
 })
 
 const caculateRowHeight = (row) => {
@@ -150,5 +156,26 @@ const setStyleSeat = (seat) => {
 .selected {
     background-color: #8888;
     color: white;
+}
+
+.minimap-preview {
+    background-color: white;
+    border: solid 1px black;
+}
+
+.minimap {
+    z-index: 10;
+    top: 70px;
+    display: none;
+
+    @media screen and (max-width: 748px) {
+        top: 50px !important;
+        display: block;
+    }
+
+    @media screen and (max-width: 556px) {
+        top: 70px !important;
+        display: block;
+    }
 }
 </style>

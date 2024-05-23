@@ -86,7 +86,7 @@
                 </thead>
                 <tbody>
                     <template v-for="booking in getBookingSorted">
-                        <tr v-if="booking?.client?.isSpecial">
+                        <tr v-if="booking?.client?.isSpecial" :key="booking?.id">
                             <td class="text-center">{{ booking.seat }}</td>
                             <td class="text-center">{{ booking.client.name }}</td>
                             <td class="text-center">{{ booking.client.phone_number }}</td>
@@ -101,200 +101,203 @@
     </Modal>
 </template>
 <script setup lang="ts">
-    import Hall1 from "../../../components/seats/Hall1.vue";
-    import Hall2 from "../../../components/seats/Hall2.vue";
-    import Modal from '../../../components/Modal.vue';
-    import { ref, onMounted, toRef, computed } from "vue";
-    import { getEventAPI } from "../../../api/admin/events";
-    import { getBookingAPI, getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../../api/admin/seats";
-    import { useRoute } from "vue-router";
-    import { HttpStatusCode } from "axios";
-    import { useToast } from "vue-toastification";
-    import { getSpecialClientsAPI } from "../../../api/admin/clients";
-    import Multiselect from "@vueform/multiselect"
-    import { AdminBookingStatus, PreBookingData } from "../../../types/seats";
+import Hall1 from "../../../components/seats/Hall1.vue";
+import Hall2 from "../../../components/seats/Hall2.vue";
+import Modal from '../../../components/Modal.vue';
+import { ref, onMounted, toRef, computed } from "vue";
+import { getEventAPI } from "../../../api/admin/events";
+import { getBookingAPI, getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../../api/admin/seats";
+import { useRoute } from "vue-router";
+import { HttpStatusCode } from "axios";
+import { useToast } from "vue-toastification";
+import { getSpecialClientsAPI } from "../../../api/admin/clients";
+import Multiselect from "@vueform/multiselect"
+import { AdminBookingStatus, PreBookingData } from "../../../types/seats";
+import { useI18n } from "vue-i18n";
 
-    const route = useRoute();
-    const toast = useToast();
-    const MODE_TICKET_CLASS_SETTING = 'ticket-class-setting';
-    const MODE_PRE_BOOKING = 'pre-booking';
-    const COLOR_SEAT_BOOKED_NON_SPECIAL = "#4CB9E7";
-    const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
-    let event = ref({});
-    let hallSelected = ref(1);
-    let seatSelectedHall1 = ref([]);
-    let seatSelectedHall2 = ref([]);
-    let ticketClassId = ref(null);
-    let seatTicketClasses = ref([]);
-    let clientsSpecial = ref({});
-    let clientPreBooking = ref(null);
-    let bookings = ref<Array<AdminBookingStatus>>();
-    let errors = ref({});
-    let mode = ref(MODE_TICKET_CLASS_SETTING)
-    let halls = [
-        {
-            name: "Khán phòng 1",
-            id: "1"
-        },
-        {
-            name: "Khán phòng 2",
-            id: "2"
-        }
-    ];
+const route = useRoute();
+const toast = useToast();
+const MODE_TICKET_CLASS_SETTING = 'ticket-class-setting';
+const MODE_PRE_BOOKING = 'pre-booking';
+const COLOR_SEAT_BOOKED_NON_SPECIAL = "#4CB9E7";
+const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
+const { t } = useI18n();
 
-    onMounted(async () => {
-        await getEvent();
-        await getSeatTicketClass();
-        await getClientsSpecial();
-        await getBookings();
-    })
-
-    const selectHall = (hallId: number) => {
-        hallSelected.value = hallId;
+let event = ref({});
+let hallSelected = ref(1);
+let seatSelectedHall1 = ref([]);
+let seatSelectedHall2 = ref([]);
+let ticketClassId = ref(null);
+let seatTicketClasses = ref([]);
+let clientsSpecial = ref({});
+let clientPreBooking = ref(null);
+let bookings = ref<Array<AdminBookingStatus>>();
+let errors = ref({});
+let mode = ref(MODE_TICKET_CLASS_SETTING)
+let halls = [
+    {
+        name: "Khán phòng 1",
+        id: "1"
+    },
+    {
+        name: "Khán phòng 2",
+        id: "2"
     }
+];
 
-    const getBookingSorted = computed(() => {
-        return bookings.value?.sort((a, b) => a.seat > b.seat ? 1 : -1);
-    })
+onMounted(async () => {
+    await getEvent();
+    await getSeatTicketClass();
+    await getClientsSpecial();
+    await getBookings();
+})
 
-    const selectSeat = (seatName: never) => {
-        let seatSelected = toRef(seatSelectedHall1);
-        if (hallSelected.value == 2) {
-            seatSelected = toRef(seatSelectedHall2);
-        }
-        let currentSeat = seatSelected.value.findIndex(seat => seat == seatName);
-        let seatBooked = bookings.value?.find(book => book.hall == hallSelected.value && book.seat == seatName);
-        if (currentSeat > -1) {
-            seatSelected.value.splice(currentSeat, 1);
-        } else if (seatBooked && seatBooked.disable == false || !seatBooked) {
-            seatSelected.value.push(seatName);
-        }
+const selectHall = (hallId: number) => {
+    hallSelected.value = hallId;
+}
+
+const getBookingSorted = computed(() => {
+    return bookings.value?.sort((a, b) => a.seat > b.seat ? 1 : -1);
+})
+
+const selectSeat = (seatName: never) => {
+    let seatSelected = toRef(seatSelectedHall1);
+    if (hallSelected.value == 2) {
+        seatSelected = toRef(seatSelectedHall2);
     }
-
-    const getEvent = async () => {
-        let response = await getEventAPI(Number(route.params.eventId));
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                event.value = response.data;
-                break;
-            default:
-                console.log(response.data);
-        }
+    let currentSeat = seatSelected.value.findIndex(seat => seat == seatName);
+    let seatBooked = bookings.value?.find(book => book.hall == hallSelected.value && book.seat == seatName);
+    if (currentSeat > -1) {
+        seatSelected.value.splice(currentSeat, 1);
+    } else if (seatBooked && seatBooked.disable == false || !seatBooked) {
+        seatSelected.value.push(seatName);
     }
+}
 
-    const getClientsSpecial = async () => {
-        let response = await getSpecialClientsAPI("", 1, false);
-        clientsSpecial.value = response.data;
+const getEvent = async () => {
+    let response = await getEventAPI(Number(route.params.eventId));
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            event.value = response.data;
+            break;
+        default:
+            console.log(response.data);
     }
+}
 
-    const getSeatTicketClass = async () => {
-        let response = await getTicketClassAPI(Number(route.params.eventId));
-        seatTicketClasses.value = response.data;
-    }
+const getClientsSpecial = async () => {
+    let response = await getSpecialClientsAPI("", 1, false);
+    clientsSpecial.value = response.data;
+}
 
-    const setSeatTicketClass = async () => {
-        let data = {
-            event_id: Number(route.params.eventId),
-            ticket_class_id: Number(ticketClassId.value),
-            seats: [
-                {
-                    hall: 1,
-                    names: seatSelectedHall1.value
-                },
-                {
-                    hall: 2,
-                    names: seatSelectedHall2.value
-                }
-            ]
-        };
-        let response = await setTicketClassAPI(data);
-        errors.value = {};
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                seatTicketClasses.value = response.data;
-                seatSelectedHall1.value = [];
-                seatSelectedHall2.value = [];
-                break;
-            case HttpStatusCode.UnprocessableEntity:
-                errors.value = response.data.errors;
-                break;
-            default:
-                toast.error(response.data.message);
-                break;
-        }
-    }
+const getSeatTicketClass = async () => {
+    let response = await getTicketClassAPI(Number(route.params.eventId));
+    seatTicketClasses.value = response.data;
+}
 
-    const preBooking = async (isCancel = false) => {
-        if (!seatSelectedHall2.value.length && !seatSelectedHall1.value.length) {
-            toast.error("Không có ghế được chọn pre-booking");
-            return;
-        }
-        if (!isCancel && !clientPreBooking.value) {
-            toast.error("Không có khách hàng để pre-booking");
-            return;
-        }
-        let data: PreBookingData = {
-            event_id: Number(route.params.eventId),
-            client_id: Number(clientPreBooking.value),
-            seats: [
-                {
-                    hall: 1,
-                    names: seatSelectedHall1.value
-                },
-                {
-                    hall: 2,
-                    names: seatSelectedHall2.value
-                }
-            ],
-            isCancel: isCancel
-        };
-        let response = await preBookinngAPI(data);
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                seatSelectedHall1.value = [];
-                seatSelectedHall2.value = [];
-                await getBookings();
-                break;
-            case HttpStatusCode.UnprocessableEntity:
-                errors.value = response.data.errors;
-                break;
-            default:
-                toast.error(response.data.message);
-                break;
-        }
-    }
-
-    const getBookings = async () => {
-        let response = await getBookingAPI(Number(route.params.eventId));
-        bookings.value = response.data.map(booking => {
-            return {
-                seat: booking.seat.name,
-                hall: booking.seat.hall,
-                color: booking.client.isSpecial ? COLOR_SEAT_BOOKED_SPECIAL : COLOR_SEAT_BOOKED_NON_SPECIAL,
-                client: booking.client,
-                disable: booking.client.isSpecial ? false : true
+const setSeatTicketClass = async () => {
+    let data = {
+        event_id: Number(route.params.eventId),
+        ticket_class_id: Number(ticketClassId.value),
+        seats: [
+            {
+                hall: 1,
+                names: seatSelectedHall1.value
+            },
+            {
+                hall: 2,
+                names: seatSelectedHall2.value
             }
-        });
+        ]
+    };
+    let response = await setTicketClassAPI(data);
+    errors.value = {};
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            seatTicketClasses.value = response.data;
+            seatSelectedHall1.value = [];
+            seatSelectedHall2.value = [];
+            break;
+        case HttpStatusCode.UnprocessableEntity:
+            errors.value = response.data.errors;
+            break;
+        default:
+            toast.error(response.data.message);
+            break;
     }
+}
+
+const preBooking = async (isCancel = false) => {
+    if (!seatSelectedHall2.value.length && !seatSelectedHall1.value.length) {
+        toast.error("Không có ghế được chọn pre-booking");
+        return;
+    }
+    if (!isCancel && !clientPreBooking.value) {
+        toast.error("Không có khách hàng để pre-booking");
+        return;
+    }
+    let data: PreBookingData = {
+        event_id: Number(route.params.eventId),
+        client_id: Number(clientPreBooking.value),
+        seats: [
+            {
+                hall: 1,
+                names: seatSelectedHall1.value
+            },
+            {
+                hall: 2,
+                names: seatSelectedHall2.value
+            }
+        ],
+        isCancel: isCancel
+    };
+    let response = await preBookinngAPI(data);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            seatSelectedHall1.value = [];
+            seatSelectedHall2.value = [];
+            await getBookings();
+            break;
+        case HttpStatusCode.UnprocessableEntity:
+            errors.value = response.data.errors;
+            break;
+        default:
+            toast.error(response.data.message);
+            break;
+    }
+}
+
+const getBookings = async () => {
+    let response = await getBookingAPI(Number(route.params.eventId));
+    bookings.value = response.data.map(booking => {
+        return {
+            seat: booking.seat.name,
+            hall: booking.seat.hall,
+            color: booking.client.isSpecial ? COLOR_SEAT_BOOKED_SPECIAL : COLOR_SEAT_BOOKED_NON_SPECIAL,
+            client: booking.client,
+            disable: booking.client.isSpecial ? false : true
+        }
+    });
+}
 </script>
 <style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
-    .box-setting {
-        background-color: white;
-        bottom: 20px;
+.box-setting {
+    background-color: white;
+    bottom: 20px;
 
-        select:focus {
-            outline: none;
-            box-shadow: none;
-        }
+    select:focus {
+        outline: none;
+        box-shadow: none;
     }
+}
 
-    .multiselect.is-active {
-        box-shadow: none !important;
-    }
+.multiselect.is-active {
+    box-shadow: none !important;
+}
 
-    .box-color-note {
-        width: 20px;
-        height: 20px;
-    }
+.box-color-note {
+    width: 20px;
+    height: 20px;
+}
 </style>
