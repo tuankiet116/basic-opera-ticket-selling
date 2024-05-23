@@ -84,6 +84,7 @@ class BookingService
             if ($errorCode == 1062) {
                 return __("messages.booking.is_booked");
             }
+            Log::error("Error while customers booking tickets: ", $e->getMessage());
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Booking Error: " . $e->getMessage(), $data);
