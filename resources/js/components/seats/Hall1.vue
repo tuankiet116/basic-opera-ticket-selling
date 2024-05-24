@@ -3,7 +3,7 @@
     <div class="row justify-content-center mx-2 mb-md-5 mb-2">
         <div id="rows" class="container-md overflow-x-auto container-fluid p-0 m-0" ref="rows">
             <div id="seats-container" ref="seatsContainer"
-                class="row p-0 justify-content-center mt-5 seats-container mx-auto" style="width: 1250px;">
+                class="row p-0 justify-content-center mt-5 seats-container mx-auto zoom" style="width: 1250px;">
                 <div class="stage col-10 m-auto col-md-6 border border-dark py-5 rounded mb-2">
                     <p class="text-center fs-4 h-100 m-0">{{ $t("seat.stage") }}</p>
                 </div>
@@ -112,9 +112,8 @@ onMounted(() => {
             target,
             width: 100,
             observe: false, // default true
-            throttle: 30, // default 30
+            throttle: 100, // default 30
         })
-        
     }, 1)
 });
 
@@ -162,6 +161,16 @@ const caculateRowHeight = (row) => {
     @media screen and (max-width: 556px) {
         top: 70px !important;
         display: block;
+    }
+}
+
+.zoom {
+    @media screen and (max-width: 748px) {
+        zoom: 0.5;
+        -ms-zoom: 0.5;
+        -webkit-zoom: 0.5;
+        -moz-transform: scale(0.5, 0.5);
+        -moz-transform-origin: left center;
     }
 }
 </style>

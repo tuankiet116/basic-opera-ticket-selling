@@ -3,7 +3,7 @@
     <div class="mt-5 row justify-content-center w-100 m-0">
         <div id="rows" class="container-md overflow-x-auto container-fluid h-100" ref="rows">
             <div id="seats-container" ref="seatsContainer"
-                class="row p-0 justify-content-center mt-5 seats-container mx-auto" style="width: 1250px;">
+                class="row p-0 justify-content-center mt-5 seats-container mx-auto zoom" style="width: 1250px;">
                 <div v-for="(row, index) in rows1" class="row mt-2 justify-content-center flex-nowrap"
                     :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                     <template v-for="seat in row" :key="seat.id">
@@ -176,6 +176,16 @@ const setStyleSeat = (seat) => {
     @media screen and (max-width: 556px) {
         top: 70px !important;
         display: block;
+    }
+}
+
+.zoom {
+    @media screen and (max-width: 748px) {
+        zoom: 0.5;
+        -ms-zoom: 0.5;
+        -webkit-zoom: 0.5;
+        -moz-transform: scale(0.5, 0.5);
+        -moz-transform-origin: left center;
     }
 }
 </style>

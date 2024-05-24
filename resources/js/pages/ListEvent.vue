@@ -8,7 +8,7 @@
                         <div class="row shadow bg-white border-hg-bottom">
                             <div class="col-lg-4 col-md-5">
                                 <figure class="image__wrapper" v-lazyload>
-                                    <img class="image__item ratio ratio-16x9" style="max-height: 200px" :data-url="`/storage/${event.image_url}`"
+                                    <img class="image__item ratio ratio-16x9 object-fit-fill" style="max-height: 200px" :data-url="`/storage/${event.image_url}`"
                                         alt="random image">
                                 </figure>
                             </div>

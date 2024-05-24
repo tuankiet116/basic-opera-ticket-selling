@@ -20,14 +20,14 @@
                 <div class="card mt-3 mx-auto" style="max-width: 600px">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start" alt="..." />
+                            <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
                                 <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                                     <h5 class="card-title">{{ event.name }}</h5>
                                 </RouterLink>
-                                <p class="card-text">
+                                <p class="card-text text-truncate-custom">
                                     {{ event.description }}
                                 </p>
                                 <p class="card-text">
@@ -45,14 +45,14 @@
                 <div class="card mt-3 mx-auto" style="max-width: 600px">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start" alt="..." />
+                            <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
                                 <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                                     <h5 class="card-title">{{ event.name }}</h5>
                                 </RouterLink>
-                                <p class="card-text">
+                                <p class="card-text text-truncate-custom">
                                     {{ event.description }}
                                 </p>
                                 <p class="card-text">

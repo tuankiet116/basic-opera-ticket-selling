@@ -19,6 +19,18 @@
                             Tìm kiếm
                         </span>
                     </button>
+                    <button class="btn btn-primary text-white ms-2" data-bs-toggle="modal" data-bs-target="#modal">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-file-earmark-excel" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
+                                <path
+                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                            </svg>
+                            Xuất báo cáo
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -61,10 +73,13 @@
                         </td>
                         <td>
                             <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
-                                class="btn btn-light mx-1 my-1 btn-sm">Cài đặt thông tin</router-link>
+                                class="btn btn-light mx-1 my-1 btn-sm w-75">Cài đặt thông tin</router-link>
+                            <br />
                             <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button"
-                                class="btn btn-light mx-1 btn-sm">Cài đặt chỗ ngồi</router-link>
-                            <button type="button" @click="removeEvent(event)" class="btn btn-danger mx-1 btn-sm">Xóa</button>
+                                class="btn btn-light mx-1 btn-sm w-75">Cài đặt chỗ ngồi</router-link>
+                            <br />
+                            <button type="button" @click="removeEvent(event)"
+                                class="btn btn-danger mx-1 btn-sm w-75">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -79,6 +94,15 @@
                     </div>
                 </div>
             </div>
+            <Modal modalTitle="Xuất báo cáo">
+                <template #body>
+                    
+                </template>
+                <template #footer>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xuất báo cáo</button>
+                </template>
+            </Modal>
         </div>
     </div>
 </template>
@@ -89,6 +113,7 @@ import { deleteEventAPI, getListEvent, updateStatusAPI } from "../../../api/admi
 import { HttpStatusCode } from "axios";
 import moment from "moment";
 import { useToast } from "vue-toastification";
+import Modal from "../../../components/Modal.vue";
 
 let events = reactive({
     data: [],
