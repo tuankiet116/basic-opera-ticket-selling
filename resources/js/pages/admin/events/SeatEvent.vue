@@ -15,7 +15,7 @@
         :seat-ticket-classes="seatTicketClasses" :bookings="mode == MODE_PRE_BOOKING ? bookings : []"
         @selectSeat="selectSeat" />
     <div
-        class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-12 col-md-4 start-0 end-0 m-auto">
+        class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-12 col-md-6 start-0 end-0 m-auto">
         <div class="row">
             <div class="col-12">
                 <ul class="nav nav-tabs mb-2">

@@ -9,7 +9,7 @@
         </div>
     </div>
     <Hall1 v-if="hallSelected == 1" @selectSeat="selectSeat" :selected="seatSelectedHall1"
-        :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
+        :seat-ticket-classes="seatTicketClasses" :bookings="bookings" ref="refHall1" />
     <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeat" :selected="seatSelectedHall2"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
     <div
@@ -138,6 +138,7 @@ let event = ref({});
 let total = ref(0);
 let eventId = route.params.eventId;
 let isZoomOutBox = ref(false);
+const refHall1 = ref(null);
 const storeBookings = useStoreBooking();
 
 onMounted(async () => {
@@ -170,6 +171,9 @@ onMounted(async () => {
                 if (index > -1) bookings.value.splice(index, 1);
             }
         });
+    setTimeout(async function () {
+        refHall1.value.minimap.reset();
+    }, 30);
 });
 
 onUnmounted(() => {
