@@ -19,10 +19,10 @@
             <div class="col-6" v-if="tab == TAB_EVENTS_OPENNING" v-for="event in eventsOpenning">
                 <div class="card mt-3 mx-auto" style="max-width: 600px">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="card-body">
                                 <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                                     <h5 class="card-title">{{ event.name }}</h5>
@@ -44,10 +44,10 @@
             <div class="col-6" v-if="tab == TAB_ALL_EVENTS" v-for="event in events.data">
                 <div class="card mt-3 mx-auto" style="max-width: 600px">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <img :src="'/storage/' + event.image_url" class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="card-body">
                                 <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                                     <h5 class="card-title">{{ event.name }}</h5>
@@ -125,3 +125,8 @@
         return moment(date).format("DD/MM/yyyy")
     }
 </script>
+<style scoped>
+.text-truncate-custom {
+    font-size: 12px
+}
+</style>

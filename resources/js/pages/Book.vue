@@ -1,6 +1,6 @@
 <template>
     <div class="container text-center pt-5">
-        <h1 class="fs-3 pt-5">{{ $t("booking_page.booking_for") }} {{ event.name }}</h1>
+        <h1 class="fs-3 pt-5">{{ event.name?.toUpperCase() }}</h1>
         <div class="d-flex justify-content-center">
             <button class="btn mx-1" :class="hall.id == hallSelected ? 'btn-primary text-white' : 'btn-light'"
                 v-for="hall in halls" @click="selectHall(hall.id)" :key="hall.id">
@@ -32,24 +32,22 @@
                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>
             </button>
-            <h5 class="fw-medium">{{ $t("booking_page.booking_info") }}</h5>
+            <h5 class="fw-medium d-none d-md-block text-responsive">{{ $t("booking_page.booking_info") }}</h5>
             <div class="col-12 mt-2 ">
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
-                    <div class="d-flex" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
+                    <div class="d-flex text-responsive" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
                         <div>{{ ticketClass.name }}</div>
-                        <div class="mx-1 rounded" :style="'background-color: ' + ticketClass.color"
-                            style="width: 20px; height: 20px"></div>
+                        <div class="mx-1 rounded color-ticket" :style="'background-color: ' + ticketClass.color"></div>
                         <span>:
                             {{ numberWithCommas(ticketClass.price) }} vnđ</span>
                         <span class="mx-1">|</span>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex text-responsive">
                         <div>{{ $t("booking_page.booked") }}</div>
-                        <div class="mx-1 rounded" :style="'background-color: ' + BOOKED_COLOR"
-                            style="width: 20px; height: 20px"></div>
+                        <div class="mx-1 rounded color-ticket" :style="'background-color: ' + BOOKED_COLOR"></div>
                     </div>
                 </div>
-                <div v-if="!isZoomOutBox" class="col-12">
+                <div v-if="!isZoomOutBox" class="col-12 text-responsive">
                     <p style="word-break: break-all">
                         <span class="fw-medium">{{ $t("booking_page.hall") }} 1: </span>
                         <template v-if="seatSelectedHall1.length">
@@ -79,16 +77,16 @@
                         <span v-else>{{ $t("booking_page.booking_none") }}</span>
                     </p>
                 </div>
-                <div class="row">
+                <div class="row text-responsive">
                     <div class="col-8 row align-items-center">
                         <div>
-                            <span class="fw-medium fs-5">
+                            <span class="fw-medium">
                                 {{ $t("booking_page.total") }}:
                             </span>
-                            <span class="fs-5">{{ numberWithCommas(total) }} vnđ</span>
+                            <span>{{ numberWithCommas(total) }} vnđ</span>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary text-white col-4" @click="confirm">
+                    <button type="button" class="btn btn-primary text-white col-4 text-responsive" @click="confirm">
                         {{ $t("booking_page.confirm_payment") }}
                     </button>
                 </div>
@@ -172,7 +170,7 @@ onMounted(async () => {
             }
         });
     setTimeout(async function () {
-        refHall1.value.minimap.reset();
+        refHall1.value.minimap?.reset();
     }, 30);
 });
 
@@ -263,3 +261,19 @@ const confirm = () => {
     }
 };
 </script>
+<style scoped>
+.text-responsive {
+    @media screen and (max-width: 1081px) {
+        font-size: 12px !important;
+    }
+}
+
+.color-ticket {
+    height: 20px;
+    width: 20px;
+    @media screen and (max-width: 1081px) {
+        width: 14px !important;
+        height: 14px !important;
+    }
+}
+</style>

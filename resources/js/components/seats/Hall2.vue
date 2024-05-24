@@ -24,7 +24,7 @@
                     </div>
                     <div class="row p-0 justify-content-center flex-nowrap my-2" style="width: 1050px;">
                         <div class="border border-dark d-flex justify-content-center align-items-center col-1"
-                            style="height: 60px;">
+                            style="height: 60px; width: 100px;">
                             <span>{{ $t("seat.door") }} 7</span>
                         </div>
                         <div v-for="(row, index) in rows2" class="row mt-2 justify-content-center flex-nowrap"
@@ -44,8 +44,8 @@
                                     :style="`margin-top: ${seat.marginTop}px !important; width: ${seat.width}px; height: ${seat.height}px;`" />
                             </template>
                         </div>
-                        <div class="border border-dark d-flex justify-content-center align-items-center col-1"
-                            style="height: 60px;">
+                        <div class="border border-dark d-flex justify-content-center align-items-center"
+                            style="height: 60px; width: 100px;">
                             <span>{{ $t("seat.door") }} 8</span>
                         </div>
                     </div>
@@ -68,11 +68,11 @@
                     </div>
                     <div class="row p-0 justify-content-around flex-nowrap my-2" style="width: 1050px;">
                         <div class="border border-dark d-flex justify-content-center align-items-center col-1"
-                            style="height: 60px;">
+                            style="height: 60px; width: 100px;">
                             <span>{{ $t("seat.door") }} 5</span>
                         </div>
                         <div class="border border-dark d-flex justify-content-center align-items-center col-1"
-                            style="height: 60px;">
+                            style="height: 60px; width: 100px;">
                             <span>{{ $t("seat.door") }} 6</span>
                         </div>
                     </div>
@@ -178,7 +178,7 @@ const setStyleSeat = (seat) => {
 }
 
 .selected {
-    background-color: #8888;
+    background-color: #8888 !important;
     color: white;
 }
 
