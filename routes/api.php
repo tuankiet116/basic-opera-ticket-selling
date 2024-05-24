@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Client\EventController as ClientEventController;
@@ -40,6 +41,10 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     Route::prefix("/bookings")->group(function () {
         Route::get("/list/{eventId}", [AdminBookingController::class, "getBookings"]);
         Route::put("/accept", [AdminBookingController::class, "acceptBooking"]);
+    });
+
+    Route::prefix("/export")->group(function () {
+        Route::get("/users", [ExportController::class, "exportReport"]);
     });
 });
 

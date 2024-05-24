@@ -94,15 +94,7 @@
                     </div>
                 </div>
             </div>
-            <Modal modalTitle="Xuất báo cáo">
-                <template #body>
-                    
-                </template>
-                <template #footer>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Xuất báo cáo</button>
-                </template>
-            </Modal>
+            <modal-report/>
         </div>
     </div>
 </template>
@@ -113,7 +105,7 @@ import { deleteEventAPI, getListEvent, updateStatusAPI } from "../../../api/admi
 import { HttpStatusCode } from "axios";
 import moment from "moment";
 import { useToast } from "vue-toastification";
-import Modal from "../../../components/Modal.vue";
+import ModalReport from "../../../components/admin/ModalReport.vue";
 
 let events = reactive({
     data: [],
