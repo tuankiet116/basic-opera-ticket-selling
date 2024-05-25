@@ -42,10 +42,6 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::get("/list/{eventId}", [AdminBookingController::class, "getBookings"]);
         Route::put("/accept", [AdminBookingController::class, "acceptBooking"]);
     });
-
-    Route::prefix("/export")->group(function () {
-        Route::get("/users", [ExportController::class, "exportReport"]);
-    });
 });
 
 Route::prefix("/event")->group(function () {

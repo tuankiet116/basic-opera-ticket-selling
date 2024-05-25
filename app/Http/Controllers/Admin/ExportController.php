@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\UserExport;
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Excel;
 
@@ -14,6 +14,6 @@ class ExportController extends Controller
 
     public function exportReport()
     {
-        return $this->excel->download(new UserExport, "userExport.xlxs");
+        return $this->excel->download(new UsersExport, "userExport.xlsx");
     }
 }

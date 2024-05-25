@@ -28,6 +28,7 @@
         "vue-flatpickr-component": "^11.0.5",
         "vue-i18n": "^10.0.0-alpha.5",
         "vue-loading-overlay": "^6.0.4",
+        "vue-multiselect": "^3.0.0",
         "vue-recaptcha-v3": "^2.0.1",
         "vue-router": "^4.3.0",
         "vue-select": "^4.0.0-beta.6",

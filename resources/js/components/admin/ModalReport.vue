@@ -1,10 +1,12 @@
 <template>
     <Modal modalTitle="Xuất báo cáo">
         <template #body>
+            <h3>Xuất báo cáo tình trạng bán vé theo ngày</h3>
             <div class="row" style="width: 700px;">
                 <div class="col-4 d-flex align-items-center">
                     <label>Chọn ngày xuất báo cáo:</label>
                 </div>
+                <multiselect v-model="eventSelected" :options="options"></multiselect>
                 <div class="col-8">
                     <flat-pickr id="event-date" v-model="reportInformation.date" class="form-control"
                         :config="config" />
@@ -25,11 +27,13 @@ import Modal from "@/components/Modal.vue";
 import flatPickr from "vue-flatpickr-component";
 import 'flatpickr/dist/flatpickr.css';
 import { Vietnamese } from 'flatpickr/dist/l10n/vn';
-import { exportReportAPI } from "../../api/admin/report";
 
 let reportInformation = reactive({
     date: ""
 });
+
+let events = ref([]);
+let eventSelected = ref([]);
 
 const config = ref({
     altInput: true,
@@ -38,6 +42,10 @@ const config = ref({
 });
 
 const handleExportReport = async () => {
-    await exportReportAPI();
+    let link = document.createElement("a");
+    link.href = "/admin/export/users";
+    link.target = "_blank";
+    link.click();
+    link.remove();
 }
 </script>
