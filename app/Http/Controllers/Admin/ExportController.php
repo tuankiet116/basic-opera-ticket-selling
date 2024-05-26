@@ -12,8 +12,8 @@ class ExportController extends Controller
     {
     }
 
-    public function exportReport()
+    public function exportReport(EventModel $event)
     {
-        return $this->excel->download(new UsersExport, "userExport.xlsx");
+        return $this->excel->download(new UsersExport, "hgo_aggregate.xlsx");
     }
 }

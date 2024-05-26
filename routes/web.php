@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\ExportController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("admin/export")->group(function() {
-    Route::get("aggregate/", [ExportController::class, "exportReport"]);
+    Route::get("aggregate/{event}", [ExportController::class, "exportReport"]);
 })->middleware("auth:sanctum");
 
 Route::fallback(function () {

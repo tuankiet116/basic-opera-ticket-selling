@@ -72,7 +72,7 @@
 <script setup>
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2 } from "../../config/hall1";
-import { onMounted, ref, defineExpose } from 'vue';
+import { onMounted, ref } from 'vue';
 import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../composable/hallComposable';
 import Minimap from 'js-minimap';
 

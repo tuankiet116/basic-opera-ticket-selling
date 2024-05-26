@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <modal-report/>
+            <modal-report ref="modalReport"/>
         </div>
     </div>
 </template>
@@ -115,10 +115,12 @@ let events = reactive({
 });
 let searchString = ref("");
 let pageNumber = ref(1);
+let modalReport = ref(null);
 const toast = useToast();
 
 onMounted(async () => {
     await getEvents();
+    modalReport.value.events = events.data;
 });
 
 const changePage = async (page) => {

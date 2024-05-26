@@ -19,7 +19,9 @@
     "dependencies": {
         "@types/js-cookie": "^3.0.6",
         "@vueform/multiselect": "^2.6.7",
+        "@vuepic/vue-datepicker": "^8.7.0",
         "bootstrap-icons": "^1.11.3",
+        "date-fns": "^3.6.0",
         "js-cookie": "^3.0.5",
         "js-minimap": "^1.1.1",
         "moment": "^2.30.1",
