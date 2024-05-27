@@ -16,4 +16,9 @@ class ExportController extends Controller
     {
         return $this->excel->download(new UsersExport, "hgo_aggregate.xlsx");
     }
+
+    public function createReport()
+    {
+        
+    }
 }

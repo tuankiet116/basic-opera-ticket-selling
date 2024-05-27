@@ -42,6 +42,9 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
         Route::get("/list/{eventId}", [AdminBookingController::class, "getBookings"]);
         Route::put("/accept", [AdminBookingController::class, "acceptBooking"]);
     });
+    Route::prefix("/report")->group(function () {
+        Route::post("/aggregate", [ExportController::class, "createReport"]);
+    });
 });
 
 Route::prefix("/event")->group(function () {

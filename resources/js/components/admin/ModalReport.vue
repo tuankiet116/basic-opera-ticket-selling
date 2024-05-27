@@ -27,7 +27,7 @@
                     <label>Chọn sự kiện:</label>
                 </div>
                 <div class="col-9">
-                    <multiselect v-model="eventSelected" :options="events" track-by="id"
+                    <multiselect v-model="eventSelected" :options="events" multiple track-by="id" @searchChange="searchChange"
                         deselect-label="Bỏ chọn sự kiện" label="name" placeholder="Chọn ít nhất 1 sự kiện"
                         select-label="Chọn sự kiện" selected-label="Đã chọn"></multiselect>
                 </div>
@@ -56,8 +56,13 @@ import Modal from "@/components/Modal.vue";
 import Multiselect from 'vue-multiselect';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { getListEvent } from "../../api/admin/events";
+import { createReportAPI } from "../../api/admin/report";
+import { HttpStatusCode } from "axios";
+import { useToast } from "vue-toastification";
 
-const format = "dd-MM-yyyy"
+const format = "dd-MM-yyyy";
+const toast = useToast();
 
 let reportInformation = reactive({
     date: [new Date(), new Date()],
@@ -67,6 +72,16 @@ let events = ref([]);
 let eventSelected = ref([]);
 let reportType = ref('report-daily');
 
+const handleCreateReport = async () => {
+    let response = await createReportAPI({});
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            break;
+        default:
+            toast.error('Xảy ra lỗi, không thể xuất báo cáo. Vui lòng check logs.');
+    }
+}
+
 const handleExportReport = async () => {
     let link = document.createElement("a");
     link.href = "/admin/export/aggregate";
@@ -75,11 +90,16 @@ const handleExportReport = async () => {
     link.remove();
 }
 
+const searchChange = async (search) => {
+    let response = await getListEvent(1, search);
+    events.value = response.data.data;
+}
+
 defineExpose({ events });
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
-.multiselect::v-deep {
+:deep(.multiselect) {
     display: block;
 }
 </style>

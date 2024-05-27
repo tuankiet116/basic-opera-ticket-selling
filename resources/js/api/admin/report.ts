@@ -1,5 +1,9 @@
 import axiosInstance from "../axios"
 
-export const exportReportAPI = async () => {
-    return await axiosInstance.get("/admin/export/users");
+type DataReport = {
+    events: Array<number>,
+}
+
+export const createReportAPI = async (data: DataReport) => {
+    return await axiosInstance.post("/admin/report/aggregate", data);
 }
