@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CreateReportRequest;
 use Maatwebsite\Excel\Excel;
 
 class ExportController extends Controller
@@ -17,8 +18,9 @@ class ExportController extends Controller
         return $this->excel->download(new UsersExport, "hgo_aggregate.xlsx");
     }
 
-    public function createReport()
+    public function createReport(CreateReportRequest $request)
     {
+        $data = $request->validated();
         
     }
 }
