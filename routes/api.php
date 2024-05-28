@@ -45,7 +45,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     Route::prefix("/report")->group(function () {
         Route::post("/aggregate", [ExportController::class, "createReport"]);
     });
-});
+})->name("admin");
 
 Route::prefix("/event")->group(function () {
     Route::get("/list", [ClientEventController::class, "list"]);

@@ -4,8 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
@@ -17,11 +16,11 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = match ($preferredLanguage = $request->header("Language", "vi")) {
+        if (Str::contains($request->url(), 'admin')) $locale = "vi";
+        else $locale = match ($preferredLanguage = $request->header("Language", "vi")) {
             '*' => app()->getLocale(), // Any locale, so use application default
             default => $preferredLanguage,
         };
-
         app()->setLocale($locale);
 
         return $next($request);

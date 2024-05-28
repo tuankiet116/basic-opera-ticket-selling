@@ -23,10 +23,10 @@ class CreateReportRequest extends FormRequest
     {
         return [
             "type" => "required|string|in:report-event,report-daily",
-            "events" => "array",
+            "events" => "array|required",
             "events.*" => "required|integer",
-            "start_date" => "required_if:type,report-daily|date|before_or_equal:end_date",
-            "end_date" => "required_if:type,report-daily|date|after_or_equal:start_date"
+            "start_date" => "required_if:type,report-daily|date|before_or_equal:end_date|date_format:Y-m-d",
+            "end_date" => "required_if:type,report-daily|date|after_or_equal:start_date|date_format:Y-m-d"
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Ds\Stack;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
@@ -24,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if($this->app->environment('production')) {
+        if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
 
