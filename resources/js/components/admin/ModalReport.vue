@@ -44,7 +44,7 @@
         </template>
         <template #footer>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary" @click="handleExportReport" data-bs-dismiss="modal">
+            <button type="button" class="btn btn-primary" @click="handleCreateReport" data-bs-dismiss="modal">
                 Xuất báo cáo
             </button>
         </template>
@@ -73,7 +73,12 @@ let eventSelected = ref([]);
 let reportType = ref('report-daily');
 
 const handleCreateReport = async () => {
-    let response = await createReportAPI({});
+    let response = await createReportAPI({
+        type: reportType.value,
+        event: eventSelected.value,
+        start_date: reportInformation.date[0],
+        end_date: reportInformation.date[1],
+    });
     switch (response.status) {
         case HttpStatusCode.Ok:
             break;

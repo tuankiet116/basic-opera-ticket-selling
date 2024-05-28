@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateReportRequest;
-use Maatwebsite\Excel\Excel;
+use App\Services\Admin\ExportService;
 
 class ExportController extends Controller
 {
-    public function __construct(protected Excel $excel)
+    public function __construct(protected ExportService $exportService)
     {
     }
 
     public function exportReport(EventModel $event)
     {
-        return $this->excel->download(new UsersExport, "hgo_aggregate.xlsx");
     }
 
     public function createReport(CreateReportRequest $request)
     {
         $data = $request->validated();
-        
+        $this->exportService->exportReportAggregateRevenue($data);
     }
 }
