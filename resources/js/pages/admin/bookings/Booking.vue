@@ -47,7 +47,8 @@
         <div class="mt-5">
             <div class="card w-75 mb-2 mx-auto" v-for="booking in bookingsGroupedByTab" :key="booking.id">
                 <div class="card-body position-relative">
-                    <span class="badge rounded-pill text-bg-success" v-if="booking.bookings.length && booking.bookings[0].isBooked">
+                    <span class="badge rounded-pill text-bg-success"
+                        v-if="booking.bookings.length && booking.bookings[0].isBooked">
                         Đã thanh toán
                     </span>
                     <span class="badge rounded-pill text-bg-danger" v-else>
@@ -89,13 +90,14 @@
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
                 <p class="mb-0">
-                    Địa chỉ nhận vé: 
+                    Địa chỉ nhận vé:
                     <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>
                     <span class="badge rounded-pill text-bg-info ms-2" v-else>
                         Nhận vé tại nhà hát
                     </span>
                 </p>
-                <p class="mb-0">Tổng tiền thanh toán: <strong class="p-1 bg-primary">{{ numberWithCommas(bookingSelected.price ?? 0) }}
+                <p class="mb-0">Tổng tiền thanh toán: <strong class="p-1 bg-primary">{{
+                    numberWithCommas(bookingSelected.price ?? 0) }}
                         vnd</strong></p>
             </div>
             <br />
@@ -121,147 +123,151 @@
         </template>
         <template #footer>
             <button class="btn btn-info" @click="bookingSelected = {}" data-bs-dismiss="modal">Đóng</button>
-            <button v-if="bookingSelected?.bookings && bookingSelected?.bookings.length && !bookingSelected.bookings[0].isBooked" class="btn btn-danger"
-                @click="confirmBooked" data-bs-dismiss="modal">Xác nhận thanh toán thành
-                công</button>
+            <button
+                v-if="bookingSelected?.bookings && bookingSelected?.bookings.length && !bookingSelected.bookings[0].isBooked"
+                class="btn btn-danger" @click="confirmBooked" data-bs-dismiss="modal">
+                Xác nhận thanh toán thành công
+            </button>
         </template>
     </Modal>
 </template>
 <script setup>
-    import InfiniteLoading from "v3-infinite-loading";
-    import "v3-infinite-loading/lib/style.css";
-    import { ref, onMounted, computed, onUnmounted } from "vue";
-    import { useRoute } from "vue-router";
-    import { getEventAPI } from "../../../api/admin/events";
-    import { HttpStatusCode } from "axios";
-    import { acceptBookingAPI, getListBookingsAPI } from "../../../api/admin/booking";
-    import { numberWithCommas } from "../../../helpers/number";
-    import { useToast } from "vue-toastification";
-    import Modal from '../../../components/Modal.vue';
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
+import { ref, onMounted, computed, onUnmounted } from "vue";
+import { useRoute } from "vue-router";
+import { getEventAPI } from "../../../api/admin/events";
+import { HttpStatusCode } from "axios";
+import { acceptBookingAPI, getListBookingsAPI } from "../../../api/admin/booking";
+import { numberWithCommas } from "../../../helpers/number";
+import { useToast } from "vue-toastification";
+import Modal from '../../../components/Modal.vue';
 
-    const TAB_ALL = 'all';
-    const TAB_PAID = 'paid';
-    const TAB_UNPAID = 'unpaid';
-    const route = useRoute();
-    const toast = useToast();
-    let bookingClients = ref({
-        data: [],
-        total: 0,
-        current_page: 1,
-        next_page_url: null,
-    });
-    let event = ref({});
-    let searchString = ref("");
-    let bookingSelected = ref({});
-    let tab = ref(TAB_ALL);
+const TAB_ALL = 'all';
+const TAB_PAID = 'paid';
+const TAB_UNPAID = 'unpaid';
+const route = useRoute();
+const toast = useToast();
+let bookingClients = ref({
+    data: [],
+    total: 0,
+    current_page: 1,
+    next_page_url: null,
+});
+let event = ref({});
+let searchString = ref("");
+let bookingSelected = ref({});
+let tab = ref(TAB_ALL);
 
-    let bookingsGroupedByTab = computed(() => {
-        return bookingClients.value.data.flatMap(bookingClient => {
-            switch (tab.value) {
-                case TAB_ALL:
-                    return bookingClient;
-                case TAB_PAID:
-                    if (bookingClient.bookings.length && bookingClient.bookings[0].isBooked) return bookingClient;
-                    return [];
-                case TAB_UNPAID:
-                    if (bookingClient.bookings.length && !bookingClient.bookings[0].isBooked) return bookingClient;
-                    return [];
-            }
-        })
-    });
-
-    onMounted(async () => {
-        await getEvent();
-        await getBookings();
-        window.Echo.private(`admin.client-booking-event-${event.value.id}`)
-            .listen(
-                "AdminClientBookingTicket",
-                (e) => {
-                    let bookingClient = e.bookings;
-                    bookingClient.price = bookingClient.bookings.reduce((previous, current) => {
-                        return previous + current.ticket_class.price;
-                    }, 0);
-
-                    //Kiểm tra đã tồn tại booking client hay chưa? nếu có rồi thì tăng price và thêm bookings cho booking client
-                    let index = bookingClients.value.data.findIndex(bc => bc.id == bookingClient.id);
-                    if (index > -1) {
-                        bookingClients.value.data[index].bookings.push(...bookingClient.bookings);
-                        bookingClients.value.data[index].price += bookingClient.price;
-                    } else {
-                        bookingClients.value.data = [bookingClient, ...bookingClients.value.data];
-                        toast.info(bookingClient.name + " vừa mua vé!", {
-                            position: "top-center"
-                        })
-                    }
-                }
-            ).listen("AdminRemoveBookingTicket", (e) => {
-                let clientId = e.client.id;
-                bookingClients.value.data = bookingClients.value.data.filter(bookingClient => {
-                    return bookingClient.id != clientId;
-                });
-            });
+let bookingsGroupedByTab = computed(() => {
+    return bookingClients.value.data.flatMap(bookingClient => {
+        switch (tab.value) {
+            case TAB_ALL:
+                return bookingClient;
+            case TAB_PAID:
+                if (bookingClient.bookings.length && bookingClient.bookings[0].isBooked) return bookingClient;
+                return [];
+            case TAB_UNPAID:
+                if (bookingClient.bookings.length && !bookingClient.bookings[0].isBooked) return bookingClient;
+                return [];
+        }
     })
+});
 
-    onUnmounted(() => {
-        window.Echo.leave(`admin.client-booking-event-${event.value.id}`);
-    });
+onMounted(async () => {
+    await getEvent();
+    await getBookings();
+    window.Echo.private(`admin.client-booking-event-${event.value.id}`)
+        .listen(
+            "AdminClientBookingTicket",
+            (e) => {
+                let bookingClient = e.bookings;
+                bookingClient.price = bookingClient.bookings.reduce((previous, current) => {
+                    return previous + current.ticket_class.price;
+                }, 0);
 
-    const changeTab = (name) => { tab.value = name };
-
-    const getEvent = async () => {
-        let response = await getEventAPI(route.params.eventId);
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                event.value = response.data;
-                break;
-            default:
-                console.log(response);
-                break;
-        }
-    }
-
-    const getBookings = async (isLoadMore = false) => {
-        let response = await getListBookingsAPI(route.params.eventId, bookingClients.value.current_page, searchString.value);
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                if (!isLoadMore) bookingClients.value.data = [];
-                for (let i = 0; i < response.data.data.length; i++) {
-                    response.data.data[i].price = response.data.data[i].bookings.reduce((previous, current) => {
-                        return previous + current.ticket_class.price;
-                    }, 0);
-                }
-                bookingClients.value.data.push(...response.data.data);
-                bookingClients.value.next_page_url = response.data.next_page_url;
-                bookingClients.value.total = response.data.total;
-                break;
-            default:
-                console.log(response);
-                break;
-        }
-    }
-
-    const loadMore = async () => {
-        bookingClients.value.current_page++;
-        await getBookings(true);
-    }
-
-    const confirmBooked = async () => {
-        let isConfirm = confirm(`Bạn xác nhận việc thanh toán là thành công với khách hàng (${bookingSelected.value.name} - ${bookingSelected.value.phone_number})?`)
-        if (!isConfirm) return;
-        let response = await acceptBookingAPI(bookingSelected.value.event_id, bookingSelected.value.id);
-        switch (response.status) {
-            case HttpStatusCode.Ok:
-                bookingClients.value.data.forEach(bookingClient => {
-                    bookingClient.bookings.forEach(booking => {
-                        booking.isBooked = true;
-                        booking.isPending = false;
-                        booking.start_pending = null;
+                //Kiểm tra đã tồn tại booking client hay chưa? nếu có rồi thì tăng price và thêm bookings cho booking client
+                let index = bookingClients.value.data.findIndex(bc => bc.id == bookingClient.id);
+                if (index > -1) {
+                    bookingClients.value.data[index].bookings.push(...bookingClient.bookings);
+                    bookingClients.value.data[index].price += bookingClient.price;
+                } else {
+                    bookingClients.value.data = [bookingClient, ...bookingClients.value.data];
+                    toast.info(bookingClient.name + " vừa mua vé!", {
+                        position: "top-center"
                     })
-                })
-                toast.success("Xác nhận đơn mua vé thành công");
-                break;
-            default:
-                toast.error("Xác nhận đơn mua vé thất bại");
-        }
+                }
+            }
+        ).listen("AdminRemoveBookingTicket", (e) => {
+            let clientId = e.client.id;
+            bookingClients.value.data = bookingClients.value.data.filter(bookingClient => {
+                return bookingClient.id != clientId;
+            });
+        });
+})
+
+onUnmounted(() => {
+    window.Echo.leave(`admin.client-booking-event-${event.value.id}`);
+});
+
+const changeTab = (name) => { tab.value = name };
+
+const getEvent = async () => {
+    let response = await getEventAPI(route.params.eventId);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            event.value = response.data;
+            break;
+        default:
+            console.log(response);
+            break;
     }
+}
+
+const getBookings = async (isLoadMore = false) => {
+    let response = await getListBookingsAPI(route.params.eventId, bookingClients.value.current_page, searchString.value);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            if (!isLoadMore) bookingClients.value.data = [];
+            for (let i = 0; i < response.data.data.length; i++) {
+                response.data.data[i].price = response.data.data[i].bookings.reduce((previous, current) => {
+                    return previous + current.ticket_class.price;
+                }, 0);
+            }
+            bookingClients.value.data.push(...response.data.data);
+            bookingClients.value.next_page_url = response.data.next_page_url;
+            bookingClients.value.total = response.data.total;
+            break;
+        default:
+            console.log(response);
+            break;
+    }
+}
+
+const loadMore = async () => {
+    bookingClients.value.current_page++;
+    await getBookings(true);
+}
+
+const confirmBooked = async () => {
+    let isConfirm = confirm(`Bạn xác nhận việc thanh toán là thành công với khách hàng (${bookingSelected.value.name} - ${bookingSelected.value.phone_number})?`)
+    if (!isConfirm) return;
+    let response = await acceptBookingAPI(bookingSelected.value.event_id, bookingSelected.value.id);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            bookingClients.value.data.forEach(bookingClient => {
+                if (bookingClient.id != bookingSelected.value.id) return;
+                bookingClient.bookings.forEach(booking => {
+                    booking.isBooked = true;
+                    booking.isPending = false;
+                    booking.start_pending = null;
+                })
+            });
+            bookingSelected.value = {};
+            toast.success("Xác nhận đơn mua vé thành công");
+            break;
+        default:
+            toast.error("Xác nhận đơn mua vé thất bại");
+    }
+}
 </script>

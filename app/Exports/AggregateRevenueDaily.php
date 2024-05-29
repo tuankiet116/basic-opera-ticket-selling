@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -14,17 +15,10 @@ class AggregateRevenueDaily
     }
 
     /**
-     * @param array $dataInformations
-     * An array includes data follow the formula 
-     *  [
-     *      [
-     *          "event_id" => number,
-     *          "name"  => string,
-     *          "ticket_classes" => array (["id" => number, "name" => ""])
-     *      ]
-     *  ]
+     * @param Collection<BookModel> $dataInformations
+     * Collection of book models with eagle load seat, events, and client
      */
-    public function export(array $dataInformations)
+    public function export(Collection $dataInformations)
     {
         $this->spreadsheet->getProperties()->setTitle("Báo cáo bán vé hàng ngày");
         $sheet = $this->spreadsheet->getActiveSheet();

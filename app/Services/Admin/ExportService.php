@@ -19,8 +19,9 @@ class ExportService
         $bookings = BookModel::with(["client", "seat", "event"])
             ->whereDate("created_at", ">=", $startDate)
             ->whereDate("created_at", "<=", $endDate)
-            ->where("isBooked", true)
+            ->where("start_pending", null)
             ->whereIn("event_id", data_get($data, "events"))->get();
-        $this->aggregateRevenueDaily->export($data);
+        
+        $this->aggregateRevenueDaily->export($bookings);
     }
 }

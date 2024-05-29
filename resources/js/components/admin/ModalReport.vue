@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-9">
                     <VueDatePicker id="event-date" v-model="dateSelected" locale="vi" :format="format" selectText="Chọn"
-                        cancelText="Thoát" range />
+                        cancelText="Thoát" range multi-calendars auto-apply/>
                     <small v-if="errors.start_date" class="text-danger">{{ errors.start_date[0] }}</small>
                     <small v-if="errors.end_date" class="text-danger">{{ errors.end_date[0] }}</small>
                 </div>
