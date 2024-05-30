@@ -62,8 +62,7 @@ class ExportService
             ];
             NEXT:
         });
-        dd($dataClientBookings);
-        $this->aggregateRevenueDaily->export($bookings);
+        $this->aggregateRevenueDaily->export($dataClientBookings, $events);
     }
 
     private function getTicketClassOfSeat($eventId, $seatId)
