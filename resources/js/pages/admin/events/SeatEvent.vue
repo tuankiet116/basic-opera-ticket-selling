@@ -119,7 +119,7 @@ const route = useRoute();
 const toast = useToast();
 const MODE_TICKET_CLASS_SETTING = 'ticket-class-setting';
 const MODE_PRE_BOOKING = 'pre-booking';
-const COLOR_SEAT_BOOKED_NON_SPECIAL = "#4CB9E7";
+const COLOR_SEAT_BOOKED_NON_SPECIAL = "rgb(0,0,0)";
 const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
 const { t } = useI18n();
 

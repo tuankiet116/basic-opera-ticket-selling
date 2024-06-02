@@ -12,8 +12,9 @@ class ExportController extends Controller
     {
     }
 
-    public function exportReport(EventModel $event)
+    public function exportReport()
     {
+        
     }
 
     public function createReport(CreateReportRequest $request)
