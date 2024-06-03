@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\FileController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Client\EventController as ClientEventController;
@@ -44,6 +45,10 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     });
     Route::prefix("/report")->group(function () {
         Route::post("/aggregate", [ExportController::class, "createReport"]);
+    });
+    Route::prefix("/files")->group(function() {
+        Route::get("/list", [FileController::class, "index"]);
+        Route::post("/delete", [FileController::class, "delete"]);
     });
 })->name("admin");
 

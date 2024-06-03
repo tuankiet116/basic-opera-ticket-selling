@@ -16,7 +16,7 @@ class ExportRevenueReport implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected ExportService $exportService)
+    public function __construct(protected array $data)
     {
         //
     }
@@ -24,8 +24,8 @@ class ExportRevenueReport implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(array $data): void
+    public function handle(ExportService $exportService): void
     {
-        $this->exportService->exportReportAggregateRevenue($data);
+        $exportService->exportReportAggregateRevenue($this->data);
     }
 }

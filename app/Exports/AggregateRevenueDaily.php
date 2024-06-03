@@ -47,7 +47,7 @@ class AggregateRevenueDaily extends Exports
      * @param Collection<EventModel> $events
      * Collection of event models with eagle load ticket_classes
      */
-    public function export(array $dataClientBookings, Collection $events)
+    public function export(array $dataClientBookings, Collection $events, string $fileName)
     {
         $this->spreadsheet->getProperties()->setTitle("Báo cáo bán vé hàng ngày");
         $sheet = $this->spreadsheet->getActiveSheet();
@@ -168,7 +168,7 @@ class AggregateRevenueDaily extends Exports
         $this->setBorderStyle($coordinatesTable);
         $this->setCenterStyle($coordinatesTable);
         $this->setWrapText($coordinatesTable);
-        $this->saveFile();
+        $this->saveFile($fileName);
     }
 
     public function exportSheetAggregateTicketOnlineClient()
@@ -176,11 +176,11 @@ class AggregateRevenueDaily extends Exports
         
     }
 
-    protected function saveFile()
+    protected function saveFile($fileName)
     {
         $writer = new Xlsx($this->spreadsheet);
         $writer->setOffice2003Compatibility(true);
         Storage::createDirectory("/reports/");
-        $writer->save(storage_path("app/reports/") . time() . ".xlsx");
+        $writer->save(storage_path("app/reports/") . $fileName . ".xlsx");
     }
 }

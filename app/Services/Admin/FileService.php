@@ -11,8 +11,8 @@ class FileService
         return FileModel::orderBy("created_at", "DESC")->paginate(PAGINATE_NUMBER)->toArray();
     }
 
-    public function deleteFile(string $fileName)
+    public function deleteFile(int $fileId)
     {
-        return FileModel::where("file_name", $fileName)->delete();
+        return FileModel::find($fileId)->delete();
     }
 }

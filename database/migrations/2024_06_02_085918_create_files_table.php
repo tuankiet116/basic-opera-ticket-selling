@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string("file_name");
-            $table->boolean("is_exported");
-            $table->boolean("is_failed");
-            $table->string("reason");
+            $table->boolean("is_exported")->default(false);
+            $table->boolean("is_failed")->default(false);
+            $table->text("reason")->nullable(true);
             $table->timestamps();
         });
     }
