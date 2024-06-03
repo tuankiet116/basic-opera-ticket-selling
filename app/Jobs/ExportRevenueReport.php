@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\Admin\ExportService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,7 +16,7 @@ class ExportRevenueReport implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(protected ExportService $exportService)
     {
         //
     }
@@ -23,8 +24,8 @@ class ExportRevenueReport implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(array $data): void
     {
-        //
+        $this->exportService->exportReportAggregateRevenue($data);
     }
 }

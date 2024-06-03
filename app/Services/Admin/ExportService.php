@@ -8,6 +8,7 @@ use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class ExportService
@@ -23,6 +24,11 @@ class ExportService
         $endDate = data_get($data, "end_date");
         $exportType = data_get($data, "type");
 
+        try {
+
+        } catch (Exception $e) {
+            
+        }
         if ($startDate == $endDate) $endDate = Carbon::createFromFormat("Y-m-d H:i:s", "$endDate 00:00:00")->addDay(1)->setTimezone("-7")->format("Y-m-d H:i:s");
         $startDate = Carbon::createFromFormat("Y-m-d H:i:s", "$startDate 00:00:00")->setTimezone("-7")->format("Y-m-d H:i:s");
 

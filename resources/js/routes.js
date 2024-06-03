@@ -13,6 +13,7 @@ import { getEventAPI } from './api/event';
 import NotFound from './pages/errors/NotFound.vue';
 import IndexBooking from './pages/admin/bookings/Index.vue';
 import Booking from './pages/admin/bookings/Booking.vue';
+import Files from './pages/admin/files/Files.vue';
 
 export const routes = [
     {
@@ -35,6 +36,7 @@ export const routes = [
         path: '/admin', component: Dashboard, name: "admin", children: [
             { path: "", component: Events, name: 'admin-list-events' },
             { path: "create-event", component: UpsertEvent, name: 'admin-create-event' },
+            { path: "files", component: Files, name: 'admin-list-file' },
             {
                 path: "event/:eventId", children: [
                     { path: "edit", name: 'admin-edit-event', component: UpsertEvent, props: { isEdit: true } },
