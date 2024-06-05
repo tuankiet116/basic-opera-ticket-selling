@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Events\AdminSystemNotification;
 use App\Exports\AggregateRevenueDaily;
 use App\Models\BookModel;
 use App\Models\EventModel;
@@ -90,11 +91,13 @@ class ExportService
             });
 
             $this->aggregateRevenueDaily->export($dataClientBookings, $events, $fileName);
+            AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thành công!", true);
             FileModel::create([
                 "file_name" => $fileName,
                 "is_exported" => true
             ]);
         } catch (Exception $e) {
+            AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thất bại!", false);
             FileModel::create([
                 "file_name" => $fileName,
                 "is_failed" => true,

@@ -8,7 +8,7 @@ class FileService
 {
     public function getListFiles()
     {
-        return FileModel::orderBy("created_at", "DESC")->paginate(PAGINATE_NUMBER)->toArray();
+        return FileModel::orderBy("created_at", "desc")->paginate(PAGINATE_NUMBER)->toArray();
     }
 
     public function deleteFile(int $fileId)

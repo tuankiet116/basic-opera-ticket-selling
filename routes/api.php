@@ -48,7 +48,7 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     });
     Route::prefix("/files")->group(function() {
         Route::get("/list", [FileController::class, "index"]);
-        Route::post("/delete", [FileController::class, "delete"]);
+        Route::delete("/delete/{fileId}", [FileController::class, "delete"]);
     });
 })->name("admin");
 

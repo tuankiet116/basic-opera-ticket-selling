@@ -30,3 +30,11 @@ export const useStoreLoading = defineStore("storeLoading", () => {
     }
     return { isLoading, setIsLoading };
 })
+
+export const useStoreExportStatus = defineStore("storeExportStatus", () => {
+    const toastId: Ref<number> = ref(null);
+    function setToastId(value: number) {
+        toastId.value = value;
+    }
+    return { toastId, setToastId };
+});

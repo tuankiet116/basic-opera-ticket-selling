@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\Admin\FileService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class FileController extends Controller
 {
@@ -22,12 +20,11 @@ class FileController extends Controller
     public function delete(int $fileId)
     {
         $result = $this->fileService->deleteFile($fileId);
-        return $this->responseSuccess($result);
+        return $this->responseSuccess([$result]);
     }
 
     public function download($fileName)
     {
-        $file = File::get("/app/reports/$fileName.xlsx");
-        return response()->download($file);
+        return response()->download(storage_path() . "/app/reports/$fileName.xlsx");
     }
 }

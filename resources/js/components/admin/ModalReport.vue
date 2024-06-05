@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-9">
                     <VueDatePicker id="event-date" v-model="dateSelected" locale="vi" :format="format" selectText="Chọn"
-                        cancelText="Thoát" range multi-calendars auto-apply/>
+                        cancelText="Thoát" range multi-calendars auto-apply />
                     <small v-if="errors.start_date" class="text-danger">{{ errors.start_date[0] }}</small>
                     <small v-if="errors.end_date" class="text-danger">{{ errors.end_date[0] }}</small>
                 </div>
@@ -49,7 +49,7 @@
         </template>
         <template #footer>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary" @click="handleCreateReport">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="handleCreateReport">
                 Xuất báo cáo
             </button>
         </template>
@@ -66,15 +66,22 @@ import { createReportAPI } from "../../api/admin/report";
 import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import moment from "moment";
+import ToastLoading from "../ToastLoading.vue";
+import { useStoreExportStatus } from "../../pinia";
 
 const format = "dd-MM-yyyy";
 const toast = useToast();
+const storeExporting = useStoreExportStatus();
 
 let events = ref([]);
 let eventSelected = ref([]);
 let dateSelected = ref([new Date(), new Date()]);
 let reportType = ref('report-daily');
 let errors = ref({});
+
+onMounted(async () => {
+    await searchChange("");
+});
 
 const handleCreateReport = async () => {
     let response = await createReportAPI({
@@ -86,6 +93,16 @@ const handleCreateReport = async () => {
     errors.value = {};
     switch (response.status) {
         case HttpStatusCode.Ok:
+            const toastId = toast.info({
+                component: ToastLoading,
+                props: {
+                    message: "Đang xuất file báo cáo"
+                }
+            }, {
+                timeout: false,
+                icon: false
+            });
+            storeExporting.setToastId(toastId);
             break;
         case HttpStatusCode.UnprocessableEntity:
             errors.value = response.data.errors;
@@ -95,20 +112,10 @@ const handleCreateReport = async () => {
     }
 }
 
-const handleExportReport = async () => {
-    let link = document.createElement("a");
-    link.href = "/admin/export/aggregate";
-    link.target = "_blank";
-    link.click();
-    link.remove();
-}
-
 const searchChange = async (search) => {
     let response = await getListEvent(1, search);
     events.value = response.data.data;
 }
-
-defineExpose({ events });
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>

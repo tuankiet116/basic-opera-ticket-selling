@@ -48,8 +48,4 @@ class Exports
         $sheet = $this->spreadsheet->getActiveSheet();
         $sheet->getStyle($coordinates)->getAlignment()->setWrapText(true);
     }
-
-    protected function setFontSizeAndBolder() {
-        
-    }
 }
