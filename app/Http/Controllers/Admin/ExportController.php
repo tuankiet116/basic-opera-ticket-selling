@@ -13,7 +13,7 @@ class ExportController extends Controller
     public function createReport(CreateReportRequest $request)
     {
         $data = $request->validated();
-        ExportRevenueReport::dispatch($data);
-        // $this->exportService->exportReportAggregateRevenue($data);
+        // ExportRevenueReport::dispatch($data);
+        $this->exportService->exportReportAggregateRevenue($data);
     }
 }
