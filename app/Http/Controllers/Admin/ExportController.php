@@ -9,9 +9,11 @@ use App\Services\Admin\ExportService;
 
 class ExportController extends Controller
 {
+    public function __construct(protected ExportService $exportService) {}
     public function createReport(CreateReportRequest $request)
     {
         $data = $request->validated();
         ExportRevenueReport::dispatch($data);
+        // $this->exportService->exportReportAggregateRevenue($data);
     }
 }

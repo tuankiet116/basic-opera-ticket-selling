@@ -49,7 +49,7 @@
         </template>
         <template #footer>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="handleCreateReport">
+            <button type="button" class="btn btn-primary" @click="handleCreateReport">
                 Xuất báo cáo
             </button>
         </template>
@@ -87,8 +87,8 @@ const handleCreateReport = async () => {
     let response = await createReportAPI({
         type: reportType.value,
         events: eventSelected.value.map(e => e.id),
-        start_date: moment(dateSelected.value[0]).format("Y-MM-DD"),
-        end_date: moment(dateSelected.value[1]).format("Y-MM-DD"),
+        start_date: dateSelected.value && dateSelected.value[0] ? moment(dateSelected.value[0]).format("Y-MM-DD") : null,
+        end_date: dateSelected.value && dateSelected.value[1] ? moment(dateSelected.value[1]).format("Y-MM-DD") : null,
     });
     errors.value = {};
     switch (response.status) {

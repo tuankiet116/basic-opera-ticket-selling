@@ -25,8 +25,8 @@ class CreateReportRequest extends FormRequest
             "type" => "required|string|in:report-event,report-daily",
             "events" => "array|required",
             "events.*" => "required|integer",
-            "start_date" => "required_if:type,report-daily|date|before_or_equal:end_date|date_format:Y-m-d",
-            "end_date" => "required_if:type,report-daily|date|after_or_equal:start_date|date_format:Y-m-d"
+            "start_date" => "required_if:type,report-daily|date|before_or_equal:end_date|date_format:Y-m-d|nullable",
+            "end_date" => "required_if:type,report-daily|date|after_or_equal:start_date|date_format:Y-m-d|nullable"
         ];
     }
 }

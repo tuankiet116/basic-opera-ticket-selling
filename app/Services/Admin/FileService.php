@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Models\FileModel;
+use Illuminate\Support\Facades\Storage;
 
 class FileService
 {
@@ -13,6 +14,9 @@ class FileService
 
     public function deleteFile(int $fileId)
     {
+        $fileRecord = FileModel::find($fileId);
+        $file = Storage::exists("reports/$fileRecord->file_name.xlsx");
+        if ($file) unlink(storage_path() . "/app/reports/$fileRecord->file_name.xlsx");
         return FileModel::find($fileId)->delete();
     }
 }
