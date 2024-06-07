@@ -30,22 +30,20 @@ class ExportService
         try {
             $dataClientBookingsSpecial = [];
             $dataClientBookingsOnline = [];
-            $bookings = BookModel::with(["client", "seat"])->where("start_pending", null);
+            $eventsTicketsBooked = [];
             if ($exportType == "report-daily") {
                 $endDate = Carbon::createFromFormat("Y-m-d H:i:s", "$endDate 00:00:00")->addDay(1)->setTimezone("-7")->format("Y-m-d H:i:s");
                 $startDate = Carbon::createFromFormat("Y-m-d H:i:s", "$startDate 00:00:00")->setTimezone("-7")->format("Y-m-d H:i:s");
-                $bookings = $bookings->where([
-                    ["created_at", ">=", $startDate],
-                    ["created_at", "<", $endDate],
-                ]);
             }
+            $bookings = BookModel::with(["client", "seat"])->where("start_pending", null);
             $bookings = $bookings->whereIn("event_id", data_get($data, "events"))->get();
             $events = EventModel::with(["ticketClasses"])->whereIn("id", $eventIds)->get();
-            $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline) {
+            $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
                 $bookingSeatId = $booking->seat_id;
                 $ticketClassId = $this->getTicketClassOfSeat($bookingEventId, $bookingSeatId);
                 $dataRef = &$dataClientBookingsOnline;
+                if ($exportType == "report-daily" && !Carbon::parse($booking->created_at)->between(Carbon::parse($startDate), Carbon::parse($endDate))) goto NEXT;
                 if ($booking->client->isSpecial) $dataRef = &$dataClientBookingsSpecial;
                 foreach ($dataRef as &$data) {
                     if (
@@ -75,12 +73,15 @@ class ExportService
                     ]
                 ];
                 NEXT:
+                if (!isset($eventsTicketsBooked[$bookingEventId])) $eventsTicketsBooked[$bookingEventId] = [];
+                if (!isset($eventsTicketsBooked[$bookingEventId][$ticketClassId])) $eventsTicketsBooked[$bookingEventId][$ticketClassId] = [];
+                $eventsTicketsBooked[$bookingEventId][$ticketClassId][] = $booking->seat->name;
             });
 
             usort($dataClientBookingsSpecial, fn ($clientA, $clientB) => strcasecmp($clientA["name"], $clientB["name"]));
             usort($dataClientBookingsOnline, fn ($clientA, $clientB) => strcasecmp($clientA["name"], $clientB["name"]));
 
-            $this->aggregateRevenueDaily->export($dataClientBookingsOnline, $dataClientBookingsSpecial, $events, $fileName);
+            $this->aggregateRevenueDaily->export($dataClientBookingsOnline, $dataClientBookingsSpecial, $eventsTicketsBooked, $events, $fileName);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thành công!", true);
             FileModel::create([
                 "file_name" => $fileName,
