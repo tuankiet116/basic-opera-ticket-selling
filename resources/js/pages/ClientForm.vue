@@ -63,7 +63,7 @@
     <not-found v-else></not-found>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useStoreBooking } from "../pinia.ts";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import { bookingAPI } from "../api/event.ts";
@@ -78,6 +78,7 @@ const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 const toast = useToast();
 const router = useRouter();
 const { t } = useI18n();
+const storeBooking = useStoreBooking();
 let errors = ref({});
 let isSucess = ref(false);
 let isReceiveTicketInOpera = ref('false');
@@ -92,7 +93,13 @@ let client = ref({
 });
 
 onMounted(() => {
-    let bookingStore = useStoreBooking().seatBooking;
+    // debugger
+    // window.addEventListener("beforeunload", (e) => {
+    //     e.preventDefault();
+    //     debugger
+    //     return "Your tickets may not save";
+    // })
+    let bookingStore = storeBooking.seatBooking;
     if (!bookingStore.length || bookingStore[0].seats.length == 0 && bookingStore[1].seats.length == 0) {
         notfound.value = true;
     } else {
@@ -100,12 +107,16 @@ onMounted(() => {
     }
 });
 
+onUnmounted(() => {
+    storeBooking.setBooking([], null);
+})
+
 const submitForm = async () => {
     await recaptchaLoaded();
     const token = await executeRecaptcha('submit');
     let data = {
         ...client.value,
-        event_id: useStoreBooking().eventBooking,
+        event_id: storeBooking.eventBooking,
         is_receive_in_opera: isReceiveTicketInOpera.value == 'true' ? true : false,
         bookings: bookings.value,
         "g-recaptcha-response": token

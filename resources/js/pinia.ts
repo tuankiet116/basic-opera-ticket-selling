@@ -16,7 +16,7 @@ export const useStoreBooking = defineStore("storeBooking", () => {
     function setBooking(seats: Array<{
         hall: number,
         names: Array<string>
-    }>, eventId: number) {
+    }>, eventId: number | null) {
         seatBooking.value = seats;
         eventBooking.value = eventId;
     }

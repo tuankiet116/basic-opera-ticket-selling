@@ -176,6 +176,8 @@ onMounted(async () => {
 
 onUnmounted(() => {
     window.Echo.leave(`client-booking-event-${event.value.id}`);
+    if (route.name == "client-form") return;
+    storeBookings.setBooking([], null);
 });
 
 const selectHall = (hallId) => {
