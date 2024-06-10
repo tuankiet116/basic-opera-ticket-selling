@@ -60,3 +60,4 @@ Route::prefix("/event")->group(function () {
 
 Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
 Route::post("/booking", [BookingController::class, "booking"]);
+Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);

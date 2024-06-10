@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\BookingRequest;
+use App\Http\Requests\Client\TemporaryBookingRequest;
 use App\Services\Client\BookingService;
 use Illuminate\Http\Request;
 
@@ -23,5 +24,9 @@ class BookingController extends Controller
         return $this->responseError([
             "message" => $result
         ]);
+    }
+
+    public function temporaryBooking(TemporaryBookingRequest $request) {
+        $data = $request->validated();
     }
 }
