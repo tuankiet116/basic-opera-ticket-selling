@@ -93,12 +93,6 @@ let client = ref({
 });
 
 onMounted(() => {
-    // debugger
-    // window.addEventListener("beforeunload", (e) => {
-    //     e.preventDefault();
-    //     debugger
-    //     return "Your tickets may not save";
-    // })
     let bookingStore = storeBooking.seatBooking;
     if (!bookingStore.length || bookingStore[0].seats.length == 0 && bookingStore[1].seats.length == 0) {
         notfound.value = true;

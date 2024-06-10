@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,13 +21,17 @@ class EventService
 
     public function create(array $data): EventModel | null
     {
+        $time = Carbon::now()->format("Y-m-d H:i:s");
         DB::beginTransaction();
         try {
             $image = request()->file("image");
             $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
             data_set($data, "image_url", $filePath);
             $event = EventModel::create($data);
-            $ticketClassesData = array_map(fn ($data) => $data + ["event_id" => $event->id], $data["ticketClasses"]);
+            $ticketClassesData = array_map(fn ($data) => $data + [
+                "event_id" => $event->id,
+                "created_at" => $time
+            ], $data["ticketClasses"]);
             TicketClassModel::insert($ticketClassesData);
         } catch (Exception $e) {
             Log::error("Create Event: ", [
@@ -52,6 +57,7 @@ class EventService
     {
         $event = EventModel::unDeleted()->find($eventId);
         if (!$event) throw new NotFoundHttpException("Event not found");
+        $time = Carbon::now()->format("Y-m-d H:i:s");
         DB::beginTransaction();
         try {
             $image = request()->file("image");
@@ -74,8 +80,9 @@ class EventService
                     $ticketClass->save();
                 }
             });
-            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->map(function ($ticketClass) use ($eventId) {
+            $dataTicketInsertable = collect($data['ticketClasses'])->where("id", null)->map(function ($ticketClass) use ($eventId, $time) {
                 $ticketClass["event_id"] = $eventId;
+                $ticketClass["created_at"] = $time;
                 return $ticketClass;
             })->all();
             if ($dataTicketInsertable) {

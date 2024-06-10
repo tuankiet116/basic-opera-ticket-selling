@@ -18,3 +18,10 @@ export type BookingData = {
     }>,
     "g-recaptcha-response": string
 }
+
+export type TemporaryBookingData = {
+    event_id: number,
+    seat: string,
+    hall: number,
+    "g-recaptcha-response": string
+}

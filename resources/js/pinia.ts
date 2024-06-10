@@ -13,12 +13,14 @@ export const useAuthenticateStore = defineStore("authentication", () => {
 export const useStoreBooking = defineStore("storeBooking", () => {
     const seatBooking: Ref<Array<any>> = ref([]);
     const eventBooking: Ref<number | null> = ref(null);
+    const tokenTemporary: Ref<string | null> = ref(null);
     function setBooking(seats: Array<{
         hall: number,
-        names: Array<string>
-    }>, eventId: number | null) {
+        names: Array<string>,
+    }>, eventId: number | null, token: string | null) {
         seatBooking.value = seats;
         eventBooking.value = eventId;
+        tokenTemporary.value = token;
     }
     return { seatBooking, setBooking, eventBooking };
 });
@@ -32,7 +34,7 @@ export const useStoreLoading = defineStore("storeLoading", () => {
 })
 
 export const useStoreExportStatus = defineStore("storeExportStatus", () => {
-    const toastId: Ref<number> = ref(null);
+    const toastId: Ref<number | null> = ref(null);
     function setToastId(value: number) {
         toastId.value = value;
     }

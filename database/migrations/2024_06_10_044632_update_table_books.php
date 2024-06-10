@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->boolean("is_temporary")->default(false);
+            $table->boolean("is_temporary")->default(false)->after("isPending");
+            $table->string("token")->nullable()->after("is_temporary");
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('books', function (Blueprint $table) {
             $table->dropColumn('is_temporary');
+            $table->dropColumn('token');
         });
     }
 };

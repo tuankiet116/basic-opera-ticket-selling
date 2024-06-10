@@ -30,11 +30,11 @@ class TemporaryBookingRequest extends FormRequest
                     return $query->where("is_delete", false)->where("is_openning", true);
                 })
             ],
-            "bookings" => "array|required",
-            "bookings.*.hall" => "required",
-            "bookings.*.seats" => "array",
-            "bookings.*.seats.*" => "string|required",
-            "g-recaptcha-response" => "recaptcha"
+            "hall" => "required|numeric",
+            "seat" => "required|string",
+            "token" => "nullable|string",
+            "is_booking" => "boolean",
+            "g-recaptcha-response" => "required|recaptcha"
         ];
     }
 }

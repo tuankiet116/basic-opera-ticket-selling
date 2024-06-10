@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\BookingRequest;
 use App\Http\Requests\Client\TemporaryBookingRequest;
 use App\Services\Client\BookingService;
+use Exception;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -28,5 +29,15 @@ class BookingController extends Controller
 
     public function temporaryBooking(TemporaryBookingRequest $request) {
         $data = $request->validated();
+        try {
+            $token = $this->bookingService->temporaryBooking($data);
+        } catch(Exception $e) {
+            return $this->responseError([
+                "message" => $e->getMessage()
+            ]);
+        }
+        return $this->responseSuccess([
+            "token" => $token
+        ]);
     }
 }

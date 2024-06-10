@@ -104,12 +104,14 @@ import {
     getBookingsAPI,
     getEventAPI,
     getTicketClassesByEventAPI,
+    temporaryBookingAPI,
 } from "../api/event";
 import { numberWithCommas } from "../helpers/number";
 import { useStoreBooking } from "../pinia";
 import { useToast } from "vue-toastification";
 import { HttpStatusCode } from "axios";
 import { useI18n } from "vue-i18n";
+import { useReCaptcha } from "vue-recaptcha-v3";
 
 const BOOKED_COLOR = "black";
 const route = useRoute();
@@ -126,6 +128,7 @@ let halls = [
         id: 2,
     },
 ];
+let temporaryToken = ref(null);
 let hallSelected = ref(halls[0].id);
 let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
@@ -135,6 +138,7 @@ let bookings = ref([]);
 let event = ref({});
 let total = ref(0);
 let eventId = route.params.eventId;
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 let isZoomOutBox = ref(false);
 const refHall1 = ref(null);
 const storeBookings = useStoreBooking();
@@ -177,7 +181,7 @@ onMounted(async () => {
 onUnmounted(() => {
     window.Echo.leave(`client-booking-event-${event.value.id}`);
     if (route.name == "client-form") return;
-    storeBookings.setBooking([], null);
+    storeBookings.setBooking([], null, null);
 });
 
 const selectHall = (hallId) => {
@@ -202,11 +206,33 @@ const selectSeat = (seatName, hall = null, isBooked = false) => {
     if (currentSeat > -1) {
         seatSelected.value.splice(currentSeat, 1);
         total.value -= isSeatValid.ticket_class.price;
+        temporaryBooking(seatSelected, seatName, hallSelected.value, false);
     } else if (!seatBooked && isSeatValid && !isBooked) {
         total.value += isSeatValid.ticket_class.price;
         seatSelected.value.push(seatName);
+        temporaryBooking(seatSelected, seatName, hallSelected.value, true);
     }
 };
+
+const temporaryBooking = async (seatSelected, seat, hall, isBooking) => {
+    await recaptchaLoaded();
+    const token = await executeRecaptcha('submit');
+    let data = {
+        "g-recaptcha-response": token,
+        event_id: Number(eventId),
+        token: temporaryToken.value,
+        is_booking: isBooking,
+        seat, hall
+    };
+    let response = await temporaryBookingAPI(data);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            temporaryToken.value = response.data.token;
+        default:
+            if (isBooking) seatSelected.value.splice(seatSelected.value.length - 1, 1);
+            else seatSelected.value.push(seat);
+    }
+}
 
 const getTicketClass = async () => {
     let response = await getTicketClassesByEventAPI(Number(eventId));

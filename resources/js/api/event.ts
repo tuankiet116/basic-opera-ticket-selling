@@ -1,4 +1,4 @@
-import { BookingData } from "../types/clients";
+import { BookingData, TemporaryBookingData } from "../types/clients";
 import axiosInstance from "./axios";
 
 export const getListEventAPI = async (page = 1) => {
@@ -19,4 +19,8 @@ export const getBookingsAPI = async (eventId: number) => {
 
 export const bookingAPI = async (data: BookingData) => {
     return await axiosInstance.post(`/booking`, data);
+}
+
+export const temporaryBookingAPI = async (data: TemporaryBookingData) => {
+    return await axiosInstance.post(`/temporary-booking`, data);
 }

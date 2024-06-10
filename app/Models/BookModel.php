@@ -17,6 +17,8 @@ class BookModel extends Model
         "isBooked",
         "isPending",
         "start_pending",
+        "is_temporary",
+        "token"
     ];
 
     protected $casts = [

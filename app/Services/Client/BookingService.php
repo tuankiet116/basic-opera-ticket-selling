@@ -16,6 +16,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class BookingService
 {
@@ -93,5 +94,30 @@ class BookingService
             DB::commit();
         }
         return true;
+    }
+
+    public function temporaryBooking(array $data)
+    {
+        $token = data_get($data, "token");
+        $eventId = $data["event_id"];
+        if (!$token) $token = md5(request()->getClientIp() . Str::random(5));
+        if (!$data["is_booking"]) BookModel::where("token", $token)->delete();
+        $seat = SeatModel::where("name", $data["seat"])->where("hall", $data["hall"])->first();
+        $ticketClass = EventSeatClassModel::with("ticketClass")->where("seat_id", data_get($seat, "id"))->where("event_id", $eventId)->first();
+        if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
+        if (data_get($data, "is_booking")) {
+            BookModel::create([
+                "event_id" => $eventId,
+                "seat_id" => $seat->id,
+                "isBooked" => false,
+                "isPending" => false,
+                "start_pending" => null,
+                "is_temporary" => true,
+                "token" => $token
+            ]);
+        } else {
+            BookModel::where("seat_id", $seat->id)->where("event_id", $eventId)->where("is_temporary", true)->delete();
+        }
+        return $token;
     }
 }
