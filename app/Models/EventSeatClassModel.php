@@ -23,4 +23,8 @@ class EventSeatClassModel extends Model
     public function ticketClass() {
         return $this->hasOne(TicketClassModel::class, "id", "ticket_class_id");
     }
+
+    public function event() {
+        return $this->hasOne(EventModel::class, "id", "event_id");
+    }
 }

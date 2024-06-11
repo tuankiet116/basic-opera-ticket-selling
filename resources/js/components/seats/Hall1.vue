@@ -11,7 +11,7 @@
                     <div v-for="(row, index) in rows1" :key="index" class="row p-0 justify-content-center flex-nowrap"
                         :style="`height: ${caculateRowHeight(row)}px`">
                         <template v-for="seat in row" :key="seat.id">
-                            <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
+                            <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
                                 :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
@@ -37,7 +37,7 @@
                     <div v-for="(row, index) in rows2" class="row justify-content-center flex-nowrap" :key="index"
                         :style="`height: ${caculateRowHeight(row)}px`">
                         <template v-for="seat in row" :key="seat.id">
-                            <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
+                            <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
                                 :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
@@ -83,6 +83,7 @@ const rows1 = ref(Array());
 const rows2 = ref(Array());
 const emits = defineEmits(["selectSeat"]);
 const minimap = ref(null);
+const Hall = 1;
 
 const props = defineProps({
     selected: {

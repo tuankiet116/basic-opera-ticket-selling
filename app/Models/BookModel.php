@@ -14,6 +14,7 @@ class BookModel extends Model
         "event_id",
         "client_id",
         "seat_id",
+        "ticket_class_id",
         "isBooked",
         "isPending",
         "start_pending",
@@ -23,7 +24,8 @@ class BookModel extends Model
 
     protected $casts = [
         "isBooked" => "boolean",
-        "isPending" => "boolean"
+        "isPending" => "boolean",
+        "is_temporary" => "boolean",
     ];
 
     public function client()

@@ -30,9 +30,11 @@ class TemporaryBookingRequest extends FormRequest
                     return $query->where("is_delete", false)->where("is_openning", true);
                 })
             ],
-            "hall" => "required|numeric",
-            "seat" => "required|string",
-            "token" => "nullable|string",
+            "bookings" => "array|required",
+            "bookings.*.hall" => "required",
+            "bookings.*.seats" => "array",
+            "bookings.*.seats.*" => "string|required",
+            "token" => "string|required",
             "is_booking" => "boolean",
             "g-recaptcha-response" => "required|recaptcha"
         ];

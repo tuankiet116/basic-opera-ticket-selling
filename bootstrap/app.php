@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\CheckPendingBooking;
+use App\Console\Commands\RemoveBookingTemporary;
 use App\Console\Commands\RemoveClientInvalid;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Console\Scheduling\Schedule;
@@ -25,4 +26,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withSchedule(function (Schedule $schedule) {
         $schedule->command(CheckPendingBooking::class)->everyMinute();
         $schedule->command(RemoveClientInvalid::class)->everyMinute();
+        $schedule->command(RemoveBookingTemporary::class)->everyMinute();
     })->create();

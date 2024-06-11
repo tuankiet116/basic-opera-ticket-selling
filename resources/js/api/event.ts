@@ -24,3 +24,11 @@ export const bookingAPI = async (data: BookingData) => {
 export const temporaryBookingAPI = async (data: TemporaryBookingData) => {
     return await axiosInstance.post(`/temporary-booking`, data);
 }
+
+export const getBookingTemporary = async (token: string, eventId: number) => {
+    return await axiosInstance.get(`/temporary-booking?eventId=${eventId}&token=${token}`);
+}
+
+export const generateTemporaryToken = async () => {
+    return await axiosInstance.get(`/temporary-token`);
+}

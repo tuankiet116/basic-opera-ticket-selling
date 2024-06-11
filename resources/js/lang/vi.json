@@ -1,5 +1,5 @@
 {
-    "title": "Đặt vé",
+    "title": "ĐẶT VÉ",
     "error_404": {
         "title": "Không tìm thấy trang",
         "go_home": "Về trang chủ",
@@ -17,7 +17,13 @@
         "booking_none": "Không có",
         "total": "Tổng tiền",
         "confirm_payment": "Xác nhận đặt vé",
-        "pls_select_seat": "Vui lòng chọn ghế"
+        "pls_select_seat": "Vui lòng chọn ghế",
+        "pls_complete_in": "Vui lòng hoàn thành việc đặt vé trong ",
+        "modal_title_cf": "Xác nhận vé của bạn",
+        "ticket_class": "Hạng vé",
+        "btn_close_modal": "Tiếp tục đặt vé",
+        "btn_cf_modal": "Điền thông tin và thanh toán",
+        "no_seat_selected": "Không có ghế nào được chọn."
     },
     "form_contact": {
         "title": "Điền thông tin liên hệ",

@@ -67,7 +67,7 @@
                         <template #nooptions>Không có dữ liệu</template>
                     </Multiselect>
                 </div>
-                <button class="btn btn-primary col-2 btn-sm" @click="preBooking()">Pre-Booking</button>
+                <button class="btn btn-primary col-2 btn-sm text-white" @click="preBooking()">Pre-Booking</button>
                 <button class="btn btn-danger col-12 btn-sm mt-2" @click="preBooking(true)">
                     Hủy Pre-Booking các ghế đang chọn
                 </button>

@@ -61,3 +61,5 @@ Route::prefix("/event")->group(function () {
 Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
 Route::post("/booking", [BookingController::class, "booking"]);
 Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);
+Route::get("/temporary-booking", [BookingController::class, "getBookingsTemporary"]);
+Route::get("/temporary-token", [BookingController::class, "generateTeporaryToken"]);

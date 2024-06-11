@@ -42,6 +42,7 @@ class BookingRequest extends FormRequest
             "bookings.*.hall" => "required",
             "bookings.*.seats" => "array",
             "bookings.*.seats.*" => "string|required",
+            "token" => "required|string",
             "g-recaptcha-response" => "recaptcha"
         ];
     }

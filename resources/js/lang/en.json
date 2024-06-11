@@ -17,7 +17,13 @@
         "booking_none": "None",
         "total": "Estimated total",
         "confirm_payment": "Booking confirmation",
-        "pls_select_seat": "Please select your seat"
+        "pls_select_seat": "Please select your seat",
+        "pls_complete_in": "Please complete your booking in ",
+        "modal_title_cf": "Tickets booking confirmation",
+        "ticket_class": "Ticket Class",
+        "btn_close_modal": "Continue booking",
+        "btn_cf_modal": "Fill information and checkout",
+        "no_seat_selected": "No seat selected."
     },
     "form_contact": {
         "title": "Your contact information",

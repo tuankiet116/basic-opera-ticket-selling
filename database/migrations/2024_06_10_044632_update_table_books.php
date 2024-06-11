@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
+            $table->unsignedBigInteger("ticket_class_id")->after("seat_id")->nullable();
             $table->boolean("is_temporary")->default(false)->after("isPending");
             $table->string("token")->nullable()->after("is_temporary");
         });
@@ -23,6 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('books', function (Blueprint $table) {
+            $table->dropColumn('ticket_class_id');
             $table->dropColumn('is_temporary');
             $table->dropColumn('token');
         });

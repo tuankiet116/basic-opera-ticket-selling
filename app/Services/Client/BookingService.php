@@ -4,25 +4,27 @@ namespace App\Services\Client;
 
 use App\Events\AdminClientBookingTicket;
 use App\Events\ClientBookingTicket;
+use App\Events\ClientRemoveBookingTicket;
 use App\Mail\AskingPayment;
 use App\Models\BookModel;
 use App\Models\ClientModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\SeatModel;
+use App\Models\TicketClassModel;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class BookingService
 {
     public function booking(array $data)
     {
         DB::beginTransaction();
+        $temporaryToken = data_get($data, "token");
         try {
             $client = ClientModel::create([
                 "name" => data_get($data, "name"),
@@ -39,6 +41,7 @@ class BookingService
             $dataBookingSendMail = [];
             $dataClient = $client->toArray();
             $dataBookings = [];
+            BookModel::where("token", $temporaryToken)->update(["is_temporary" => false]);
             foreach ($bookings as $booking) {
                 $seats = SeatModel::whereIn("name", data_get($booking, "seats"))->where("hall", data_get($booking, "hall"))->get();
                 $dataBookingSendMail[$booking["hall"]] = [];
@@ -46,34 +49,53 @@ class BookingService
                 else $seats = [];
                 array_push($seatsBooking, ...$seats);
                 foreach ($seats as $seat) {
-                    $bookingCreated = BookModel::create([
-                        "event_id" => data_get($data, "event_id"),
-                        "client_id" => data_get($client, "id"),
+                    $bookingClient = BookModel::where([
+                        "token" => $temporaryToken,
                         "seat_id" => $seat["id"],
-                        "isPending" => true,
-                        "start_pending" => Carbon::now()->format('Y-m-d H:i:s')
-                    ])->toArray();
-                    $ticketClass = EventSeatClassModel::with("ticketClass")->where("seat_id", $seat["id"])->where("event_id", data_get($data, "event_id"))->first();
-                    if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
-                    $bookingCreated["seat"] = $seat;
-                    $bookingCreated["ticket_class"] = $ticketClass->ticketClass->toArray();
+                        "event_id" => data_get($data, "event_id")
+                    ])->first();
+                    if ($bookingClient) {
+                        $bookingClient->update([
+                            "client_id" => $client->id,
+                            "token" => null,
+                            "start_pending" => Carbon::now()->format("Y-m-d H:i:s"),
+                            "isPending" => true,
+                        ]);
+                        $bookingClient->save();
+                        $ticketClass = TicketClassModel::find($bookingClient->ticket_class_id);
+                    } else {
+                        $ticketClass = EventSeatClassModel::with("ticketClass")->where([
+                            "seat_id" => $seat["id"],
+                            "event_id" => data_get($data, "event_id")
+                        ])->first()->ticketClass;
+                        $bookingClient = BookModel::create([
+                            "client_id" => $client->id,
+                            "token" => null,
+                            "start_pending" => Carbon::now()->format("Y-m-d H:i:s"),
+                            "isPending" => true,
+                            "seat_id" => $seat["id"],
+                            "event_id" => data_get($data, "event_id"),
+                            "ticket_class_id" => $ticketClass->id,
+                            "is_temporary" => false
+                        ]);
+                    }
 
-                    $dataBookings[] = $bookingCreated;
+                    $dataBookings[] = [
+                        ...$bookingClient->toArray(),
+                        "seat" => $seat,
+                        "ticket_class" => $ticketClass->toArray()
+                    ];
                     array_push($dataBookingSendMail[$booking["hall"]], [
-                        "class" => $ticketClass->ticketClass->name,
+                        "class" => $ticketClass->name,
                         "seat" => $seat["name"],
-                        "price" => $ticketClass->ticketClass->price,
+                        "price" => $ticketClass->price,
                     ]);
                 }
             }
+            BookModel::where(["token" => $temporaryToken])->delete();
             $event = EventModel::find($data["event_id"]);
 
             Mail::to($client)->queue(new AskingPayment($event, $client, $dataBookingSendMail));
-
-            // Chunk data before dispatch to broadcasr to avoid memory leaks and large amounts of data
-            foreach (array_chunk($seatsBooking, CHUNK_SIZE_BROADCAST) as $seatsBookingChunk) {
-                ClientBookingTicket::dispatch($seatsBookingChunk, $event);
-            }
 
             $dataAdminBookingTicket = [...$dataClient];
             foreach (array_chunk($dataBookings, CHUNK_SIZE_BROADCAST) as $dataBookingsChunk) {
@@ -100,24 +122,53 @@ class BookingService
     {
         $token = data_get($data, "token");
         $eventId = $data["event_id"];
-        if (!$token) $token = md5(request()->getClientIp() . Str::random(5));
-        if (!$data["is_booking"]) BookModel::where("token", $token)->delete();
-        $seat = SeatModel::where("name", $data["seat"])->where("hall", $data["hall"])->first();
-        $ticketClass = EventSeatClassModel::with("ticketClass")->where("seat_id", data_get($seat, "id"))->where("event_id", $eventId)->first();
-        if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
-        if (data_get($data, "is_booking")) {
-            BookModel::create([
-                "event_id" => $eventId,
-                "seat_id" => $seat->id,
-                "isBooked" => false,
-                "isPending" => false,
-                "start_pending" => null,
-                "is_temporary" => true,
-                "token" => $token
-            ]);
-        } else {
-            BookModel::where("seat_id", $seat->id)->where("event_id", $eventId)->where("is_temporary", true)->delete();
+        $startTime = Carbon::now()->format("Y-m-d H:i:s");
+        $firstTemporary = BookModel::where("token", $token)->first();
+        if ($firstTemporary) $startTime = $firstTemporary->created_at;
+        foreach ($data["bookings"] as $dBooking) {
+            $seats = SeatModel::whereIn("name", $dBooking["seats"])->where("hall", $dBooking["hall"])->get()->toArray();
+            foreach ($seats as $seat) {
+                $ticketClass = EventSeatClassModel::with(["ticketClass", "event"])->where("seat_id", data_get($seat, "id"))->where("event_id", $eventId)->first();
+                if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
+                if (data_get($data, "is_booking")) {
+                    BookModel::insert([
+                        "event_id" => $eventId,
+                        "seat_id" => data_get($seat, "id"),
+                        "ticket_class_id" => $ticketClass->ticketClass->id,
+                        "isBooked" => false,
+                        "isPending" => false,
+                        "start_pending" => null,
+                        "is_temporary" => true,
+                        "token" => $token,
+                        "created_at" => $startTime,
+                        "updated_at" => $startTime,
+                    ]);
+                    broadcast(new ClientBookingTicket([[
+                        "name" => $seat["name"],
+                        "hall" => $seat["hall"],
+                    ]], $eventId))->toOthers();
+                } else {
+                    BookModel::where([
+                        ["seat_id", "=", data_get($seat, "id")],
+                        ["event_id", "=", $eventId],
+                        ["is_temporary", "=", true],
+                        ["token", "=", $token],
+                    ])->delete();
+                    broadcast(new ClientRemoveBookingTicket([[
+                        "name" => $seat["name"],
+                        "hall" => $seat["hall"],
+                    ]], $ticketClass->event))->toOthers();
+                }
+            }
         }
         return $token;
+    }
+
+    public function getListTemporaryBookings(string $token, int $eventId)
+    {
+        return BookModel::with("seat")->where([
+            "token" => $token,
+            "event_id" => $eventId
+        ])->get(["event_id", "seat_id"])->toArray();
     }
 }

@@ -18,6 +18,7 @@ const onRequest = (config) => {
     // proceed with the initial response
     storeLoading.setIsLoading(true);
     config.headers = { ...config.headers, "Language": currentLang };
+    config.headers['X-Socket-ID'] = window.Echo.socketId() // Echo instance
     if ((
         config.method == 'post' ||
         config.method == 'put' ||

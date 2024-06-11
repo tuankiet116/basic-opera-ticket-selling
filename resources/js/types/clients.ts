@@ -22,6 +22,9 @@ export type BookingData = {
 export type TemporaryBookingData = {
     event_id: number,
     seat: string,
-    hall: number,
+    bookings: Array<{
+        hall: number,
+        seats: Array<string>
+    }>,
     "g-recaptcha-response": string
 }

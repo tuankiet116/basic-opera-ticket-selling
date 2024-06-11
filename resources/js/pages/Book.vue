@@ -8,9 +8,9 @@
             </button>
         </div>
     </div>
-    <Hall1 v-if="hallSelected == 1" @selectSeat="selectSeat" :selected="seatSelectedHall1"
+    <Hall1 v-if="hallSelected == 1" @selectSeat="selectSeatTemporary" :selected="seatSelectedHall1"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" ref="refHall1" />
-    <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeat" :selected="seatSelectedHall2"
+    <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeatTemporary" :selected="seatSelectedHall2"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
     <div
         class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
@@ -47,6 +47,7 @@
                         <div class="mx-1 rounded color-ticket" :style="'background-color: ' + BOOKED_COLOR"></div>
                     </div>
                 </div>
+                <p class="fw-bold">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>
                 <div v-if="!isZoomOutBox" class="col-12 text-responsive">
                     <p style="word-break: break-all">
                         <span class="fw-medium">{{ $t("booking_page.hall") }} 1: </span>
@@ -86,13 +87,15 @@
                             <span>{{ numberWithCommas(total) }} vnđ</span>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary text-white col-4 text-responsive" @click="confirm">
+                    <button type="button" class="btn btn-primary text-white col-4 text-responsive"
+                        data-bs-toggle="modal" data-bs-target="#modal" @click="createBookingsCart">
                         {{ $t("booking_page.confirm_payment") }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    <modal-confirm-booking :bookings="currentBookingsCart" @unSelectSeat="handleUnselectSeatCart" @confirm="confirm"/>
 </template>
 
 <script setup>
@@ -101,17 +104,20 @@ import Hall1 from "../components/seats/Hall1.vue";
 import Hall2 from "../components/seats/Hall2.vue";
 import { ref, toRef, onMounted, onUnmounted } from "vue";
 import {
+    generateTemporaryToken,
     getBookingsAPI,
+    getBookingTemporary,
     getEventAPI,
     getTicketClassesByEventAPI,
     temporaryBookingAPI,
 } from "../api/event";
 import { numberWithCommas } from "../helpers/number";
-import { useStoreBooking } from "../pinia";
+import { useStoreBooking, useStoreTemporaryBooking } from "../pinia";
 import { useToast } from "vue-toastification";
 import { HttpStatusCode } from "axios";
 import { useI18n } from "vue-i18n";
 import { useReCaptcha } from "vue-recaptcha-v3";
+import ModalConfirmBooking from "../components/client/ModalConfirmBooking.vue";
 
 const BOOKED_COLOR = "black";
 const route = useRoute();
@@ -128,7 +134,6 @@ let halls = [
         id: 2,
     },
 ];
-let temporaryToken = ref(null);
 let hallSelected = ref(halls[0].id);
 let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
@@ -137,28 +142,39 @@ let ticketClasses = ref([]);
 let bookings = ref([]);
 let event = ref({});
 let total = ref(0);
+let timer = ref("");
+let currentBookingsCart = ref([]);
 let eventId = route.params.eventId;
 const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 let isZoomOutBox = ref(false);
 const refHall1 = ref(null);
 const storeBookings = useStoreBooking();
+const storeTemporaryBookings = useStoreTemporaryBooking();
 
 onMounted(async () => {
-    await getTicketClass();
-    await getEvent();
+    getTicketClass();
+    getEvent();
     await getBookingStatus();
-    const seatsBookings = storeBookings.seatBooking;
-    for (let i = 0; i < seatsBookings.length; i++) {
-        let bookings = seatsBookings[i];
-        for (let j = 0; j < bookings.seats.length; j++) {
-            selectSeat(bookings.seats[j], bookings.hall);
-        }
+    if (!storeTemporaryBookings.token) {
+        let resToken = await generateTemporaryToken();
+        storeTemporaryBookings.setToken(resToken.data.token);
+    }
+    let resTemporary = await getBookingTemporary(storeTemporaryBookings.token, eventId);
+    if (resTemporary.status == HttpStatusCode.Ok) {
+        resTemporary.data.forEach((value) => {
+            let bookingIndex = bookings.value.findIndex(booking => booking.seat == value.seat.name && booking.hall == value.seat.hall);
+            if (bookingIndex > -1) bookings.value.splice(bookingIndex, 1);
+            reselectSeat(value.seat.name, value.seat.hall);
+        })
     }
 
     window.Echo.channel(`client-booking-event-${event.value.id}`)
         .listen("ClientBookingTicket", (e) => {
-            let seats = e.seats.map((seat) => {
-                selectSeat(seat.name, seat.hall, true);
+            let seats = e.seats.flatMap((seat) => {
+                let selectedSeats = seatSelectedHall1.value;
+                if (seat.hall == 2) selectedSeats = seatSelectedHall2.value;
+                let isSeatCurrentBooking = selectedSeats.find(s => s == seat.name);
+                if (isSeatCurrentBooking) return [];
                 return creatBookingItem(seat.name, seat.hall);
             });
             bookings.value.push(...seats);
@@ -167,70 +183,109 @@ onMounted(async () => {
             let seats = e.seats;
             for (let i = 0; i < seats.length; i++) {
                 let seat = seats[i];
-                let index = bookings.value.findIndex(
-                    (book) => book.seat == seat.name && book.hall == seat.hall
-                );
-                if (index > -1) bookings.value.splice(index, 1);
+                let indexBooking = bookings.value.findIndex(book => book.seat == seat.name && book.hall == seat.hall);
+                if (indexBooking > -1) bookings.value.splice(indexBooking, 1);
             }
         });
     setTimeout(async function () {
         refHall1.value.minimap?.reset();
     }, 30);
+
+    let endTime = new Date().getTime() + 10 * 60 * 1000;
+    let x = setInterval(function () {
+        let now = new Date().getTime();
+        let distance = endTime - now;
+        let minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        let seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+        if (distance < 0) {
+            clearInterval(x);
+            minutes = seconds = "00";
+            unselectAllSeats();
+        }
+        timer.value = minutes + ":" + seconds;
+    }, 1000);
 });
 
-onUnmounted(() => {
+onUnmounted(async () => {
     window.Echo.leave(`client-booking-event-${event.value.id}`);
     if (route.name == "client-form") return;
-    storeBookings.setBooking([], null, null);
+    storeBookings.setBooking([], null);
+    unselectAllSeats();
 });
 
-const selectHall = (hallId) => {
-    hallSelected.value = hallId;
-};
-
-const selectSeat = (seatName, hall = null, isBooked = false) => {
+const reselectSeat = (seatName, hall, isReceiveFromSocket = false) => {
     let seatSelected = toRef(seatSelectedHall1);
     if ((hall && hall == 2) || hallSelected.value == 2) {
         seatSelected = toRef(seatSelectedHall2);
     }
-    let currentSeat = seatSelected.value.findIndex((seat) => seat == seatName);
-    let seatBooked = bookings.value?.find(
-        (book) => book.hall == hallSelected.value && book.seat == seatName
-    );
+    let currentSeatIdx = seatSelected.value.findIndex((seat) => seat == seatName);
     let isSeatValid = seatTicketClasses.value.find(
         (ticketclass) =>
             ticketclass.seat.name == seatName &&
             ticketclass.seat.hall == hallSelected.value
     );
 
-    if (currentSeat > -1) {
-        seatSelected.value.splice(currentSeat, 1);
+    if (currentSeatIdx > -1) {
+        seatSelected.value.splice(currentSeatIdx, 1);
         total.value -= isSeatValid.ticket_class.price;
-        temporaryBooking(seatSelected, seatName, hallSelected.value, false);
-    } else if (!seatBooked && isSeatValid && !isBooked) {
-        total.value += isSeatValid.ticket_class.price;
-        seatSelected.value.push(seatName);
-        temporaryBooking(seatSelected, seatName, hallSelected.value, true);
+        return false;
+    }
+    total.value += isSeatValid.ticket_class.price;
+    seatSelected.value.push(seatName);
+    return true;
+}
+
+const selectHall = (hallId) => {
+    hallSelected.value = hallId;
+};
+
+const selectSeatTemporary = (seatName, hall = null) => {
+    let isSelect = reselectSeat(seatName, hall);
+    if (isSelect !== null) {
+        temporaryBooking(seatName, hallSelected.value, isSelect);
     }
 };
 
-const temporaryBooking = async (seatSelected, seat, hall, isBooking) => {
+const unselectAllSeats = async () => {
+    const token = await executeRecaptcha('submit');
+    let data = {
+        "g-recaptcha-response": token,
+        bookings: [
+            {
+                hall: 1,
+                seats: seatSelectedHall1.value,
+            },
+            {
+                hall: 2,
+                seats: seatSelectedHall2.value,
+            }
+        ],
+        event_id: Number(eventId),
+        token: storeTemporaryBookings.token,
+        is_booking: false
+    };
+    await temporaryBookingAPI(data);
+    seatSelectedHall1.value = [];
+    seatSelectedHall2.value = [];
+}
+
+const temporaryBooking = async (seat, hall, isBooking) => {
     await recaptchaLoaded();
     const token = await executeRecaptcha('submit');
     let data = {
         "g-recaptcha-response": token,
+        bookings: [{ seats: [seat], hall: hall }],
         event_id: Number(eventId),
-        token: temporaryToken.value,
-        is_booking: isBooking,
-        seat, hall
+        token: storeTemporaryBookings.token,
+        is_booking: isBooking
     };
     let response = await temporaryBookingAPI(data);
     switch (response.status) {
         case HttpStatusCode.Ok:
-            temporaryToken.value = response.data.token;
+            storeTemporaryBookings.setToken(response.data.token);
+            break;
         default:
-            if (isBooking) seatSelected.value.splice(seatSelected.value.length - 1, 1);
-            else seatSelected.value.push(seat);
+            reselectSeat(seat, hall);
     }
 }
 
@@ -262,6 +317,39 @@ const creatBookingItem = (seatName, seatHall) => {
         textcolor: "white",
     };
 };
+
+const createBookingsCart = () => {
+    let seatsHall1 = makeBookingWithClass(seatSelectedHall1.value, 1);
+    let seatsHall2 = makeBookingWithClass(seatSelectedHall2.value, 2);
+    currentBookingsCart.value = [
+        {
+            hall: 1,
+            seats: seatsHall1,
+        },
+        {
+            hall: 2,
+            seats: seatsHall2,
+        },
+    ]
+}
+
+const makeBookingWithClass = (seatSelected, hall) => {
+    return seatSelected.map(seat => {
+        return {
+            name: seat,
+            class: seatTicketClasses.value.find(
+                (ticketclass) =>
+                    ticketclass.seat.name == seat &&
+                    ticketclass.seat.hall == hall
+            )
+        }
+    })
+}
+
+const handleUnselectSeatCart = (seat, hall) => {
+    selectSeatTemporary(seat, hall);
+    createBookingsCart();
+}
 
 const confirm = () => {
     let selected = [
@@ -299,6 +387,7 @@ const confirm = () => {
 .color-ticket {
     height: 20px;
     width: 20px;
+
     @media screen and (max-width: 1081px) {
         width: 14px !important;
         height: 14px !important;

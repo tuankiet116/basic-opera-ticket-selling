@@ -8,7 +8,7 @@
                     <div v-for="(row, index) in rows1" class="row mt-2 justify-content-center flex-nowrap"
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
-                            <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
+                            <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
                                 :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
@@ -30,7 +30,7 @@
                         <div v-for="(row, index) in rows2" class="row mt-2 justify-content-center flex-nowrap"
                             :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                             <template v-for="seat in row" :key="seat.id">
-                                <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
+                                <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
                                     :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                     class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                     :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
@@ -52,7 +52,7 @@
                     <div v-for="(row, index) in rows3" class="row mt-2 justify-content-center flex-nowrap"
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
-                            <div v-if="seat.id" @click="emits('selectSeat', seat.id)"
+                            <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
                                 :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
@@ -95,6 +95,7 @@ const rows1 = ref(Array());
 const rows2 = ref(Array());
 const rows3 = ref(Array());
 const emits = defineEmits(["selectSeat"]);
+const Hall = 2;
 import Minimap from 'js-minimap';
 
 const props = defineProps({

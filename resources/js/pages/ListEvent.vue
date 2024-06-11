@@ -3,7 +3,7 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-md-10">
                 <h3 class="py-5 fs-3"> {{ $t("events.title") }} </h3>
-                <div class="mb-5" v-for="event in events.data">
+                <div class="mb-5" v-for="event in events.data" :key="event.id">
                     <router-link :to="{ name: 'book-ticket', params: { eventId: event.id } }">
                         <div class="row shadow bg-white border-hg-bottom">
                             <div class="col-lg-4 col-md-5">

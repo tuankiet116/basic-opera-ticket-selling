@@ -64,7 +64,7 @@
 </template>
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { useStoreBooking } from "../pinia.ts";
+import { useStoreBooking, useStoreTemporaryBooking } from "../pinia.ts";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import { bookingAPI } from "../api/event.ts";
 import NotFound from "./errors/NotFound.vue";
@@ -79,6 +79,7 @@ const toast = useToast();
 const router = useRouter();
 const { t } = useI18n();
 const storeBooking = useStoreBooking();
+const storeTemporaryBooking = useStoreTemporaryBooking();
 let errors = ref({});
 let isSucess = ref(false);
 let isReceiveTicketInOpera = ref('false');
@@ -113,6 +114,7 @@ const submitForm = async () => {
         event_id: storeBooking.eventBooking,
         is_receive_in_opera: isReceiveTicketInOpera.value == 'true' ? true : false,
         bookings: bookings.value,
+        token: storeTemporaryBooking.token,
         "g-recaptcha-response": token
     }
     let response = await bookingAPI(data);
