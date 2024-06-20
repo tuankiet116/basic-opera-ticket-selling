@@ -3,8 +3,8 @@
         <div class="container-fluid py-2 d-flex row">
             <div class="col p-0">
                 <router-link :to="{ name: 'index' }">
-                    <img class="d-none d-md-block" height="50px" src="../../images/image.png" alt="Ho Guom Opera"/>
-                    <img class="d-md-none" height="30px" src="../../images/image.png" />
+                    <img class="d-none d-md-block" height="50px" src="../../images/image.webp" alt="Ho Guom Opera"/>
+                    <img class="d-md-none" height="30px" src="../../images/image.webp" />
                 </router-link>
             </div>
             <div class="col text-center p-0">

@@ -104,7 +104,7 @@
 import Hall1 from "../../../components/seats/Hall1.vue";
 import Hall2 from "../../../components/seats/Hall2.vue";
 import Modal from '../../../components/Modal.vue';
-import { ref, onMounted, toRef, computed } from "vue";
+import { ref, onMounted, toRef, computed, Ref } from "vue";
 import { getEventAPI } from "../../../api/admin/events";
 import { getBookingAPI, getTicketClassAPI, preBookinngAPI, setTicketClassAPI } from "../../../api/admin/seats";
 import { useRoute } from "vue-router";
@@ -132,7 +132,7 @@ let seatTicketClasses = ref([]);
 let clientsSpecial = ref({});
 let clientPreBooking = ref(null);
 let bookings = ref<Array<AdminBookingStatus>>();
-let errors = ref({});
+let errors: Ref<any> = ref({});
 let mode = ref(MODE_TICKET_CLASS_SETTING)
 let halls = [
     {
@@ -171,6 +171,8 @@ const selectSeat = (seatName: never) => {
         seatSelected.value.splice(currentSeat, 1);
     } else if (seatBooked && seatBooked.disable == false || !seatBooked) {
         seatSelected.value.push(seatName);
+    } else if (seatBooked.disable) {
+        toast.error("Ghế đã được đặt chỗ. Không thể sửa đổi.");
     }
 }
 

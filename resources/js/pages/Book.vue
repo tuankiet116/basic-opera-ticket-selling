@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-    <modal-confirm-booking :bookings="currentBookingsCart" @unSelectSeat="handleUnselectSeatCart" @confirm="confirm"/>
+    <modal-confirm-booking :bookings="currentBookingsCart" @unSelectSeat="handleUnselectSeatCart" @confirm="confirm" />
 </template>
 
 <script setup>
@@ -111,7 +111,7 @@ import {
     getTicketClassesByEventAPI,
     temporaryBookingAPI,
 } from "../api/event";
-import { numberWithCommas } from "../helpers/number";
+import { calcTimeRemaining, numberWithCommas } from "../helpers/number";
 import { useStoreBooking, useStoreTemporaryBooking } from "../pinia";
 import { useToast } from "vue-toastification";
 import { HttpStatusCode } from "axios";
@@ -152,21 +152,20 @@ const storeBookings = useStoreBooking();
 const storeTemporaryBookings = useStoreTemporaryBooking();
 
 onMounted(async () => {
-    getTicketClass();
-    getEvent();
-    await getBookingStatus();
-    if (!storeTemporaryBookings.token) {
-        let resToken = await generateTemporaryToken();
-        storeTemporaryBookings.setToken(resToken.data.token);
-    }
-    let resTemporary = await getBookingTemporary(storeTemporaryBookings.token, eventId);
-    if (resTemporary.status == HttpStatusCode.Ok) {
-        resTemporary.data.forEach((value) => {
-            let bookingIndex = bookings.value.findIndex(booking => booking.seat == value.seat.name && booking.hall == value.seat.hall);
-            if (bookingIndex > -1) bookings.value.splice(bookingIndex, 1);
-            reselectSeat(value.seat.name, value.seat.hall);
-        })
-    }
+    Promise.allSettled([getTicketClass(), getEvent(), getBookingStatus()]).then(async () => {
+        if (!storeTemporaryBookings.token) {
+            let resToken = await generateTemporaryToken();
+            storeTemporaryBookings.setToken(resToken.data.token);
+        }
+        let resTemporary = await getBookingTemporary(storeTemporaryBookings.token, eventId);
+        if (resTemporary.status == HttpStatusCode.Ok) {
+            resTemporary.data.forEach((value) => {
+                let bookingIndex = bookings.value.findIndex(booking => booking.seat == value.seat.name && booking.hall == value.seat.hall);
+                if (bookingIndex > -1) bookings.value.splice(bookingIndex, 1);
+                reselectSeat(value.seat.name, value.seat.hall);
+            })
+        }
+    })
 
     window.Echo.channel(`client-booking-event-${event.value.id}`)
         .listen("ClientBookingTicket", (e) => {
@@ -191,7 +190,7 @@ onMounted(async () => {
         refHall1.value.minimap?.reset();
     }, 30);
 
-    let endTime = new Date().getTime() + 10 * 60 * 1000;
+    let endTime = new Date().getTime() + storeTemporaryBookings.timeRemaining;
     let x = setInterval(function () {
         let now = new Date().getTime();
         let distance = endTime - now;
@@ -208,12 +207,16 @@ onMounted(async () => {
 
 onUnmounted(async () => {
     window.Echo.leave(`client-booking-event-${event.value.id}`);
-    if (route.name == "client-form") return;
+    if (route.name == "client-form") {
+        storeTemporaryBookings.setTimeRemaining(calcTimeRemaining(timer.value));
+        return;
+    };
     storeBookings.setBooking([], null);
     unselectAllSeats();
 });
 
-const reselectSeat = (seatName, hall, isReceiveFromSocket = false) => {
+const reselectSeat = (seatName, hall) => {
+    if (bookings.value.find((booking => booking.seat == seatName && hall))) return null;
     let seatSelected = toRef(seatSelectedHall1);
     if ((hall && hall == 2) || hallSelected.value == 2) {
         seatSelected = toRef(seatSelectedHall2);

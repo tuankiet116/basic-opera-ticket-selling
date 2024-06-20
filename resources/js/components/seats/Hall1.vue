@@ -38,11 +38,10 @@
                         :style="`height: ${caculateRowHeight(row)}px`">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
-                                :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
-                                :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
-                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                v-tooltip>
+                                :class="setClassName(seat)" :style="setStyleSeat(seat)"
+                                v-bind="makeToolTipData(seat, props.bookings, 1)" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-custom-class="custom-tooltip" v-tooltip>
                                 <span>{{ seat.name }}</span>
                             </div>
                             <div v-else-if="seat.isWall" class="wall mx-1"
@@ -102,6 +101,11 @@ const props = defineProps({
 
 const setStyleSeat = (seat) => {
     return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 1)
+}
+
+const setClassName = (seat) => {
+    let className = isSeatInSelected(seat.id, props.selected) ? 'selected' : '';
+    return className;
 }
 
 onMounted(() => {

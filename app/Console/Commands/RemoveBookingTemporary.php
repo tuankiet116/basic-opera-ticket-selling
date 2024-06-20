@@ -31,7 +31,7 @@ class RemoveBookingTemporary extends Command
     public function handle()
     {
         try {
-            $timeToCheck = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
+            $timeToCheck = Carbon::now()->subMinutes(11)->format('Y-m-d H:i:s');
             $bookingOverTime = BookModel::with(["seat", "event"])->where("created_at", "<", $timeToCheck)->where("is_temporary", true)->get();
             if (sizeof($bookingOverTime)) {
                 $bookingIds = [];

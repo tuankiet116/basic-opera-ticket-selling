@@ -4,6 +4,7 @@
         <div class="p-4 border shadow">
             <form id="form-client">
                 <h3 class="text-center">{{ $t("form_contact.title") }}</h3>
+                <p class="fw-bold">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>
                 <div class="mb-3">
                     <label for="email" class="form-label">{{ $t("form_contact.receive_address") }}</label>
                     <div class="form-check">
@@ -73,6 +74,7 @@ import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import BookSuccess from "./success/BookSuccess.vue";
 import { useI18n } from "vue-i18n";
+import { calcTimeRemaining } from "../helpers/number.ts";
 
 const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 const toast = useToast();
@@ -85,6 +87,7 @@ let isSucess = ref(false);
 let isReceiveTicketInOpera = ref('false');
 let notfound = ref(false);
 let bookings = ref([]);
+let timer = ref("");
 let client = ref({
     name: "",
     email: "",
@@ -100,6 +103,20 @@ onMounted(() => {
     } else {
         bookings.value = bookingStore;
     }
+
+    let endTime = new Date().getTime() + storeTemporaryBooking.timeRemaining;
+    let x = setInterval(function () {
+        let now = new Date().getTime();
+        let distance = endTime - now;
+        let minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        let seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+        if (distance < 0) {
+            clearInterval(x);
+            minutes = seconds = "00";
+            unselectAllSeats();
+        }
+        timer.value = minutes + ":" + seconds;
+    }, 1000);
 });
 
 onUnmounted(() => {
@@ -135,6 +152,7 @@ const submitForm = async () => {
 }
 
 const goBack = () => {
+    storeTemporaryBooking.setTimeRemaining(calcTimeRemaining(timer.value));
     router.back();
 }
 </script>

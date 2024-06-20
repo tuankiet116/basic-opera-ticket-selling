@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <img width="50" src="../../../images/image.png" />
+            <img width="50" src="../../../images/image.webp" />
             <span class="fs-4">&nbsp; HGO Admin</span>
         </a>
         <hr>

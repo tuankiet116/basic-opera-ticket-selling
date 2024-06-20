@@ -41,9 +41,14 @@ export const useStoreExportStatus = defineStore("storeExportStatus", () => {
 
 export const useStoreTemporaryBooking = defineStore("storeTemporaryBooking", () => {
     const token: Ref<string | null> = ref(null);
-    function setToken(tokenTemporary: string|null) {
+    const timeRemaining: Ref<number> = ref(10 * 60 * 1000);
+
+    function setToken(tokenTemporary: string | null) {
         token.value = tokenTemporary;
     }
 
-    return {token, setToken};
+    function setTimeRemaining(time: number) {
+        timeRemaining.value = time;
+    }
+    return { token, setToken, timeRemaining, setTimeRemaining };
 }); 
