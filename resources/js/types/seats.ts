@@ -22,7 +22,7 @@ export type RowConfig = {
 }
 
 export type SeatFormatted = {
-    id?: string | null,
+    id?: number | string,
     name?: string | null,
     marginTop?: number,
     isWall?: boolean,

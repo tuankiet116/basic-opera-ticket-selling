@@ -97,3 +97,21 @@ select:focus {
   width: var(--width);
   height: calc(var(--width) * (9 / 16));
 }
+
+.admin-seat-hover-booked:hover {
+  background-color: black;
+}
+
+.admin-seat-booked-special {
+  background-color: #75ffe1;
+}
+
+.admin-seat-booked {
+  background-color: black;
+  color: white;
+}
+
+.client-seat-booked {
+  background-color: black;
+  color: white;
+}

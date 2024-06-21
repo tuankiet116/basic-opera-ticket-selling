@@ -9,11 +9,9 @@
         </div>
     </div>
     <Hall1 class="mb-5 pb-5" v-if="hallSelected == 1" :selected="seatSelectedHall1"
-        :seat-ticket-classes="seatTicketClasses" :bookings="mode == MODE_PRE_BOOKING ? bookings : []"
-        @selectSeat="selectSeat" />
+        :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
     <Hall2 class="mb-5 pb-5" v-else-if="hallSelected == 2" :selected="seatSelectedHall2"
-        :seat-ticket-classes="seatTicketClasses" :bookings="mode == MODE_PRE_BOOKING ? bookings : []"
-        @selectSeat="selectSeat" />
+        :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
     <div
         class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-12 col-md-6 start-0 end-0 m-auto">
         <div class="row">
@@ -112,18 +110,17 @@ import { HttpStatusCode } from "axios";
 import { useToast } from "vue-toastification";
 import { getSpecialClientsAPI } from "../../../api/admin/clients";
 import Multiselect from "@vueform/multiselect"
-import { AdminBookingStatus, PreBookingData } from "../../../types/seats";
+import { PreBookingData } from "../../../types/seats";
 import { useI18n } from "vue-i18n";
+import { MODE_PRE_BOOKING, MODE_TICKET_CLASS_SETTING } from "../../../config/const";
 
 const route = useRoute();
 const toast = useToast();
-const MODE_TICKET_CLASS_SETTING = 'ticket-class-setting';
-const MODE_PRE_BOOKING = 'pre-booking';
 const COLOR_SEAT_BOOKED_NON_SPECIAL = "rgb(0,0,0)";
 const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
 const { t } = useI18n();
 
-let event = ref({});
+let event: Ref<any> = ref({});
 let hallSelected = ref(1);
 let seatSelectedHall1 = ref([]);
 let seatSelectedHall2 = ref([]);
@@ -131,10 +128,10 @@ let ticketClassId = ref(null);
 let seatTicketClasses = ref([]);
 let clientsSpecial = ref({});
 let clientPreBooking = ref(null);
-let bookings = ref<Array<AdminBookingStatus>>();
+let bookings = ref<Array<any>>();
 let errors: Ref<any> = ref({});
 let mode = ref(MODE_TICKET_CLASS_SETTING)
-let halls = [
+let halls: Array<any> = [
     {
         name: "Khán phòng 1",
         id: "1"
@@ -160,7 +157,7 @@ const getBookingSorted = computed(() => {
     return bookings.value?.sort((a, b) => a.seat > b.seat ? 1 : -1);
 })
 
-const selectSeat = (seatName: never) => {
+const selectSeat = (seatName: any) => {
     let seatSelected = toRef(seatSelectedHall1);
     if (hallSelected.value == 2) {
         seatSelected = toRef(seatSelectedHall2);
@@ -275,9 +272,10 @@ const getBookings = async () => {
         return {
             seat: booking.seat.name,
             hall: booking.seat.hall,
-            color: booking.client.isSpecial ? COLOR_SEAT_BOOKED_SPECIAL : COLOR_SEAT_BOOKED_NON_SPECIAL,
+            color: booking.client?.isSpecial ? COLOR_SEAT_BOOKED_SPECIAL : COLOR_SEAT_BOOKED_NON_SPECIAL,
             client: booking.client,
-            disable: booking.client.isSpecial ? false : true
+            disable: booking.client?.isSpecial ? false : true,
+            textcolor: booking.client?.isSpecial ? "black" : "white",
         }
     });
 }

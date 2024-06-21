@@ -12,7 +12,7 @@
                         :style="`height: ${caculateRowHeight(row)}px`">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
-                                :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
+                                :class="setClassName(seat)"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 1)"
                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
@@ -72,8 +72,9 @@
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2 } from "../../config/hall1";
 import { onMounted, ref } from 'vue';
-import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../composable/hallComposable';
+import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData, bookingStatus } from '../../composable/hallComposable';
 import Minimap from 'js-minimap';
+import { MODE_TICKET_CLASS_SETTING } from '../../config/const';
 
 const rows = ref(null);
 const wrapper = ref(null);
@@ -96,15 +97,24 @@ const props = defineProps({
     bookings: {
         type: Array,
         default: []
+    },
+    mode: {
+        default: ""
     }
 });
 
 const setStyleSeat = (seat) => {
-    return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 1)
+    // return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 1, props.mode)
 }
 
 const setClassName = (seat) => {
     let className = isSeatInSelected(seat.id, props.selected) ? 'selected' : '';
+    let booking = bookingStatus(seat, props.bookings, 1);
+    console.log(booking)
+    if (booking && booking.disable) {
+        
+        className +='booking';
+    }
     return className;
 }
 
