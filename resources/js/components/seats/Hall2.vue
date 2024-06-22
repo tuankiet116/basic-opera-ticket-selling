@@ -9,7 +9,7 @@
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
-                                :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
+                                :class="setClassName(seat)"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
                                 data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
@@ -31,7 +31,7 @@
                             :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                             <template v-for="seat in row" :key="seat.id">
                                 <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
-                                    :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
+                                    :class="setClassName(seat)"
                                     class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                     :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
                                     data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
@@ -53,7 +53,7 @@
                         :style="`height: ${caculateRowHeight(row)}px`" :key="index">
                         <template v-for="seat in row" :key="seat.id">
                             <div v-if="seat.id" @click="emits('selectSeat', seat.id, Hall)"
-                                :class="{ 'selected': isSeatInSelected(seat.id, props.selected) }"
+                                :class="setClassName(seat)"
                                 class="border border-dark seat d-flex justify-content-center align-items-center z-1 rounded"
                                 :style="setStyleSeat(seat)" v-bind="makeToolTipData(seat, props.bookings, 2)"
                                 data-bs-toggle="tooltip" data-bs-placement="top" v-tooltip>
@@ -85,8 +85,8 @@
 <script setup>
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2, seats3 } from "../../config/hall2.ts";
-import { onMounted, ref } from 'vue';
-import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData } from '../../composable/hallComposable.ts';
+import { onMounted, ref, computed } from 'vue';
+import { setStyleSeatByTicketClass, makeToolTipData, setSeatClassName } from '../../composable/hallComposable.ts';
 
 const rows = ref(null);
 const seatsContainer = ref(null);
@@ -110,6 +110,9 @@ const props = defineProps({
     bookings: {
         type: Array,
         default: []
+    },
+    mode: {
+        default: ""
     }
 });
 
@@ -142,8 +145,12 @@ const caculateRowHeight = (row) => {
 }
 
 const setStyleSeat = (seat) => {
-    return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 2)
+    return setStyleSeatByTicketClass(seat, props.seatTicketClasses, 2)
 }
+
+const setClassName = computed(() => {
+    return (seat) => setSeatClassName(seat, props.selected, props.seatTicketClasses, props.bookings, props.mode, 2)
+})
 </script>
 <style>
 .minimap-preview {

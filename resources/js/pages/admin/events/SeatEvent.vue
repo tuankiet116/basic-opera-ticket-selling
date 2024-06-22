@@ -1,5 +1,9 @@
 <template>
-    <div class="container text-center pt-5">
+    <div v-show="event.is_openning" class="alert alert-danger position-sticky z-2 m-auto left-0 w-50" style="top: 1rem;"
+        role="alert">
+        Không thể sửa đổi thông tin khi sự kiện đang trong trạng thái mở bán vé!
+    </div>
+    <div class="container text-center pt-5 position-relative">
         <h1 class="fs-3 pt-5">Cài đặt hạng vé chỗ ngồi cho {{ event.name }}</h1>
         <div class="d-flex justify-content-center">
             <button class="btn" :class="hall.id == hallSelected ? 'btn-primary' : 'btn-light'" v-for="hall in halls"
@@ -8,10 +12,12 @@
             </button>
         </div>
     </div>
-    <Hall1 class="mb-5 pb-5" v-if="hallSelected == 1" :selected="seatSelectedHall1"
-        :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
-    <Hall2 class="mb-5 pb-5" v-else-if="hallSelected == 2" :selected="seatSelectedHall2"
-        :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
+    <KeepAlive>
+        <Hall1 class="mb-5 pb-5" v-if="hallSelected == 1" :selected="seatSelectedHall1"
+            :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
+        <Hall2 class="mb-5 pb-5" v-else-if="hallSelected == 2" :selected="seatSelectedHall2"
+            :seat-ticket-classes="seatTicketClasses" :mode="mode" :bookings="bookings" @selectSeat="selectSeat" />
+    </KeepAlive>
     <div
         class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-12 col-md-6 start-0 end-0 m-auto">
         <div class="row">
@@ -37,7 +43,8 @@
                         </option>
                     </select>
                 </div>
-                <button class="btn btn-primary col-2" @click="setSeatTicketClass">Đặt hạng vé</button>
+                <button class="btn btn-primary col-2" @click="setSeatTicketClass" :disabled="event.is_openning">Đặt hạng
+                    vé</button>
             </div>
             <div class="row justify-content-center" v-if="mode == MODE_PRE_BOOKING">
                 <div class="mb-2 row mx-0 p-0">
@@ -74,12 +81,12 @@
     </div>
     <Modal modalId="modal" :modalTitle="'Tình trạng đặt trước vé khán phòng' + hallSelected">
         <template #body>
-            <table class="table table-bordered border-primary" style="width: 500px;">
+            <table class="table table-bordered border-primary" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th scope="col">Ghế</th>
-                        <th scope="col">Tên khách hàng</th>
-                        <th scope="col">Số điện thoại</th>
+                        <th scope="col" class="text-center">Ghế</th>
+                        <th scope="col" class="text-center">Tên khách hàng</th>
+                        <th scope="col" class="text-center">Số điện thoại</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,14 +118,12 @@ import { useToast } from "vue-toastification";
 import { getSpecialClientsAPI } from "../../../api/admin/clients";
 import Multiselect from "@vueform/multiselect"
 import { PreBookingData } from "../../../types/seats";
-import { useI18n } from "vue-i18n";
 import { MODE_PRE_BOOKING, MODE_TICKET_CLASS_SETTING } from "../../../config/const";
 
 const route = useRoute();
 const toast = useToast();
 const COLOR_SEAT_BOOKED_NON_SPECIAL = "rgb(0,0,0)";
 const COLOR_SEAT_BOOKED_SPECIAL = "#FFEDD8";
-const { t } = useI18n();
 
 let event: Ref<any> = ref({});
 let hallSelected = ref(1);

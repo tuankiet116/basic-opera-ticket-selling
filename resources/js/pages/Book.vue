@@ -165,27 +165,27 @@ onMounted(async () => {
                 reselectSeat(value.seat.name, value.seat.hall);
             })
         }
+        window.Echo.channel(`client-booking-event-${event.value.id}`)
+            .listen("ClientBookingTicket", (e) => {
+                let seats = e.seats.flatMap((seat) => {
+                    let selectedSeats = seatSelectedHall1.value;
+                    if (seat.hall == 2) selectedSeats = seatSelectedHall2.value;
+                    let isSeatCurrentBooking = selectedSeats.find(s => s == seat.name);
+                    if (isSeatCurrentBooking) return [];
+                    return creatBookingItem(seat.name, seat.hall);
+                });
+                bookings.value.push(...seats);
+            })
+            .listen("ClientRemoveBookingTicket", (e) => {
+                let seats = e.seats;
+                for (let i = 0; i < seats.length; i++) {
+                    let seat = seats[i];
+                    let indexBooking = bookings.value.findIndex(book => book.seat == seat.name && book.hall == seat.hall);
+                    if (indexBooking > -1) bookings.value.splice(indexBooking, 1);
+                }
+            });
     })
 
-    window.Echo.channel(`client-booking-event-${event.value.id}`)
-        .listen("ClientBookingTicket", (e) => {
-            let seats = e.seats.flatMap((seat) => {
-                let selectedSeats = seatSelectedHall1.value;
-                if (seat.hall == 2) selectedSeats = seatSelectedHall2.value;
-                let isSeatCurrentBooking = selectedSeats.find(s => s == seat.name);
-                if (isSeatCurrentBooking) return [];
-                return creatBookingItem(seat.name, seat.hall);
-            });
-            bookings.value.push(...seats);
-        })
-        .listen("ClientRemoveBookingTicket", (e) => {
-            let seats = e.seats;
-            for (let i = 0; i < seats.length; i++) {
-                let seat = seats[i];
-                let indexBooking = bookings.value.findIndex(book => book.seat == seat.name && book.hall == seat.hall);
-                if (indexBooking > -1) bookings.value.splice(indexBooking, 1);
-            }
-        });
     setTimeout(async function () {
         refHall1.value.minimap?.reset();
     }, 30);

@@ -71,10 +71,9 @@
 <script setup>
 import { renderSeats } from '../../helpers/seats';
 import { seats1, seats2 } from "../../config/hall1";
-import { onMounted, ref } from 'vue';
-import { setStyleSeatByTicketClass, isSeatInSelected, makeToolTipData, bookingStatus } from '../../composable/hallComposable';
+import { onMounted, ref, computed } from 'vue';
+import { setStyleSeatByTicketClass, makeToolTipData, setSeatClassName } from '../../composable/hallComposable';
 import Minimap from 'js-minimap';
-import { MODE_TICKET_CLASS_SETTING } from '../../config/const';
 
 const rows = ref(null);
 const wrapper = ref(null);
@@ -104,19 +103,12 @@ const props = defineProps({
 });
 
 const setStyleSeat = (seat) => {
-    // return setStyleSeatByTicketClass(seat, props.seatTicketClasses, props.bookings, 1, props.mode)
+    return setStyleSeatByTicketClass(seat, props.seatTicketClasses, 1)
 }
 
-const setClassName = (seat) => {
-    let className = isSeatInSelected(seat.id, props.selected) ? 'selected' : '';
-    let booking = bookingStatus(seat, props.bookings, 1);
-    console.log(booking)
-    if (booking && booking.disable) {
-        
-        className +='booking';
-    }
-    return className;
-}
+const setClassName = computed(() => {
+    return (seat) => setSeatClassName(seat, props.selected, props.seatTicketClasses, props.bookings, props.mode, 1)
+})
 
 onMounted(() => {
     rows1.value = renderSeats(seats1);
