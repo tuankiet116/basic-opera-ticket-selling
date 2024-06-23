@@ -19,8 +19,8 @@ export const setSeatClassName = (seat: SeatFormatted, selectedSeats: Array<strin
     if (mode == MODE_TICKET_CLASS_SETTING && booking && booking.disable) {
         className += " admin-seat-hover-booked";
     } else if (mode == MODE_PRE_BOOKING && booking) {
-        className += booking.client?.isSpecial ? " admin-seat-booked-special" : " seat-booked";
-    } else if (booking && !mode) className += " seat-booked";
+        className += booking.client?.isSpecial ? " admin-seat-booked-special" : " admin-seat-booked";
+    } else if (booking && !mode) className += " seat-unselectable";
     else if ((!mode && config) || mode) className += " seat-selectable";
     else className += " seat-unselectable";
     return className;
