@@ -83,6 +83,15 @@ class EventService
             $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
             $ticketClasses->each(function ($ticketClass) use ($data, $eventId) {
                 $dataTicket = collect($data['ticketClasses'])->where("id", $ticketClass->id)->first();
+                $ticketClassBooked = BookModel::where([
+                    "ticket_class_id" => $ticketClass->id,
+                    "event_id" => $eventId
+                ])->first();
+                if ($ticketClassBooked && !$dataTicket) throw new Exception("Hạng vé đã được đặt chỗ, không thể xóa bỏ!");
+                if ($ticketClassBooked && $dataTicket && $dataTicket["price"] != $ticketClass->price)
+                    throw new Exception("Hạng vé đã được đặt chỗ, không thể thay đổi giá vé!");
+                if ($ticketClassBooked && $dataTicket && $dataTicket["name"] != $ticketClass->name)
+                    throw new Exception("Hạng vé đã được đặt chỗ, không thể thay đổi tên!");
                 if (!$dataTicket) {
                     EventSeatClassModel::where(["event_id" => $eventId, "ticket_class_id" => $ticketClass->id])->delete();
                     $ticketClass->delete();
@@ -101,12 +110,11 @@ class EventService
             }
         } catch (Exception $e) {
             Log::error("Update Event: ", [
-                "data" => collect($data)->except("image"),
                 "message" => $e->getMessage()
             ]);
             if (isset($filePath) && $filePath) Storage::disk("public")->delete($filePath);
             DB::rollBack();
-            return null;
+            throw $e;
         }
         DB::commit();
         return $event;

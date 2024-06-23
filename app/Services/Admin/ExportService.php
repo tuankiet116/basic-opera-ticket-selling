@@ -40,8 +40,7 @@ class ExportService
             $events = EventModel::with(["ticketClasses"])->whereIn("id", $eventIds)->get();
             $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
-                $bookingSeatId = $booking->seat_id;
-                $ticketClassId = $this->getTicketClassOfSeat($bookingEventId, $bookingSeatId);
+                $ticketClassId = $booking->ticket_class_id;
                 $dataRef = &$dataClientBookingsOnline;
                 if ($exportType == "report-daily" && !Carbon::parse($booking->created_at)->between(Carbon::parse($startDate), Carbon::parse($endDate))) goto NEXT;
                 if ($booking->client->isSpecial) $dataRef = &$dataClientBookingsSpecial;
@@ -95,10 +94,5 @@ class ExportService
                 "reason" => $e->getMessage()
             ]);
         }
-    }
-
-    private function getTicketClassOfSeat($eventId, $seatId)
-    {
-        return EventSeatClassModel::where("event_id", $eventId)->where("seat_id", $seatId)->first()->ticket_class_id;
     }
 }

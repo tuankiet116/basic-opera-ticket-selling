@@ -186,7 +186,8 @@ class AggregateRevenueDaily extends Exports
             $this->spreadsheet->setActiveSheetIndex(++$currentSheetIndex);
             $sheet = $this->spreadsheet->getActiveSheet();
 
-            $title = substr("Doanh thu $event->name", 0, 31);
+            $title = "Doanh thu $event->name";
+            $title = strlen($title) > 31 ? substr($title, 0, 27) . "..." : $title;
             $eventDate = $this->formatDate($event->date);
 
             $sheet->setTitle($title);

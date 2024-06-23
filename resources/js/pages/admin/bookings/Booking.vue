@@ -102,7 +102,7 @@
             </div>
             <br />
             <h5>Bảng thông tin chi tiết:</h5>
-            <table class="table table-bordered border-primary" style="width: 600px">
+            <table class="table table-bordered border-primary">
                 <thead>
                     <tr>
                         <th width="15%" scope="col" class="text-center">Khán phòng</th>

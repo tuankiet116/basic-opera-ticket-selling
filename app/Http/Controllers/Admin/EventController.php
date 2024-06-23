@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\CreateEventRequest;
 use App\Http\Requests\Admin\UpdateEventRequest;
 use App\Http\Requests\Admin\UpdateEventStatusRequest;
 use App\Services\Admin\EventService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -45,14 +46,14 @@ class EventController extends Controller
     public function update(int $eventId, UpdateEventRequest $request)
     {
         $data = $request->validated();
-        $event = $this->eventService->update($data, $eventId);
-        if (!$event) return $this->responseError([
-            "message" => __("messages.errors.common")
-        ]);
+        try {
+            $event = $this->eventService->update($data, $eventId);
+        } catch (Exception $e) {
+            return $this->responseError([
+                "message" => $e->getMessage()
+            ]);
+        }
         if ($event) return $this->responseSuccess($event->toArray());
-        return $this->responseError([
-            "message" => __("messages.errors.common")
-        ]);
     }
 
     public function updateStatus(int $eventId, UpdateEventStatusRequest $request)

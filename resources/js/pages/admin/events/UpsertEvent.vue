@@ -103,7 +103,7 @@ const updateEvent = async () => {
             errors.value = response.data.errors;
             break;
         default:
-            toast.error("Cập nhật sự kiện thất bại");
+            toast.error(response.data.message);
             break;
     }
     isLoading.value = false;

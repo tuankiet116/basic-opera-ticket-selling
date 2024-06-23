@@ -5,7 +5,7 @@
             <div class="row" v-for="(data, index) in props.ticketClasses" :key="index">
                 <div class="col-4">
                     <label for="name" class="form-label">Tên hạng vé: </label>
-                    <input type="text" class="form-control" id="name" v-model="data.name" :disabled="props.isLoading">
+                    <input type="text" class="form-control" id="name" v-model="data.name" :disabled="props.isLoading || data.isBooked">
                     <small v-if="props.errors[`ticketClasses.${index}.name`]" class="text-danger">
                         {{ props.errors[`ticketClasses.${index}.name`][0] }}
                     </small>
@@ -14,7 +14,7 @@
                     <label for="price" class="form-label">Giá vé: </label>
                     <div class="input-group">
                         <input v-model="data.priceFormatted" type="text" class="form-control" id="price"
-                            @keydown="checkNumber" :disabled="props.isLoading">
+                            @keydown="checkNumber" :disabled="props.isLoading || data.isBooked">
                         <span class="input-group-text">vnd</span>
                     </div>
                     <small v-if="props.errors[`ticketClasses.${index}.price`]" class="text-danger">
