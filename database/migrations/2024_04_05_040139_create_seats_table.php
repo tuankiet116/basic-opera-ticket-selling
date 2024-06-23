@@ -25,6 +25,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('ticket_classes');
+        Schema::dropIfExists('events');
         Schema::dropIfExists('seats');
     }
 };

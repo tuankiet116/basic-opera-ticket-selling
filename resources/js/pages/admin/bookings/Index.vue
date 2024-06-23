@@ -17,7 +17,7 @@
         </div>
         <div class="row">
             <template v-if="tab == TAB_EVENTS_OPENNING">
-                <div class="col-6" v-for="event in eventsOpenning" :key="event.id">
+                <div class="col-4" v-for="event in eventsOpenning" :key="event.id">
                     <div class="m-3">
                         <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                             <div class="row shadow bg-white border-hg-bottom">
@@ -25,14 +25,14 @@
                                     <img :src="'/storage/' + event.image_url"
                                         class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                                 </div>
-                                <div class="col">
+                                <div class="col" style="height: 10rem">
                                     <h5>{{ event.name }}</h5>
-                                    <p class="card-text text-truncate-custom">
-                                        {{ event.description }}
-                                    </p>
                                     <p class="card-text">
                                         <small class="text-body-secondary">Ngày diễn: {{ convertDate(event.date)
                                             }}</small>
+                                    </p>
+                                    <p class="card-text text-truncate-custom">
+                                        {{ event.description }}
                                     </p>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                 </div>
             </template>
             <template v-if="tab == TAB_ALL_EVENTS">
-                <div class="col-3" v-for="event in events.data" :key="event.id">
+                <div class="col-4" v-for="event in events.data" :key="event.id">
                     <div class="m-3">
                         <RouterLink :to="{ name: 'admin-list-booking-event', params: { eventId: event.id } }">
                             <div class="row shadow bg-white border-hg-bottom">
@@ -52,14 +52,14 @@
                                     <img :src="'/storage/' + event.image_url"
                                         class="img-fluid rounded-start ratio ratio-16x9 object-fit-fill" alt="..." />
                                 </div>
-                                <div class="col">
+                                <div class="col" style="height: 10rem">
                                     <h5>{{ event.name }}</h5>
-                                    <p class="card-text text-truncate-custom">
-                                        {{ event.description }}
-                                    </p>
                                     <p class="card-text">
                                         <small class="text-body-secondary">Ngày diễn: {{ convertDate(event.date)
                                             }}</small>
+                                    </p>
+                                    <p class="card-text text-truncate-custom">
+                                        {{ event.description }}
                                     </p>
                                 </div>
                             </div>

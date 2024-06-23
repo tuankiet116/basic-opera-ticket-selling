@@ -2,6 +2,8 @@
 
 namespace App\Services\Admin;
 
+use App\Models\BookModel;
+use App\Models\ClientModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
@@ -25,7 +27,7 @@ class EventService
         DB::beginTransaction();
         try {
             $image = request()->file("image");
-            $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
+            $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".webp");
             data_set($data, "image_url", $filePath);
             $event = EventModel::create($data);
             $ticketClassesData = array_map(fn ($data) => $data + [
@@ -46,11 +48,20 @@ class EventService
         return $event;
     }
 
-    public function edit($eventId): EventModel | null
+    public function edit($eventId): array
     {
         $event = EventModel::with("ticketClasses")->unDeleted()->find($eventId);
-        if (!$event) return null;
-        return $event;
+        $event->ticketClasses->each(function (TicketClassModel &$ticketclass) use ($eventId) {
+            $booking = BookModel::where([
+                "ticket_class_id" => $ticketclass->id,
+                "event_id" => $eventId,
+                "is_client_special" => false
+            ])->first();
+            if ($booking) data_set($ticketclass, "isBooked", true);
+            else data_set($ticketclass, "isBooked", false);
+        });
+        if (!$event) return [];
+        return $event->toArray();
     }
 
     public function update(array $data, int $eventId)

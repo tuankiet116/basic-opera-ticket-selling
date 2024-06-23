@@ -19,13 +19,15 @@ class BookModel extends Model
         "isPending",
         "start_pending",
         "is_temporary",
-        "token"
+        "token",
+        "is_client_special"
     ];
 
     protected $casts = [
         "isBooked" => "boolean",
         "isPending" => "boolean",
         "is_temporary" => "boolean",
+        "is_client_special" => "boolean",
     ];
 
     public function client()

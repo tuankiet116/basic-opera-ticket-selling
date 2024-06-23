@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_classes', function (Blueprint $table) {
-            $table->id();
-            $table->string("name");
-            $table->double("price");
-            $table->string("color");
-            $table->timestamps();
+        Schema::table('books', function (Blueprint $table) {
+            $table->boolean("is_client_special")->after("client_id")->nullable();
         });
     }
 
@@ -25,5 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('books', function (Blueprint $table) {
+            $table->dropColumn('is_client_special');
+        });
     }
 };

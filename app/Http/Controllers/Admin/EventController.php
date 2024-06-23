@@ -39,7 +39,7 @@ class EventController extends Controller
         if (!$data) return $this->responseError([
             "message" => __("messages.errors.common")
         ]);
-        return $this->responseSuccess($data->toArray());
+        return $this->responseSuccess($data);
     }
 
     public function update(int $eventId, UpdateEventRequest $request)

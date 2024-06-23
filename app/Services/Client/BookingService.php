@@ -76,6 +76,7 @@ class BookingService
                             "seat_id" => $seat["id"],
                             "event_id" => data_get($data, "event_id"),
                             "ticket_class_id" => $ticketClass->id,
+                            "is_client_special" => false,
                             "is_temporary" => false
                         ]);
                     }
@@ -140,6 +141,7 @@ class BookingService
                         "start_pending" => null,
                         "is_temporary" => true,
                         "token" => $token,
+                        "is_client_special" => false,
                         "created_at" => $startTime,
                         "updated_at" => $startTime,
                     ]);

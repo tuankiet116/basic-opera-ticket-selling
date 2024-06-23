@@ -30,11 +30,17 @@ class SeatService
     {
         DB::beginTransaction();
         try {
-            $dataInsert = [];
+            $event = EventModel::find($data["event_id"]);
+            if ($event->is_openning) throw new Exception("Sự kiện đang mở bán vé, không thể cập nhật.");
             foreach ($data["seats"] as $seatData) {
                 if (sizeof($seatData["names"])) {
-                    DB::enableQueryLog();
                     $seats = SeatModel::where("hall", $seatData["hall"])->whereIn("name", $seatData["names"])->get()->toArray();
+                    $seatIds = collect($seats)->pluck("id")->toArray();
+                    $seatBookedCount = BookModel::where([
+                        "event_id" => $event->id,
+                        "is_client_special" => false
+                    ])->whereIn("seat_id", $seatIds)->count();
+                    if ($seatBookedCount) throw new Exception("Không thể cập nhật hạng vé cho ghế đã được đặt chỗ.");
                     foreach ($seats as $seat) {
                         $eventId = $data["event_id"];
                         $seatId = $seat["id"];
@@ -47,23 +53,23 @@ class SeatService
                             $oldSeatsClass->update(["ticket_class_id" => $ticketClassId]);
                             $oldSeatsClass->save();
                         } else {
-                            $dataInsert[] = [
+                            $dataCreate = [
                                 "event_id" => $data["event_id"],
                                 "seat_id" => $seat["id"],
                                 "ticket_class_id" => $data["ticket_class_id"]
                             ];
+                            EventSeatClassModel::create($dataCreate);
                         }
                     }
                 }
             }
-            EventSeatClassModel::insert($dataInsert);
         } catch (Exception $e) {
             Log::error("Set Seat Ticket Class: ", [
                 "data" => $data,
                 "message" => $e->getMessage()
             ]);
             DB::rollBack();
-            return null;
+            throw $e;
         }
         DB::commit();
         return $this->getSeatTicketClass($data["event_id"]);
@@ -82,9 +88,11 @@ class SeatService
             return $query;
         })->get();
         $seatIds = $seats->pluck("id")->toArray();
-        $books = $this->getBooksWithClientNonSpecial($seatIds, $data["event_id"]);
+        $bookingsOnline = $this->getBooksWithClientNonSpecial($seatIds, $data["event_id"]);
+        if (sizeof($bookingsOnline)) throw new InvalidBookingException($bookingsOnline->pluck("seat_id")->toArray());
 
-        if (sizeof($books)) throw new InvalidBookingException($books->pluck("seat_id")->toArray());
+        $ticketClasses = EventSeatClassModel::where("event_id", $event->id)->whereIn("seat_id", $seatIds)->pluck("ticket_class_id");
+        if (sizeof($ticketClasses) != sizeof($seatIds)) throw new Exception("Không thể prebooking khi chưa có hạng vé");
         DB::beginTransaction();
         try {
             foreach ($seatIds as $id) {
@@ -96,7 +104,8 @@ class SeatService
                 } else {
                     BookModel::updateOrCreate([
                         "event_id" => $data["event_id"],
-                        "seat_id" => $id
+                        "seat_id" => $id,
+                        "is_client_special" => true
                     ], ["client_id" => $data["client_id"]]);
                 }
             }
@@ -106,7 +115,6 @@ class SeatService
                 if ($isCancel) ClientRemoveBookingTicket::dispatch($seatsChunk, $event);
                 else ClientBookingTicket::dispatch($seatsChunk, $event);
             }
-            
         } catch (Exception $e) {
             Log::error("Pre Booking: ", [
                 "data" => $data,
@@ -126,10 +134,8 @@ class SeatService
 
     private function getBooksWithClientNonSpecial(array $seatIds, int $eventId): ?Collection
     {
-        return BookModel::where("books.event_id", $eventId)
-            ->whereIn("seat_id", $seatIds)
-            ->join("clients", "clients.id", "=", "books.client_id")
-            ->where("clients.isSpecial", false)
-            ->select(["books.*", "clients.name as client_name"])->get();
+        return BookModel::where("event_id", $eventId)
+            ->where("is_client_special", false)
+            ->whereIn("seat_id", $seatIds)->get();
     }
 }

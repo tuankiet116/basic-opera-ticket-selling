@@ -24,7 +24,6 @@ return new class extends Migration
     {
         Schema::table('seats', function (Blueprint $table) {
             $table->dropUnique(['name', 'hall']);
-            $table->string("name")->unique(true)->change();
         });
     }
 };

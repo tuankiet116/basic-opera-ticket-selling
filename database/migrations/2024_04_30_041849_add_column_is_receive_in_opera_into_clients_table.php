@@ -24,7 +24,6 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->dropColumn('is_receive_in_opera');
-            $table->string("address")->nullable(false)->change();
         });
     }
 };

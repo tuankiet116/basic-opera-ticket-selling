@@ -24,13 +24,14 @@ class SeatController extends Controller
     public function setSeatTicketClass(SetSeatTicketClassRequest $request)
     {
         $data = $request->validated();
-        $result = $this->seatService->setSeatTicketClass($data);
-        if ($result) {
-            return $this->responseSuccess($result);
+        try {
+            $result = $this->seatService->setSeatTicketClass($data);
+        } catch (Exception $e) {
+            return $this->responseError([
+                "message" => $e->getMessage()
+            ]);
         }
-        return $this->responseError([
-            "message" => __("messages.errors.common")
-        ]);
+        return $this->responseSuccess($result);
     }
 
     public function preBookingTicket(PreBookingRequest $request)
