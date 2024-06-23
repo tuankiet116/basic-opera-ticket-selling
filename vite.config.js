@@ -29,14 +29,5 @@ export default defineConfig({
     },
     server: {
         host: false
-    },
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    vue: ['vue']
-                }
-            }
-        }
     }
 });
