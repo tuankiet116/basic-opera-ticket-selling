@@ -113,7 +113,6 @@ onMounted(() => {
         if (distance < 0) {
             clearInterval(x);
             minutes = seconds = "00";
-            unselectAllSeats();
         }
         timer.value = minutes + ":" + seconds;
     }, 1000);
