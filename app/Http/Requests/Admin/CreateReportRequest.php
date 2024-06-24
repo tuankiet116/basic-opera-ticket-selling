@@ -29,4 +29,14 @@ class CreateReportRequest extends FormRequest
             "end_date" => "required_if:type,report-daily|date|after_or_equal:start_date|date_format:Y-m-d|nullable"
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "type" => "Loại report",
+            "events" => "Sự kiện",
+            "start_date" => "Ngày bắt đầu",
+            "end_date" => "Ngày kết thúc"
+        ];
+    }
 }

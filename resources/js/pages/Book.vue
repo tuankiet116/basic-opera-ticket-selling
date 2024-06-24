@@ -42,10 +42,6 @@
                             {{ numberWithCommas(ticketClass.price) }} vnđ</span>
                         <span class="mx-1">|</span>
                     </div>
-                    <div class="d-flex text-responsive">
-                        <div>{{ $t("booking_page.booked") }}</div>
-                        <div class="mx-1 rounded color-ticket" :style="'background-color: ' + BOOKED_COLOR"></div>
-                    </div>
                 </div>
                 <p class="fw-bold">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>
                 <div v-if="!isZoomOutBox" class="col-12 text-responsive">
@@ -119,7 +115,6 @@ import { useI18n } from "vue-i18n";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import ModalConfirmBooking from "../components/client/ModalConfirmBooking.vue";
 
-const BOOKED_COLOR = "black";
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
@@ -315,9 +310,7 @@ const getBookingStatus = async () => {
 const creatBookingItem = (seatName, seatHall) => {
     return {
         seat: seatName,
-        hall: seatHall,
-        color: BOOKED_COLOR,
-        textcolor: "white",
+        hall: seatHall
     };
 };
 

@@ -3,12 +3,12 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-    // base: "https://1977-27-72-29-216.ngrok-free.app",
     plugins: [
         laravel({
             input: [
                 'resources/css/app.scss',
                 'resources/js/index.js',
+                'resources/js/admin.js',
             ],
             refresh: true,
         }),

@@ -43,9 +43,9 @@
                     <tr v-else v-for="(event, index) in events.data" :key="index">
                         <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
                         <td>
-                            <router-link :to="{ name: 'book-ticket', params: { eventId: event.id } }">
+                            <a :href="`/book/${event.id}`">
                                 <strong>{{ event.name }}</strong>
-                            </router-link>
+                            </a>
                         </td>
                         <td>{{ convertDate(event.date) }}</td>
                         <td>

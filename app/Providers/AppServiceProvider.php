@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         Pulse::user(fn (User $user) => [
             'name' => $user->name,
             'extra' => $user->email,
-            'avatar' => Vite::asset("resources/images/image.png"),
+            'avatar' => Vite::asset("resources/images/image.webp"),
         ]);
     }
 }

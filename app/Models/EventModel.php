@@ -19,6 +19,7 @@ class EventModel extends Model
         "image_url",
         "is_openning",
         "is_delete",
+        "banking_code",
     ];
 
     protected $casts = [

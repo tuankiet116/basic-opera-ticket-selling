@@ -28,4 +28,14 @@ class CreateSpecialClientRequest extends FormRequest
             "address" => "required|string"
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "name" => "Tên",
+            "phone_number" => "Số điện thoại",
+            "email" => "Email",
+            "address" => "Địa chỉ"
+        ];
+    }
 }

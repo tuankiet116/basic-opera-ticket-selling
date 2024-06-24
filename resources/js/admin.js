@@ -1,7 +1,7 @@
 import 'bootstrap';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from './routes/routes.client.js';
+import { routes } from './routes/routes.admin.js';
 import App from './App.vue';
 import lazyload from './directives/lazyload';
 import { isLoggedInAPI } from './api/admin/auth';
@@ -23,7 +23,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
-
 router.beforeEach(async (to, from, next) => {
     const isAuthenticated = authenticatedStore.isAdminLoggedIn;
     if (to.matched.find(value => value.name == "admin" && !isAuthenticated)) {

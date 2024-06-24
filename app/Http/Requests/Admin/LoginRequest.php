@@ -27,4 +27,13 @@ class LoginRequest extends FormRequest
             "remember_me" => "boolean"
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "email" => "Email",
+            "password" => "Mật khẩu",
+            "remember_me" => "Ghi nhớ đăng nhập"
+        ];
+    }
 }

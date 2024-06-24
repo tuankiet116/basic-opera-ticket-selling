@@ -29,7 +29,8 @@ class CreateEventRequest extends FormRequest
             "ticketClasses" => "array",
             "ticketClasses.*.name" => "required|string",
             "ticketClasses.*.price" => "required|numeric",
-            "ticketClasses.*.color" => "required|string"
+            "ticketClasses.*.color" => "required|string",
+            "banking_code" => "required|string|max:10"
         ];
     }
 
@@ -43,6 +44,7 @@ class CreateEventRequest extends FormRequest
             "ticketClasses.*.name" => __("attibutes.ticket-class.name"),
             "ticketClasses.*.price" => __("attibutes.ticket-class.price"),
             "ticketClasses.*.color" => __("attibutes.ticket-class.color"),
+            "banking_code" => "Mã chuyển khoản ngân hàng"
         ];
     }
 }

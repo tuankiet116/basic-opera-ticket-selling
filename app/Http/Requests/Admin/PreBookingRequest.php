@@ -37,4 +37,14 @@ class PreBookingRequest extends FormRequest
             "isCancel" => "boolean",
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "event_id" => "Sự kiện",
+            "client_id" => "Khách hàng",
+            "seats" => "Ghế",
+            "isCancel" => "Hủy đặt chỗ"
+        ];
+    }
 }

@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <h3 class="container mt-2" v-if="props.isEdit">Cập nhật thông tin sự kiện {{ dataBasic.title }}</h3>
         <h3 class="container mt-2" v-else>Tạo mới sự kiện</h3>
-        <EventInfo :title="dataBasic.title" :date="dataBasic.date" :description="dataBasic.desc" :errors="errors"
-            @changeDate="setDate" @changeTitle="setTitle" @changeFile="setFile" @changeDesc="setDesc"
+        <EventInfo :title="dataBasic.title" :date="dataBasic.date" :description="dataBasic.desc" :bankingCode="dataBasic.bankingCode" :errors="errors"
+            @changeDate="setDate" @changeTitle="setTitle" @changeFile="setFile" @changeDesc="setDesc" @changeBankingCode="setBankingCode"
             :isLoading="isLoading" />
         <TicketClass :ticketClasses="dataTicketClasses" :errors="errors" :isLoading="isLoading" @deleteTicketClass="deleteTicketClass"/>
         <div class="row justify-content-center mt-5">
@@ -37,7 +37,8 @@ const dataBasic = reactive({
     title: "",
     desc: "",
     file: null,
-    date: ""
+    date: "",
+    bankingCode: "",
 });
 
 let dataTicketClasses = ref([
@@ -60,6 +61,7 @@ const setDate = (date: string) => { dataBasic.date = date; }
 const setTitle = (title: string) => { dataBasic.title = title }
 const setFile = (file: any) => { dataBasic.file = file }
 const setDesc = (desc: string) => { dataBasic.desc = desc }
+const setBankingCode = (bankingCode: string) => {dataBasic.bankingCode = bankingCode} 
 const toast = useToast();
 const router = useRouter();
 const route = useRoute();
@@ -82,6 +84,7 @@ const getEvent = async () => {
     dataBasic.title = response.data.name;
     dataBasic.desc = response.data.description;
     dataBasic.date = response.data.date;
+    dataBasic.bankingCode = response.data.banking_code;
     dataTicketClasses.value = response.data.ticket_classes;
 }
 
@@ -91,6 +94,7 @@ const updateEvent = async () => {
         date: moment(dataBasic.date).format("Y-MM-DD"),
         image: dataBasic.file,
         description: dataBasic.desc,
+        banking_code: dataBasic.bankingCode,
         ticketClasses: dataTicketClasses.value
     }
     isLoading.value = true;
@@ -115,6 +119,7 @@ const createEvent = async () => {
         date: moment(dataBasic.date).format("Y-MM-DD"),
         description: dataBasic.desc,
         image: dataBasic.file,
+        banking_code: dataBasic.bankingCode,
         ticketClasses: dataTicketClasses.value
     }
     isLoading.value = true;

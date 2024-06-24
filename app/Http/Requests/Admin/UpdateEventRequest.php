@@ -30,7 +30,23 @@ class UpdateEventRequest extends FormRequest
             "ticketClasses.*.id" => "nullable|integer",
             "ticketClasses.*.name" => "required|string",
             "ticketClasses.*.price" => "required|numeric",
-            "ticketClasses.*.color" => "required|string"
+            "ticketClasses.*.color" => "required|string",
+            "banking_code" => "required|string|max:10"
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            "name" => "Tên sự kiện",
+            "date" => "Ngày công chiếu",
+            "description" => "Mô tả",
+            "image" => "Hình ảnh",
+            "ticketClasses" => "Hạng vé",
+            "ticketClasses.*.name" => "Tên hạng vé",
+            "ticketClasses.*.price" => "Giá hạng vé",
+            "ticketClasses.*.color" => "Màu sắc hạng vé",
+            "banking_code" => "Mã chuyển khoản ngân hàng"
         ];
     }
 }

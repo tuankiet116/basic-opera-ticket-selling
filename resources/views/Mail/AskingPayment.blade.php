@@ -70,13 +70,12 @@
   <p dir="ltr">Tên tài khoản/Beneficiary: <strong>NHA HAT HO GUOM</strong></p>
   <p dir="ltr">Ngân hàng/Bank: <strong>Ngân hàng TMCP Kỹ Thương Việt Nam - Techcombank</strong></p>
   <p dir="ltr">Số tài khoản/Bank account number:<strong> 3135 9999</strong></p>
-  <p dir="ltr">Nội dung chuyển khoản/Syntax:<strong> {{ date('d.m.Y', strtotime($event->date)) }} -
-      {{ $event->name }} - Số ghế - Tên bạn</strong></p>
-  <p dir="ltr">Ví dụ: {{ date('d.m.Y', strtotime($event->date)) }} -
-    {{ transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove', $event->name) }} - A1 A3 - NGUYEN
+  <p dir="ltr">Nội dung chuyển khoản/Syntax:<strong> {{ $event->banking_code }} - Số ghế - Tên bạn</strong></p>
+  <p dir="ltr">Ví dụ:
+    {{ transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove', $event->banking_code) }} - A1 A3 - NGUYEN
     VAN A</p>
-  <p dir="ltr">E.g: {{ date('d.m.Y', strtotime($event->date)) }} -
-    {{ transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove', $event->name) }} - A1 A3 - NGUYEN
+  <p dir="ltr">E.g:
+    {{ transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove', $event->banking_code) }} - A1 A3 - NGUYEN
     VAN A</p>
   <p dir="ltr"><img
       src="https://lh7-us.googleusercontent.com/AxruJbuIJ03ByvTXV-y9y1Ex2JjIu0K6HkNK2jxa2YdPz-6ukfR4KBxp-NLWCYcFojV9YybJfioVR_QsPiQZbGGzLd8yLC4nyBbiJz9zztX4qemXfucXCcAJw0UKb7aRHaknvvrT_981-NPAP2_JJd8"
@@ -111,7 +110,7 @@
     <tbody>
       <tr>
         <td><br>
-          <p dir="ltr"><img src="{{ Vite::asset('resources/images/image.png') }}" width="134.86458333333331" height="90"></p>
+          <p dir="ltr"><img src="{{ Vite::asset('resources/images/image.webp') }}" width="134.86458333333331" height="90"></p>
         </td>
         <td>
           <p dir="ltr">

@@ -37,4 +37,15 @@ class SetSeatTicketClassRequest extends FormRequest
             "seats.*.names.*" => "string",
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "ticket_class_id" => "Hạng vé",
+            "event_id" => "Sự kiện",
+            "seats" => "Ghế",
+            "seats.*.hall" => "Khán phòng",
+            "seats.*.names" => "Tên ghế",
+        ];
+    }
 }

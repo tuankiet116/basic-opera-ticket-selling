@@ -5,5 +5,6 @@ export type EventData = {
     date: string,
     description: string,
     image?: any | File,
+    banking_code: string,
     ticketClasses: Array<TicketClass>
 }

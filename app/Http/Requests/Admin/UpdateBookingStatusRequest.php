@@ -33,4 +33,12 @@ class UpdateBookingStatusRequest extends FormRequest
             ]
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "client_id" => "Khách hàng",
+            "event_id" => "Sự kiện"
+        ];
+    }
 }

@@ -110,7 +110,7 @@
     <table>
       <tr>
         <td>
-          <img style="width:121px;height:90px" src="{{ Vite::asset('resources/images/image.png') }}">
+          <img style="width:121px;height:90px" src="{{ Vite::asset('resources/images/image.webp') }}">
         </td>
         <td>
           <p dir="ltr"><strong>HO GUOM OPERA</strong></p>
