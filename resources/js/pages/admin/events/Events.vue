@@ -26,12 +26,12 @@
             <table class="table table-group-divider">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
-                        <th width="10%">Tên sự kiện</th>
-                        <th width="5%">Ngày diễn</th>
-                        <th width="40%">Mô tả</th>
-                        <th width="15%">Trạng thái</th>
-                        <th width="25%">Hành động</th>
+                        <th width="2%" class="text-center">#</th>
+                        <th width="25%" class="text-center">Tên sự kiện</th>
+                        <th width="5%" class="text-center">Ngày diễn</th>
+                        <th width="15%" class="text-center">Mã chuyển khoản</th>
+                        <th width="15%" class="text-center">Trạng thái</th>
+                        <th width="20%" class="text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,33 +41,34 @@
                         </td>
                     </tr>
                     <tr v-else v-for="(event, index) in events.data" :key="index">
-                        <th scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page }}</th>
-                        <td>
-                            <a :href="`/book/${event.id}`">
-                                <strong>{{ event.name }}</strong>
+                        <th class="text-center" scope="row">{{ index + 1 + (events.current_page - 1) * events.per_page
+                            }}</th>
+                        <td class="text-center">
+                            <a :href="`/book/${event.id}`" class="fw-medium">
+                                {{ event.name }}
                             </a>
                         </td>
-                        <td>{{ convertDate(event.date) }}</td>
+                        <td class="text-center">{{ convertDate(event.date) }}</td>
+                        <td class="text-center">{{ event.banking_code }}</td>
                         <td>
-                            <p class="text-wrap text-truncate-custom m-0">{{ event.description }}</p>
-                        </td>
-                        <td>
-                            <div class="form-check form-switch">
-                                <label class="form-check-label" for="flexSwitchCheckDisabled">Mở bán vé</label>
-                                <input class="form-check-input"
-                                    @change="updateOpenningStatus(event.id, !event.is_openning)" type="checkbox"
-                                    role="switch" id="flexSwitchCheckDisabled" :checked="event.is_openning">
+                            <div class="d-flex justify-content-center">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label" for="flexSwitchCheckDisabled">Mở bán vé</label>
+                                    <input class="form-check-input"
+                                        @change="updateOpenningStatus(event.id, !event.is_openning)" type="checkbox"
+                                        role="switch" id="flexSwitchCheckDisabled" :checked="event.is_openning">
+                                </div>
                             </div>
                         </td>
                         <td>
                             <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
-                                class="btn btn-light mx-1 my-1 btn-sm w-75">Cài đặt thông tin</router-link>
+                                class="btn btn-light mx-1 my-1 btn-sm w-100">Cài đặt thông tin</router-link>
                             <br />
                             <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button"
-                                class="btn btn-light mx-1 btn-sm w-75">Cài đặt chỗ ngồi</router-link>
+                                class="btn btn-light mx-1 btn-sm w-100">Cài đặt chỗ ngồi</router-link>
                             <br />
                             <button type="button" @click="removeEvent(event)"
-                                class="btn btn-danger mx-1 btn-sm w-75">Xóa</button>
+                                class="btn btn-danger mx-1 btn-sm w-100">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
