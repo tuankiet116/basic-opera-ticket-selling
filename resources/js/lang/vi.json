@@ -7,7 +7,8 @@
     },
     "events": {
         "title": "Danh sách sự kiện",
-        "booking": "Đặt vé ngay"
+        "booking": "Đặt vé ngay",
+        "publish_date": "Ngày diễn"
     },
     "booking_page": {
         "booking_for": "Đặt vé cho",

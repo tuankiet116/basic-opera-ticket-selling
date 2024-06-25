@@ -2,7 +2,7 @@
   <span>
     <p dir="ltr">
       <span>
-        <strong>{{ $event->name }}</strong> xin chào bạn!
+        <strong>Musical Seasons</strong> xin chào bạn!
       </span>
     </p>
     <p dir="ltr">
@@ -105,7 +105,7 @@
       <span>Xin chân thành cảm ơn/Best regards,</span>
     </p>
     <p dir="ltr">
-      <strong> {{ $event->name }}<br></strong>
+      <strong>Musical Seasons<br></strong>
     </p>
     <table>
       <tr>

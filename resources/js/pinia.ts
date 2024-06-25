@@ -51,4 +51,4 @@ export const useStoreTemporaryBooking = defineStore("storeTemporaryBooking", () 
         timeRemaining.value = time;
     }
     return { token, setToken, timeRemaining, setTimeRemaining };
-}); 
+});

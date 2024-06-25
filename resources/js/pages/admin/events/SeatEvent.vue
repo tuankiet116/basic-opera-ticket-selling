@@ -51,11 +51,11 @@
                     <div class="col-10">
                         <div class="d-flex">
                             <span>Ghế đã đặt chỗ bởi khách hàng Online: </span>
-                            <div class="box-color-note" :style="`background-color: ${COLOR_SEAT_BOOKED_NON_SPECIAL}`" />
+                            <div class="box-color-note admin-seat-booked"/>
                         </div>
                         <div class="d-flex">
                             <span>Ghế được đặt trước: </span>
-                            <div class="box-color-note" :style="`background-color: ${COLOR_SEAT_BOOKED_SPECIAL}`" />
+                            <div class="box-color-note admin-seat-booked-special"/>
                         </div>
                     </div>
                     <button type="button" class="btn btn-light col btn-sm" data-bs-toggle="modal"

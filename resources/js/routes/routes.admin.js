@@ -8,6 +8,7 @@ import UpsertClient from '../pages/admin/clients/UpsertClient.vue';
 import IndexBooking from '../pages/admin/bookings/Index.vue';
 import Booking from '../pages/admin/bookings/Booking.vue';
 import Files from '../pages/admin/files/Files.vue';
+import Discounts from '../pages/admin/discounts/Discounts.vue';
 
 export const routes = [
     {
@@ -19,6 +20,7 @@ export const routes = [
                 path: "event/:eventId", children: [
                     { path: "edit", name: 'admin-edit-event', component: UpsertEvent, props: { isEdit: true } },
                     { path: "seats", name: 'admin-edit-seats', component: SeatEvent },
+                    { path: "discount-code", name: 'admin-discount', component: Discounts},
                 ]
             },
             {

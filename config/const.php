@@ -45,3 +45,6 @@ if (!defined("CONFIG_HALL_2")) define("CONFIG_HALL_2", [
 ]);
 
 if (!defined("CHUNK_SIZE_BROADCAST")) define("CHUNK_SIZE_BROADCAST", 5);
+
+if (!defined("PRICE_DISCOUNT_TYPE")) define("PRICE_DISCOUNT_TYPE", "price-discount");
+if (!defined("PERCENTAGE_DISCOUNT_TYPE")) define("PERCENTAGE_DISCOUNT_TYPE", "percentage-discount");

@@ -205,7 +205,7 @@ return [
         Recorders\SlowRequests::class => [
             'enabled' => env('PULSE_SLOW_REQUESTS_ENABLED', true),
             'sample_rate' => env('PULSE_SLOW_REQUESTS_SAMPLE_RATE', 1),
-            'threshold' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1000),
+            'threshold' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 200),
             'ignore' => [
                 '#^/'.env('PULSE_PATH', 'pulse').'$#', // Pulse dashboard...
                 '#^/telescope#', // Telescope dashboard...

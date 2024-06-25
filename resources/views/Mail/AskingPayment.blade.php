@@ -1,6 +1,6 @@
 <div>
   <p dir="ltr">
-    <strong>{{ $event->name }}</strong> xin chào bạn,
+    <strong>Musical Seasons</strong> xin chào bạn,
   </p>
   <p dir="ltr">
     Để hoàn tất thủ tục đặt vé cho
@@ -39,6 +39,7 @@
     <tbody>
       @php
         $price = 0;
+        $priceDiscount = 0;
       @endphp
       @foreach ($bookings as $hall => $booking)
         @foreach ($booking as $seat)
@@ -53,17 +54,30 @@
               <b>{{ $seat['class'] }}</b>
             </td>
             <td style="border: 1px solid black; text-align:center;">
-              <b>{{ number_format($seat['price']) }} vnd</b>
+              @if ($seat['price'] > $seat["discount_price"])
+                <b style="text-decoration: line-through; color: red; margin-right: 2px;">{{ number_format($seat['price']) }} vnd</b>
+                <b>{{ number_format($seat['discount_price']) }} vnd</b>
+              @else
+                <b>{{ number_format($seat['price']) }} vnd</b>
+              @endif
             </td>
           </tr>
           @php
             $price += $seat['price'];
+            $priceDiscount += $seat['discount_price'];
           @endphp
         @endforeach
       @endforeach
       <tr>
         <td style="border: 1px solid black; text-align:center;">Tổng cộng/Total</td>
-        <td style="border: 1px solid black; text-align:center;" colspan=3>{{ number_format($price) }} vnd</td>
+        <td style="border: 1px solid black; text-align:center;" colspan=3>
+          @if ($seat['price'] > $seat["discount_price"])
+		  	<span style="text-decoration: line-through; color: red; margin-right: 2px;">{{ number_format($price) }} vnd</span>
+		  	<span>{{ number_format($priceDiscount) }} vnd</span>
+          @else
+		  	{{ number_format($price) }} vnd
+          @endif
+        </td>
       </tr>
     </tbody>
   </table>
@@ -97,7 +111,7 @@
   <p dir="ltr"> </p>
   <p dir="ltr">Xin chân thành cảm ơn / Best regards,</p>
   <strong>
-    {{ $event->name }}<br>
+    Musical Seasons<br>
   </strong>
 </div>
 <div> </div>

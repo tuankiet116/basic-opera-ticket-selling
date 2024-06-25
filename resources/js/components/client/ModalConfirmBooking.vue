@@ -1,33 +1,31 @@
 <template>
     <modal :modalTitle="$t('booking_page.modal_title_cf')" isCenter>
         <template #body>
-            <template v-if="bookings.some(booking => booking.seats.length)">
-                <div v-for="booking in bookings" :key="booking.hall" class="content">
-                    <template v-if="booking.seats.length">
+            <template v-if="groupBookings.some(booking => Object.keys(booking.seats).length)">
+                <div v-for="booking in groupBookings" :key="booking.hall" class="content">
+                    <template v-if="Object.keys(booking.seats).length">
                         <h5>{{ $t("booking_page.hall") }} {{ booking.hall }} </h5>
-                        <div class="card mb-2 shadow-sm" v-for="seat in booking.seats" :key="`${seat}_${booking.hall}`">
-                            <div class="card-body py-1">
+                        <div class="card mb-2 shadow-sm" v-for="(dataSeats, index) in booking.seats" :key="index">
+                            <div class="row my-2">
+                                <div class="col-md-1 col-2 p-0 m-0 d-flex align-items-center justify-content-center">
+                                    <div class="border rounded-circle"
+                                        :style="{ 'background-color': dataSeats[0].color, width: '20px', height: '20px' }">
+                                    </div>
+                                </div>
+                                <p class="col-auto m-0 p-0 fw-medium fs-5">Hạng vé: {{ dataSeats[0].class }}</p>
+                            </div>
+                            <div v-for="seat in dataSeats" :key="seat.name + booking.hall" class="card-body py-1">
                                 <div class="row col-12">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div
-                                                class="col-md-1 col-2 p-0 m-0 d-flex align-items-center justify-content-center">
-                                                <div class="border rounded-circle"
-                                                    :style="{ 'background-color': seat.class.ticket_class.color, width: '20px', height: '20px' }">
-                                                </div>
-                                            </div>
-                                            <div class="col-auto ps-1">
-                                                <p class="fw-bold mb-0">{{ seat.name }}</p>
-                                                <span>{{ seat.class.ticket_class.name }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-center">
-                                        <p class="fw-bold p-0 m-0">{{ numberWithCommas(seat.class.ticket_class.price) }}
-                                            VND
-                                        </p>
-                                    </div>
-                                    <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <p class="col fw-medium mb-0">{{ seat.name }}</p>
+                                    <p class="col fw-medium p-0 m-0">
+                                        <span
+                                            :class="{ 'text-decoration-line-through text-danger me-2': seat.price > seat.discountPrice }">
+                                            {{ numberWithCommas(seat.price) }} VND
+                                        </span>
+                                        <span v-if="seat.price > seat.discountPrice">{{
+                                            numberWithCommas(seat.discountPrice) }} VND</span>
+                                    </p>
+                                    <div class="col-2 d-flex align-items-center justify-content-end">
                                         <button class="btn btn-link"
                                             @click="$emit('unSelectSeat', seat.name, booking.hall)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -42,16 +40,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-12 px-2">
-                            <div class="col">
-                                <p class="text-end fw-bold">{{ $t("booking_page.total") }}: </p>
-                            </div>
-                            <div class="col">
-                                <p class="fw-bold p-0 m-0 text-center">{{ numberWithCommas(total()) }} VND</p>
-                            </div>
-                            <div class="col-1"></div>
-                        </div>
                     </template>
+                </div>
+                <div class="row col-12 px-2">
+                    <div class="col">
+                        <p class="text-end fw-bold">{{ $t("booking_page.total") }}: </p>
+                    </div>
+                    <div class="col">
+                        <p class="fw-bold p-0 m-0 text-start"
+                            :class="{ 'text-decoration-line-through text-danger': totalPrice > totalPriceDiscount }">
+                            {{ numberWithCommas(totalPrice) }} VND
+                        </p>
+                        <p v-if="totalPrice > totalPriceDiscount" class="fw-bold p-0 m-0 text-start">
+                            {{ numberWithCommas(totalPriceDiscount) }} VND
+                        </p>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row col-12 px-2">
+                    <div class="col-5">
+                        <p class="fw-medium text-end">Nhập mã giảm giá:</p>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" v-model="discountCode" />
+                    </div>
+                    <div class="col-3">
+                        <button :disabled="isLoading"
+                            class="btn btn-primary text-white d-flex justify-content-center align-items-center w-100"
+                            @click="applyDiscount">
+                            <div v-if="isLoading" class="spinner-border text-light me-2"
+                                style="width: 20px; height: 20px;" role="status"></div>
+                            <span>Áp dụng</span>
+                        </button>
+                    </div>
                 </div>
             </template>
             <template v-else>
@@ -77,22 +98,120 @@
 <script setup>
 import Modal from "../Modal.vue";
 import { numberWithCommas } from "../../helpers/number";
+import { ref, watch, computed } from "vue";
+import { applyDiscountAPI } from "../../api/discount";
+import { useStoreTemporaryBooking } from "../../pinia";
+import { useReCaptcha } from "vue-recaptcha-v3";
+import { HttpStatusCode } from "axios";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
+const storeTemporaryBooking = useStoreTemporaryBooking();
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 const props = defineProps({
     bookings: {
         type: Array,
         required: true
+    },
+    discount: {
+        required: true
     }
 });
 
-defineEmits(["unSelectSeat", "confirm"]);
+let groupBookings = ref([]);
+let discountCode = ref("");
+let discount = ref(null);
+let isLoading = ref(false);
 
-const total = () => {
-    return props.bookings.reduce((previous, currentBooking) => {
-        return previous + currentBooking.seats.reduce((previousPrice, currentSeat) => {
-            return previousPrice + currentSeat.class.ticket_class.price;
+const emit = defineEmits(["unSelectSeat", "confirm", "applyDiscount"]);
+
+const totalPrice = computed(() => {
+    return groupBookings.value.reduce((previous, currentBooking) => {
+        return previous + Object.values(currentBooking.seats).reduce((previousPriceTicketClass, currentSeatsTicketClass) => {
+            return previousPriceTicketClass + currentSeatsTicketClass.reduce((previousPrice, currentSeat) => {
+                return previousPrice + currentSeat.price;
+            }, 0);
         }, 0);
-    }, 0)
+    }, 0);
+})
+
+const totalPriceDiscount = computed(() => {
+    return Math.round(groupBookings.value.reduce((previous, currentBooking) => {
+        return previous + Object.values(currentBooking.seats).reduce((previousPriceTicketClass, currentSeatsTicketClass) => {
+            return previousPriceTicketClass + currentSeatsTicketClass.reduce((previousPrice, currentSeat) => {
+                return previousPrice + Number(currentSeat.discountPrice);
+            }, 0);
+        }, 0);
+    }, 0));
+})
+
+const applyDiscount = async () => {
+    isLoading.value = true;
+    await recaptchaLoaded();
+    const token = await executeRecaptcha('submit');
+    let data = {
+        discount_code: discountCode.value,
+        token: storeTemporaryBooking.token,
+        "g-recaptcha-response": token
+    };
+    let response = await applyDiscountAPI(data);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            discount.value = response.data;
+            groupBookings.value = calculateBookings(props.bookings);
+            emit("applyDiscount", response.data, totalPriceDiscount.value);
+            break;
+        case HttpStatusCode.UnprocessableEntity:
+            console.log(response.data.errors)
+            break;
+        default:
+            discount.value = null;
+            toast.error(response.data.message);
+    }
+    isLoading.value = false;
+}
+
+watch(() => props.bookings, (bookings, oldBookings) => {
+    groupBookings.value = calculateBookings(bookings);
+    if (groupBookings.value.every(booking => !Object.keys(booking.seats).length)) {
+        discount.value = null;
+        discountCode.value = null;
+        emit("applyDiscount", null, 0);
+    }
+})
+
+watch(() => props.discount, (newDiscount) => {
+    if (newDiscount) {
+        discountCode.value = newDiscount.discount_code;
+        discount.value = newDiscount;
+    }
+});
+
+const calculateBookings = (bookings) => {
+    return bookings.map(booking => {
+        let dataSeats = {};
+        booking.seats.forEach((seat => {
+            let ticketClassId = seat.class.ticket_class.id;
+            let discountPrice = seat.class.ticket_class.price;
+            if (discount.value && (ticketClassId == discount.value.ticket_class || !discount.value.ticket_class) && discount.value.applied.includes(seat.id)) {
+                discountPrice = discountPrice - (discount.value.discount_type == "percentage-discount" ?
+                    discount.value.percentage_discount * discountPrice / 100 : discount.value.price_discount);
+            }
+            let seatData = {
+                name: seat.name,
+                price: seat.class.ticket_class.price,
+                discountPrice: discountPrice,
+                class: seat.class.ticket_class.name,
+                color: seat.class.ticket_class.color
+            }
+            if (dataSeats[ticketClassId]) dataSeats[ticketClassId].push(seatData)
+            else dataSeats[ticketClassId] = [seatData];
+        }))
+        return {
+            hall: booking.hall,
+            seats: dataSeats
+        }
+    })
 }
 </script>
 <style scoped lang="scss">

@@ -63,12 +63,12 @@
                         <td>
                             <router-link :to="{ name: 'admin-edit-event', params: { eventId: event.id } }" type="button"
                                 class="btn btn-light mx-1 my-1 btn-sm w-100">Cài đặt thông tin</router-link>
-                            <br />
                             <router-link :to="{ name: 'admin-edit-seats', params: { eventId: event.id } }" type="button"
-                                class="btn btn-light mx-1 btn-sm w-100">Cài đặt chỗ ngồi</router-link>
-                            <br />
+                                class="btn btn-light mx-1 btn-sm w-100 mt-1">Cài đặt chỗ ngồi</router-link>
+                            <router-link :to="{ name: 'admin-discount', params: { eventId: event.id } }" type="button"
+                                class="btn btn-light mx-1 btn-sm w-100 mt-1">Mã giảm giá</router-link>
                             <button type="button" @click="removeEvent(event)"
-                                class="btn btn-danger mx-1 btn-sm w-100">Xóa</button>
+                                class="btn btn-danger mx-1 btn-sm w-100 mt-1">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -102,7 +102,6 @@ let events = reactive({
 });
 let searchString = ref("");
 let pageNumber = ref(1);
-let modalReport = ref(null);
 const toast = useToast();
 
 onMounted(async () => {

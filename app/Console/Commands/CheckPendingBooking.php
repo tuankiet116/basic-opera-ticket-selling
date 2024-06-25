@@ -6,9 +6,11 @@ use App\Events\AdminRemoveBookingTicket;
 use App\Events\ClientRemoveBookingTicket;
 use App\Models\BookModel;
 use App\Models\ClientModel;
+use App\Services\DiscountServiceUltils;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CheckPendingBooking extends Command
@@ -32,6 +34,7 @@ class CheckPendingBooking extends Command
      */
     public function handle()
     {
+        DB::beginTransaction();
         try {
             $timeToCheck = Carbon::now()->subMinutes(20)->format('Y-m-d H:i:s');
             $bookingOverTime = BookModel::with(["client", "seat", "event"])->where("start_pending", "<", $timeToCheck)
@@ -52,6 +55,7 @@ class CheckPendingBooking extends Command
                     $clientEmail = data_get($booking, "client.email");
                     $hall =  data_get($booking, "seat.hall");
                     $seatName = data_get($booking, "seat.name");
+                    DiscountServiceUltils::releaseDiscountInUsed($booking);
                     $bookingIds[] = $booking->id;
                     if (isset($bookingInformation[$clientEmail])) {
                         if (isset($bookingInformation[$clientEmail][$hall])) array_push($bookingInformation[$clientEmail][$hall], $seatName);
@@ -74,8 +78,10 @@ class CheckPendingBooking extends Command
                 Log::info("Delete bookings overtime of clients: ", array_keys($bookingInformation));
                 Log::info("Delete clients id of booking overtime: ", $clientIds);
             }
+            DB::commit();
         } catch (Exception $e) {
             Log::error("Error on check pending booking command: ". $e->getMessage());
+            DB::rollBack();
         }
     }
 }

@@ -80,7 +80,11 @@
                             <span class="fw-medium">
                                 {{ $t("booking_page.total") }}:
                             </span>
-                            <span>{{ numberWithCommas(total) }} vnđ</span>
+                            <span class="me-2"
+                                :class="{ 'text-decoration-line-through text-danger': total > totalDiscount }">
+                                {{ numberWithCommas(total) }} vnđ
+                            </span>
+                            <span v-if="total > totalDiscount">{{ numberWithCommas(totalDiscount) }} vnđ</span>
                         </div>
                     </div>
                     <button type="button" class="btn btn-primary text-white col-4 text-responsive"
@@ -91,7 +95,8 @@
             </div>
         </div>
     </div>
-    <modal-confirm-booking :bookings="currentBookingsCart" @unSelectSeat="handleUnselectSeatCart" @confirm="confirm" />
+    <modal-confirm-booking :bookings="currentBookingsCart" :discount="discount" @unSelectSeat="handleUnselectSeatCart"
+        @applyDiscount="handleApplyDiscount" @confirm="confirm" />
 </template>
 
 <script setup>
@@ -137,6 +142,8 @@ let ticketClasses = ref([]);
 let bookings = ref([]);
 let event = ref({});
 let total = ref(0);
+let totalDiscount = ref(0);
+let discount = ref(null);
 let timer = ref("");
 let currentBookingsCart = ref([]);
 let eventId = route.params.eventId;
@@ -154,11 +161,12 @@ onMounted(async () => {
         }
         let resTemporary = await getBookingTemporary(storeTemporaryBookings.token, eventId);
         if (resTemporary.status == HttpStatusCode.Ok) {
-            resTemporary.data.forEach((value) => {
+            discount.value = resTemporary.data.discount;
+            resTemporary.data.bookings.forEach((value) => {
                 let bookingIndex = bookings.value.findIndex(booking => booking.seat == value.seat.name && booking.hall == value.seat.hall);
                 if (bookingIndex > -1) bookings.value.splice(bookingIndex, 1);
                 reselectSeat(value.seat.name, value.seat.hall);
-            })
+            });
         }
         window.Echo.channel(`client-booking-event-${event.value.id}`)
             .listen("ClientBookingTicket", (e) => {
@@ -217,18 +225,25 @@ const reselectSeat = (seatName, hall) => {
         seatSelected = toRef(seatSelectedHall2);
     }
     let currentSeatIdx = seatSelected.value.findIndex((seat) => seat == seatName);
-    let isSeatValid = seatTicketClasses.value.find(
-        (ticketclass) =>
-            ticketclass.seat.name == seatName &&
-            ticketclass.seat.hall == hallSelected.value
-    );
+    let isSeatTicketValid = seatTicketClasses.value.find((ticketclass) => ticketclass.seat.name == seatName && ticketclass.seat.hall == hallSelected.value);
 
+    let ticketClassId = isSeatTicketValid.ticket_class.id;
+    let seatId = isSeatTicketValid.seat.id;
+    let price = Number(isSeatTicketValid.ticket_class.price);
+    let discountPrice = price;
+
+    if (discount.value && (ticketClassId == discount.value.ticket_class || !discount.value.ticket_class) && discount.value.applied.includes(seatId)) {
+        discountPrice = discountPrice - (discount.value.discount_type == "percentage-discount" ?
+            discount.value.percentage_discount * discountPrice / 100 : discount.value.price_discount);
+    }
     if (currentSeatIdx > -1) {
         seatSelected.value.splice(currentSeatIdx, 1);
-        total.value -= isSeatValid.ticket_class.price;
+        total.value -= price;
+        totalDiscount.value = Math.round(totalDiscount.value - discountPrice);
         return false;
     }
-    total.value += isSeatValid.ticket_class.price;
+    total.value += price;
+    totalDiscount.value = Math.round(totalDiscount.value + discountPrice);
     seatSelected.value.push(seatName);
     return true;
 }
@@ -265,6 +280,9 @@ const unselectAllSeats = async () => {
     await temporaryBookingAPI(data);
     seatSelectedHall1.value = [];
     seatSelectedHall2.value = [];
+    currentBookingsCart.value = [];
+    totalDiscount.value = 0;
+    total.value = 0;
 }
 
 const temporaryBooking = async (seat, hall, isBooking) => {
@@ -314,6 +332,11 @@ const creatBookingItem = (seatName, seatHall) => {
     };
 };
 
+const handleApplyDiscount = (discountData, totalPriceDiscount) => {
+    discount.value = discountData;
+    totalDiscount.value = totalPriceDiscount;
+}
+
 const createBookingsCart = () => {
     let seatsHall1 = makeBookingWithClass(seatSelectedHall1.value, 1);
     let seatsHall2 = makeBookingWithClass(seatSelectedHall2.value, 2);
@@ -331,13 +354,15 @@ const createBookingsCart = () => {
 
 const makeBookingWithClass = (seatSelected, hall) => {
     return seatSelected.map(seat => {
+        let ticketClass = seatTicketClasses.value.find(
+            (ticketclass) =>
+                ticketclass.seat.name == seat &&
+                ticketclass.seat.hall == hall
+        )
         return {
+            id: ticketClass.seat.id,
             name: seat,
-            class: seatTicketClasses.value.find(
-                (ticketclass) =>
-                    ticketclass.seat.name == seat &&
-                    ticketclass.seat.hall == hall
-            )
+            class: ticketClass
         }
     })
 }

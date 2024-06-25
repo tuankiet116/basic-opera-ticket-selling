@@ -8,10 +8,12 @@ use App\Events\ClientRemoveBookingTicket;
 use App\Mail\AskingPayment;
 use App\Models\BookModel;
 use App\Models\ClientModel;
+use App\Models\DiscountModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\SeatModel;
 use App\Models\TicketClassModel;
+use App\Services\DiscountServiceUltils;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -77,7 +79,8 @@ class BookingService
                             "event_id" => data_get($data, "event_id"),
                             "ticket_class_id" => $ticketClass->id,
                             "is_client_special" => false,
-                            "is_temporary" => false
+                            "is_temporary" => false,
+                            "pricing" => $ticketClass->price,
                         ]);
                     }
 
@@ -89,7 +92,8 @@ class BookingService
                     array_push($dataBookingSendMail[$booking["hall"]], [
                         "class" => $ticketClass->name,
                         "seat" => $seat["name"],
-                        "price" => $ticketClass->price,
+                        "price" => $bookingClient->pricing,
+                        "discount_price" => $bookingClient->pricing - ($bookingClient->discount_price ?? 0)
                     ]);
                 }
             }
@@ -141,6 +145,7 @@ class BookingService
                         "start_pending" => null,
                         "is_temporary" => true,
                         "token" => $token,
+                        "pricing" => $ticketClass->ticketClass->price,
                         "is_client_special" => false,
                         "created_at" => $startTime,
                         "updated_at" => $startTime,
@@ -150,12 +155,15 @@ class BookingService
                         "hall" => $seat["hall"],
                     ]], $eventId))->toOthers();
                 } else {
-                    BookModel::where([
+                    $booking = BookModel::where([
                         ["seat_id", "=", data_get($seat, "id")],
                         ["event_id", "=", $eventId],
                         ["is_temporary", "=", true],
                         ["token", "=", $token],
-                    ])->delete();
+                    ])->first();
+                    if (!$booking) continue;
+                    DiscountServiceUltils::releaseDiscountInUsed($booking);
+                    $booking->delete();
                     broadcast(new ClientRemoveBookingTicket([[
                         "name" => $seat["name"],
                         "hall" => $seat["hall"],
@@ -168,9 +176,17 @@ class BookingService
 
     public function getListTemporaryBookings(string $token, int $eventId)
     {
-        return BookModel::with("seat")->where([
+        $bookings = BookModel::with("seat")->where([
             "token" => $token,
             "event_id" => $eventId
-        ])->get(["event_id", "seat_id"])->toArray();
+        ])->get(["event_id", "seat_id", "discount_code"])->toArray();
+        $discount = sizeof($bookings) ? DiscountModel::where("discount_code", data_get($bookings, "0.discount_code"))->first() : null;
+        if ($discount) {
+            $discount->applied = collect($bookings)->pluck("seat_id");
+        }
+        return [
+            "bookings" => $bookings,
+            "discount" => $discount
+        ];
     }
 }

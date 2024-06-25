@@ -20,7 +20,9 @@ class BookModel extends Model
         "start_pending",
         "is_temporary",
         "token",
-        "is_client_special"
+        "is_client_special",
+        "discount_code",
+        "discount_price",
     ];
 
     protected $casts = [

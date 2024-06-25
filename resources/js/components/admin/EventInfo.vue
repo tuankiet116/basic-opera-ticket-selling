@@ -86,8 +86,7 @@ const bankingCode = ref(props.bankingCode)
 const file = ref(null);
 const config = ref({
     altInput: true,
-    dateFormat: 'Y-m-d',
-    locale: Vietnamese, // locale for this instance only          
+    dateFormat: 'Y-m-d',       
 });
 
 watch(props, function (newValue) {

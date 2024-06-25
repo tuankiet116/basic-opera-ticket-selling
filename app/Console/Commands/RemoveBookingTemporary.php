@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use App\Events\ClientRemoveBookingTicket;
 use App\Models\BookModel;
+use App\Services\DiscountServiceUltils;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RemoveBookingTemporary extends Command
@@ -30,6 +32,7 @@ class RemoveBookingTemporary extends Command
      */
     public function handle()
     {
+        DB::beginTransaction();
         try {
             $timeToCheck = Carbon::now()->subMinutes(11)->format('Y-m-d H:i:s');
             $bookingOverTime = BookModel::with(["seat", "event"])->where("created_at", "<", $timeToCheck)->where("is_temporary", true)->get();
@@ -43,18 +46,21 @@ class RemoveBookingTemporary extends Command
                         $eventSeats[$booking->event_id]["event"] = $booking->event;
                         $eventSeats[$booking->event_id]["seats"] = [$booking->seat];
                     }
+                    DiscountServiceUltils::releaseDiscountInUsed($booking);
                     $bookingIds[] = $booking->id;
                 });
                 foreach ($eventSeats as $eventSeat) {
                     foreach (array_chunk($eventSeat["seats"], CHUNK_SIZE_BROADCAST) as $seats) {
                         ClientRemoveBookingTicket::dispatch($seats, $eventSeat["event"]);
-                        Log::info("Release seats in temporary booking: ", $seats);
+                        Log::info("Release seats in temporary booking: ", collect($seats)->select("name")->toArray());
                     }
                 }
                 BookModel::whereIn("id", $bookingIds)->delete();
             }
+            DB::commit();
         } catch (Exception $e) {
             Log::error("Error on release seats in temporary booking: ". $e->getMessage());
+            DB::rollBack();
         }
     }
 }

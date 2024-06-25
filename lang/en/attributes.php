@@ -19,6 +19,7 @@ return [
         "is_receive_in_opera" => "is receive in opera",
         "address" => "address",
         "id_number" => "ID Card / Passport Number",
-        "bookings" => "bookings"
+        "bookings" => "bookings",
+        "discount_code" => "discount code",
     ]
 ];
