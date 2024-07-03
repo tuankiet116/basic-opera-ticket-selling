@@ -16,11 +16,14 @@ class DiscountService
         DB::beginTransaction();
         // Validate discount code and check quantity remaining, ticket class, and booking temporary token.
         try {
+            $bookingEvent = BookModel::where("token", $temporaryToken)
+                ->where("is_temporary", true)->first();
             $discount = DiscountModel::where("discount_code", $discountCode)
+                ->where("event_id", data_get($bookingEvent, "event_id"))
                 ->where("start_date", "<=", Carbon::now()->format("Y-m-d"))
                 ->where("end_date", ">=", Carbon::now()->format("Y-m-d"))->lockForUpdate()->first();
 
-            if (!$discount) {
+            if (!$discount || !$bookingEvent) {
                 Log::error("Mã giảm giá $discountCode không hợp lệ");
                 throw new Exception("Mã giảm giá không hợp lệ");
             }
@@ -41,24 +44,26 @@ class DiscountService
                     "discount_code" => null
                 ]);
 
-            $bookings = BookModel::where("token", $temporaryToken)
+            $bookings = $bookingsValid = BookModel::where("token", $temporaryToken)
                 ->where("discount_code", null)
                 ->where("is_temporary", true)->get();
-            if (!sizeof($bookings)) goto END;
 
             $countBooking = collect($bookings)->count();
             if ($ticketClassId) {
                 $countBooking = collect($bookings)->where("ticket_class_id", $ticketClassId)->count();
+                $bookingsValid = $bookings->where("ticket_class_id", $ticketClassId);
             }
             if ($countBooking > $discountRemaining) {
-                $bookings->splice($discountRemaining);
+                $bookingsValid->splice($discountRemaining);
                 $countBooking = $discountRemaining;
             }
+
+            $discountQuantityUsed = $discount->quantity_used;
             $discount->update([
-                "quantity_used" => $discount->quantity_used + $countBooking - $bookingsUsingDiscount,
+                "quantity_used" => $discountQuantityUsed + $countBooking - $bookingsUsingDiscount,
             ]);
             $discount->save();
-            $bookings->each(function ($booking) use ($ticketClassId, $discount) {
+            $bookingsValid->each(function ($booking) use ($ticketClassId, $discount) {
                 if (($ticketClassId && $booking->ticket_class_id === $ticketClassId) || !$ticketClassId) {
                     $priceDiscount = $discount->price_discount;
                     if ($discount->discount_type == PERCENTAGE_DISCOUNT_TYPE) {
@@ -72,10 +77,9 @@ class DiscountService
                 }
             });
             DB::commit();
-
-            END:
+            Log::info("Update discount ($discountCode) quantity from $discountQuantityUsed to $discount->qunatity_used");
             $discountInfo = collect($discount)->except(["quantity", "quantity_used", "start_date", "end_date", "created_at", "updated_at"])->toArray();
-            $seatsApplied = collect($bookings)->pluck("seat_id");
+            $seatsApplied = collect($bookingsValid)->pluck("seat_id");
             $discountInfo["applied"] = $seatsApplied;
             return $discountInfo;
         } catch (Exception $e) {

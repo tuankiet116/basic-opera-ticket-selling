@@ -34,6 +34,7 @@
         "vue-recaptcha-v3": "^2.0.1",
         "vue-router": "^4.3.0",
         "vue-select": "^4.0.0-beta.6",
-        "vue-toastification": "^2.0.0-rc.5"
+        "vue-toastification": "^2.0.0-rc.5",
+        "vue3-popper": "^1.5.0"
     }
 }
