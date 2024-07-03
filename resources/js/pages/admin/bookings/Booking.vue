@@ -65,8 +65,17 @@
                         Địa chỉ nhận vé: <strong>{{ booking.address }}
                         </strong>
                     </p>
-                    <p class="mb-0 fs-5">Tổng tiền thanh toán: <strong>{{ numberWithCommas(booking.price) }}
-                            vnd</strong></p>
+                    <p class="mb-0 fs-5">Tổng tiền thanh toán:
+                        <template v-if="booking.priceDiscounted < booking.priceTotal">
+                            <span class="text-decoration-line-through text-danger me-2">
+                                {{ numberWithCommas(booking.priceTotal) }} vnd
+                            </span>
+                            <span>
+                                {{ numberWithCommas(booking.priceDiscounted) }} vnd
+                            </span>
+                        </template>
+                        <strong v-else>{{ numberWithCommas(booking.priceTotal) }} vnd</strong>
+                    </p>
                     <button class="btn btn-primary text-white position-absolute" data-bs-toggle="modal"
                         data-bs-target="#modal" style="bottom: 10%; right: 2%;" @click="bookingSelected = booking">
                         Xem chi tiết
@@ -96,18 +105,29 @@
                         Nhận vé tại nhà hát
                     </span>
                 </p>
-                <p class="mb-0">Tổng tiền thanh toán: <strong class="p-1 bg-primary">{{
-                    numberWithCommas(bookingSelected.price ?? 0) }}
-                        vnd</strong></p>
+                <p class="mb-0">
+                    <strong class="p-1">
+                        Tổng tiền thanh toán:
+                        <template v-if="bookingSelected.priceDiscounted < bookingSelected.priceTotal">
+                            <span class="text-decoration-line-through text-danger me-2">
+                                {{ numberWithCommas(bookingSelected.priceTotal ?? 0) }} vnd
+                            </span>
+                            <span>
+                                {{ numberWithCommas(bookingSelected.priceDiscounted ?? 0) }} vnd
+                            </span>
+                        </template>
+                    </strong>
+                </p>
             </div>
             <br />
             <h5>Bảng thông tin chi tiết:</h5>
             <table class="table table-bordered border-primary">
                 <thead>
                     <tr>
-                        <th width="15%" scope="col" class="text-center">Khán phòng</th>
+                        <th width="5%" scope="col" class="text-center">Khán phòng</th>
                         <th width="20%" scope="col" class="text-center">Ghế</th>
                         <th width="20%" scope="col" class="text-center">Hạng vé</th>
+                        <th width="15%" scope="col" class="text-center">Mã giảm giá</th>
                         <th width="45%" scope="col" class="text-center">Đơn giá</th>
                     </tr>
                 </thead>
@@ -116,7 +136,20 @@
                         <td class="text-center">{{ booking.seat.hall }}</td>
                         <td class="text-center">{{ booking.seat.name }}</td>
                         <td class="text-center">{{ booking.ticket_class.name }}</td>
-                        <td class="text-center">{{ numberWithCommas(booking.ticket_class.price) }} vnd</td>
+                        <td class="text-center">{{ booking.discount_code }}</td>
+                        <td class="text-center">
+                            <template v-if="booking.discount_price">
+                                <span class="text-decoration-line-through text-danger">
+                                    {{ numberWithCommas(booking.pricing) }} vnd
+                                </span>
+                                <span>
+                                    {{ numberWithCommas(Number(booking.pricing - booking.discount_price)) }} vnd
+                                </span>
+                            </template>
+                            <span v-else>
+                                {{ numberWithCommas(booking.pricing) }} vnd
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -182,15 +215,19 @@ onMounted(async () => {
             "AdminClientBookingTicket",
             (e) => {
                 let bookingClient = e.bookings;
-                bookingClient.price = bookingClient.bookings.reduce((previous, current) => {
-                    return previous + current.ticket_class.price;
+                bookingClient.priceTotal = bookingClient.bookings.reduce((previous, current) => {
+                    return previous + current.pricing;
+                }, 0);
+                bookingClient.priceDiscounted = bookingClient.bookings.reduce((previous, current) => {
+                    return previous + (current.pricing - current.discount_price);
                 }, 0);
 
                 //Kiểm tra đã tồn tại booking client hay chưa? nếu có rồi thì tăng price và thêm bookings cho booking client
                 let index = bookingClients.value.data.findIndex(bc => bc.id == bookingClient.id);
                 if (index > -1) {
                     bookingClients.value.data[index].bookings.push(...bookingClient.bookings);
-                    bookingClients.value.data[index].price += bookingClient.price;
+                    bookingClients.value.data[index].priceTotal += bookingClient.priceTotal;
+                    bookingClients.value.data[index].priceDiscounted += bookingClient.priceDiscounted;
                 } else {
                     bookingClients.value.data = [bookingClient, ...bookingClients.value.data];
                     toast.info(bookingClient.name + " vừa mua vé!", {
@@ -230,8 +267,11 @@ const getBookings = async (isLoadMore = false) => {
         case HttpStatusCode.Ok:
             if (!isLoadMore) bookingClients.value.data = [];
             for (let i = 0; i < response.data.data.length; i++) {
-                response.data.data[i].price = response.data.data[i].bookings.reduce((previous, current) => {
-                    return previous + current.ticket_class.price;
+                response.data.data[i].priceTotal = response.data.data[i].bookings.reduce((previous, current) => {
+                    return previous + current.pricing;
+                }, 0);
+                response.data.data[i].priceDiscounted = response.data.data[i].bookings.reduce((previous, current) => {
+                    return previous + (current.pricing - current.discount_price);
                 }, 0);
             }
             bookingClients.value.data.push(...response.data.data);
