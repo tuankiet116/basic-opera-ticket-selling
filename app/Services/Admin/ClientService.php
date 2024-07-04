@@ -26,6 +26,7 @@ class ClientService
     {
         $data["isSpecial"] = $special;
         try {
+            $data["banking_code"] = time();
             $client = ClientModel::create($data);
             $client = $client->toArray();
         } catch (\Exception $e) {
