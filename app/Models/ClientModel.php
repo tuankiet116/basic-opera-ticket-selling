@@ -20,6 +20,7 @@ class ClientModel extends Model
         "isSpecial",
         "is_receive_in_opera",
         "id_number",
+        "banking_code",
     ];
 
     protected $casts = [

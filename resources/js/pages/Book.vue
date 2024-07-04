@@ -13,7 +13,7 @@
     <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeatTemporary" :selected="seatSelectedHall2"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
     <div
-        class="box position-sticky border border-1 bg-white box-setting p-3 px-4 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
+        class="box position-sticky border border-1 bg-white box-setting py-md-3 px-md-4 p-2 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
         <div class="row position-relative">
             <button
                 class="position-absolute btn btn-light top-0 col-1 end-0 d-flex justify-content-center align-items-center p-1 w-fit"
@@ -34,6 +34,9 @@
             </button>
             <h5 class="fw-medium d-none d-md-block text-responsive">{{ $t("booking_page.booking_info") }}</h5>
             <div class="col-12 mt-2 ">
+                <p class="text-center text-danger fst-italic mb-1 fw-bold" style="font-size: 10px;">
+                    Website đặt vé chỉ hoạt động từ 10h00 đến 22h00 hàng ngày
+                </p>
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
                     <div class="d-flex text-responsive" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
                         <div>{{ ticketClass.name }}</div>
@@ -75,7 +78,7 @@
                     </p>
                 </div>
                 <div class="row text-responsive">
-                    <div class="col-8 row align-items-center">
+                    <div class="col-md-8 col-7 row align-items-center">
                         <div>
                             <span class="fw-medium">
                                 {{ $t("booking_page.total") }}:
@@ -87,7 +90,7 @@
                             <span v-if="total > totalDiscount">{{ numberWithCommas(totalDiscount) }} vnđ</span>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary text-white col-4 text-responsive"
+                    <button type="button" class="btn btn-primary text-white col-md-4 col-5 text-responsive"
                         data-bs-toggle="modal" data-bs-target="#modal" @click="createBookingsCart">
                         {{ $t("booking_page.confirm_payment") }}
                     </button>
@@ -227,25 +230,26 @@ const reselectSeat = (seatName, hall) => {
     let currentSeatIdx = seatSelected.value.findIndex((seat) => seat == seatName);
     let isSeatTicketValid = seatTicketClasses.value.find((ticketclass) => ticketclass.seat.name == seatName && ticketclass.seat.hall == hallSelected.value);
 
-    let ticketClassId = isSeatTicketValid.ticket_class.id;
-    let seatId = isSeatTicketValid.seat.id;
-    let price = Number(isSeatTicketValid.ticket_class.price);
+    let ticketClassId = isSeatTicketValid?.ticket_class.id;
+    let seatId = isSeatTicketValid?.seat.id;
+    let price = Number(isSeatTicketValid?.ticket_class.price ?? 0);
     let discountPrice = price;
 
     if (discount.value && (ticketClassId == discount.value.ticket_class || !discount.value.ticket_class) && discount.value.applied.includes(seatId)) {
         discountPrice = discountPrice - (discount.value.discount_type == "percentage-discount" ?
             discount.value.percentage_discount * discountPrice / 100 : discount.value.price_discount);
     }
+
+    let factor = 1;
     if (currentSeatIdx > -1) {
+        factor = -1;
         seatSelected.value.splice(currentSeatIdx, 1);
-        total.value -= price;
-        totalDiscount.value = Math.round(totalDiscount.value - discountPrice);
-        return false;
+    } else {
+        seatSelected.value.push(seatName);
     }
-    total.value += price;
-    totalDiscount.value = Math.round(totalDiscount.value + discountPrice);
-    seatSelected.value.push(seatName);
-    return true;
+    total.value += (price * factor);
+    totalDiscount.value = Math.round(totalDiscount.value + discountPrice * factor);
+    return !(currentSeatIdx > -1);
 }
 
 const selectHall = (hallId) => {

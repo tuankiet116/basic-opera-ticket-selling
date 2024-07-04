@@ -146,6 +146,7 @@ const totalPriceDiscount = computed(() => {
 })
 
 const applyDiscount = async () => {
+    if (!discountCode.value) return;
     isLoading.value = true;
     await recaptchaLoaded();
     const token = await executeRecaptcha('submit');
@@ -158,16 +159,13 @@ const applyDiscount = async () => {
     switch (response.status) {
         case HttpStatusCode.Ok:
             discount.value = response.data;
-            groupBookings.value = calculateBookings(props.bookings);
-            emit("applyDiscount", response.data, totalPriceDiscount.value);
-            break;
-        case HttpStatusCode.UnprocessableEntity:
-            console.log(response.data.errors)
             break;
         default:
             discount.value = null;
             toast.error(response.data.message);
     }
+    groupBookings.value = calculateBookings(props.bookings);
+    emit("applyDiscount", discount.value, totalPriceDiscount.value);
     isLoading.value = false;
 }
 
@@ -183,8 +181,8 @@ watch(() => props.bookings, (bookings, oldBookings) => {
 watch(() => props.discount, (newDiscount) => {
     if (newDiscount) {
         discountCode.value = newDiscount.discount_code;
-        discount.value = newDiscount;
     }
+    discount.value = newDiscount;
 });
 
 const calculateBookings = (bookings) => {

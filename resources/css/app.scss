@@ -101,13 +101,13 @@ select:focus {
 .admin-seat-hover-booked:hover {
   background-color: #424642 !important;
   color: white !important;
-  cursor: not-allowed	!important;
+  cursor: not-allowed !important;
 }
 
 .admin-seat-hover-booked span:hover {
   background-color: #424642 !important;
   color: white !important;
-  cursor: not-allowed	!important;
+  cursor: not-allowed !important;
 }
 
 .admin-seat-booked-special {
@@ -120,9 +120,11 @@ select:focus {
   color: white;
 }
 
-.seat-selectable:hover {
-  background-color: rgb(136 136 136 / 53%) !important;
-  color: white !important;
+@media only screen and (min-width: 900px) {
+  .seat-selectable:hover {
+    background-color: rgb(136 136 136 / 53%) !important;
+    color: white !important;
+  }
 }
 
 .seat-unselectable {

@@ -65,6 +65,9 @@
                         Địa chỉ nhận vé: <strong>{{ booking.address }}
                         </strong>
                     </p>
+                    <p class="mb-0 fs-5">
+                        Mã banking: <strong>{{ booking.banking_code }}</strong>
+                    </p>
                     <p class="mb-0 fs-5">Tổng tiền thanh toán:
                         <template v-if="booking.priceDiscounted < booking.priceTotal">
                             <span class="text-decoration-line-through text-danger me-2">
@@ -98,6 +101,7 @@
                 <p class="mb-0">CCCD/Hộ chiếu: <strong>{{ bookingSelected?.id_number }}</strong></p>
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
+                <p class="mb-0">Mã banking: <strong>{{ booking.banking_code }}</strong></p>
                 <p class="mb-0">
                     Địa chỉ nhận vé:
                     <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>

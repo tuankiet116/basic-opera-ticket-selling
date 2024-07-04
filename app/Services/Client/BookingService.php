@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
+use function App\Helpers\generateRandomString;
+
 class BookingService
 {
     public function booking(array $data)
@@ -28,6 +30,8 @@ class BookingService
         DB::beginTransaction();
         $temporaryToken = data_get($data, "token");
         try {
+            $event = EventModel::find($data["event_id"]);
+            $clientBookingCode = $event->banking_code . "-" . substr(time(), -2) . generateRandomString();
             $client = ClientModel::create([
                 "name" => data_get($data, "name"),
                 "email" => data_get($data, "email"),
@@ -36,7 +40,8 @@ class BookingService
                 "address" => data_get($data, "address"),
                 "event_id" => data_get($data, "event_id"),
                 "id_number" => data_get($data, "id_number"),
-                "isSpecial" => false
+                "isSpecial" => false,
+                "banking_code" => $clientBookingCode
             ]);
             $bookings = data_get($data, "bookings");
             $seatsBooking = [];
@@ -98,7 +103,6 @@ class BookingService
                 }
             }
             BookModel::where(["token" => $temporaryToken])->delete();
-            $event = EventModel::find($data["event_id"]);
 
             Mail::to($client)->queue(new AskingPayment($event, $client, $dataBookingSendMail));
 

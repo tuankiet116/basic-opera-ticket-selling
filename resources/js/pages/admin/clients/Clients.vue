@@ -57,7 +57,7 @@
                         <th width="10%">Email</th>
                         <th width="10%">Số điện thoại</th>
                         <th width="20%">Địa chỉ</th>
-                        <th width="10%">Sự kiện đặt vé</th>
+                        <th width="10%" v-if="tab == TAB_CLIENTS">Sự kiện đặt vé</th>
                         <th width="20%" v-if="tab == TAB_SPECIAL_CLIENTS">
                             Hành động
                         </th>

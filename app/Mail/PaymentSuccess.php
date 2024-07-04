@@ -33,7 +33,8 @@ class PaymentSuccess extends Mailable
             array_push($this->bookingData[$seat->hall], [
                 "class" => $ticketClass->ticketClass->name,
                 "seat" => $seat["name"],
-                "price" => $ticketClass->ticketClass->price,
+                "price" => $booking->pricing,
+                "discount_price" => ($booking->pricing - $booking->discount_price)
             ]);
         });
     }
