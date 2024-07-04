@@ -8,7 +8,7 @@
         <p dir="ltr">
             <span>
                 Chúc mừng bạn đã hoàn thành thanh toán đặt vé cho Hòa nhạc “{{ $event->name }}” ngày
-                {{ $event->date }} tại
+                {{ date('d-m-Y', strtotime($event->date)) }} tại
                 Nhà hát Hồ
                 Gươm. Chúng mình gửi lại bạn thông tin thanh toán vé hòa nhạc dưới đây:
             </span>
@@ -16,7 +16,7 @@
         <p dir="ltr">
             <i>
                 Congratulations! You have completed payment to book ticket(s) for the “{{ $event->name }}” Concert on
-                {{ $event->date }},
+                {{ date('F j, Y', strtotime($event->date)) }},
                 2024, at Ho Guom Opera. Below is the payment information for concert ticket(s):
             </i>
         </p>
@@ -45,7 +45,7 @@
                 <tbody>
                     @php
                         $price = 0;
-						$priceDiscount = 0;
+                        $priceDiscount = 0;
                     @endphp
                     @foreach ($bookings as $hall => $booking)
                         @foreach ($booking as $seat)
@@ -60,7 +60,13 @@
                                     <b>{{ $seat['class'] }}</b>
                                 </td>
                                 <td style="border: 1px solid black; text-align:center;">
-                                    <b>{{ number_format($seat['price']) }} vnd</b>
+                                    @if ($seat['price'] > $seat['discount_price'])
+                                        <span style="text-decoration: line-through; color: red; margin-right: 2px;">
+                                            {{ number_format($seat['price']) }} vnd</span>
+                                        <span>{{ number_format($seat['discount_price']) }} vnd</span>
+                                    @else
+                                        {{ number_format($seat['price']) }} vnd
+                                    @endif
                                 </td>
                             </tr>
                             @php
@@ -72,10 +78,10 @@
                     <tr>
                         <td style="border: 1px solid black; text-align:center;">Tổng cộng/Total</td>
                         <td style="border: 1px solid black; text-align:center;" colspan=3>
-                            @if ($seat['price'] > $seat['discount_price'])
-                                <span
-                                    style="text-decoration: line-through; color: red; margin-right: 2px;">{{ number_format($price) }}
-                                    vnd</span>
+                            @if ($price > $priceDiscount)
+                                <span style="text-decoration: line-through; color: red; margin-right: 2px;">
+                                    {{ number_format($price) }} vnd
+                                </span>
                                 <span>{{ number_format($priceDiscount) }} vnd</span>
                             @else
                                 {{ number_format($price) }} vnd
