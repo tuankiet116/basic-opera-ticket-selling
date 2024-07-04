@@ -55,7 +55,7 @@
                         Chưa thanh toán
                     </span>
                     <span class="badge rounded-pill text-bg-info ms-2" v-if="booking.is_receive_in_opera">
-                        Nhận vé tại nhà hát
+                        Nhận vé tại nhà hát 
                     </span>
                     <p class="mb-0 fs-5">Khách hàng: <strong>{{ booking.name }}</strong></p>
                     <p class="mb-0 fs-5">Email: <strong>{{ booking.email }}</strong></p>
@@ -101,7 +101,7 @@
                 <p class="mb-0">CCCD/Hộ chiếu: <strong>{{ bookingSelected?.id_number }}</strong></p>
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
-                <p class="mb-0">Mã banking: <strong>{{ booking.banking_code }}</strong></p>
+                <p class="mb-0">Mã banking: <strong>{{ bookingSelected?.banking_code }}</strong></p>
                 <p class="mb-0">
                     Địa chỉ nhận vé:
                     <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>
