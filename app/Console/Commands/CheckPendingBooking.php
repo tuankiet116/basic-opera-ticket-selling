@@ -36,7 +36,7 @@ class CheckPendingBooking extends Command
     {
         DB::beginTransaction();
         try {
-            $timeToCheck = Carbon::now()->subMinutes(20)->format('Y-m-d H:i:s');
+            $timeToCheck = Carbon::now()->subMinutes(1000)->format('Y-m-d H:i:s');
             $bookingOverTime = BookModel::with(["client", "seat", "event"])->where("start_pending", "<", $timeToCheck)
                 ->where("isPending", true)->get();
             if (sizeof($bookingOverTime)) {
