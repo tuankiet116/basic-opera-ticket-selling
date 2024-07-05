@@ -58,7 +58,7 @@ let isNoEvents = ref(false);
 
 onMounted(async () => {
     await getListEvent();
-    if (!events.value.data.length) isNoEvents.value = false;
+    if (!events.value.data.length) isNoEvents.value = true;
 });
 
 const getListEvent = async (page = 1) => {
