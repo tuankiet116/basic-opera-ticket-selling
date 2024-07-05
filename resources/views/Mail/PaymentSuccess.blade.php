@@ -17,7 +17,7 @@
             <i>
                 Congratulations! You have completed payment to book ticket(s) for the “{{ $event->name }}” Concert on
                 {{ date('F j, Y', strtotime($event->date)) }},
-                2024, at Ho Guom Opera. Below is the payment information for concert ticket(s):
+                at Ho Guom Opera. Below is the payment information for concert ticket(s):
             </i>
         </p>
         <div>
