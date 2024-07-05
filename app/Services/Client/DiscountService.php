@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use function App\Helpers\trans_format;
+
 class DiscountService
 {
     const DISCOUNT_EXCEPTION = 10001;
@@ -27,7 +29,7 @@ class DiscountService
             if (!$discount || !$bookingEvent) {
                 if ($bookingEvent) $this->unApplyDiscountCodeFromBookings($temporaryToken, $bookingEvent->discount_code);
                 Log::error("Mã giảm giá $discountCode không hợp lệ");
-                throw new Exception("Mã giảm giá không hợp lệ", self::DISCOUNT_EXCEPTION);
+                throw new Exception(trans_format("messages.discount.invalid_code"), self::DISCOUNT_EXCEPTION);
             }
 
             $bookingsUsingThisDiscountCode = BookModel::where("token", $temporaryToken)
@@ -38,7 +40,7 @@ class DiscountService
             if ($discountRemaining == 0) {
                 $this->unApplyDiscountCodeFromBookings($temporaryToken, $bookingEvent->discount_code);
                 Log::info("Đã sử dụng hết mã giảm giá $discountCode cho hạng vé $ticketClassId");
-                throw new Exception("Mã giảm giá đã được sử dụng hết", self::DISCOUNT_EXCEPTION);
+                throw new Exception(trans_format("messages.discount.used_up"), self::DISCOUNT_EXCEPTION);
             }
             $bookingsUsingDiscount = BookModel::where("token", $temporaryToken)
                 ->where("is_temporary", true)

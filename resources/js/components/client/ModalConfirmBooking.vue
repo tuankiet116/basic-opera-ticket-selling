@@ -4,38 +4,50 @@
             <template v-if="groupBookings.some(booking => Object.keys(booking.seats).length)">
                 <div v-for="booking in groupBookings" :key="booking.hall" class="content">
                     <template v-if="Object.keys(booking.seats).length">
-                        <h5>{{ $t("booking_page.hall") }} {{ booking.hall }} </h5>
+                        <h7>{{ $t("booking_page.hall") }}: {{ booking.hall }} </h7>
                         <div class="card mb-2 shadow-sm" v-for="(dataSeats, index) in booking.seats" :key="index">
-                            <div class="row my-2">
-                                <div class="col-md-1 col-2 p-0 m-0 d-flex align-items-center justify-content-center">
-                                    <div class="border rounded-circle"
-                                        :style="{ 'background-color': dataSeats[0].color, width: '20px', height: '20px' }">
-                                    </div>
+                            <div class="row my-2 mx-0 align-items-center">
+                                <div class="col-1 p-0 m-0 mx-1 border rounded-circle container-ticket-color"
+                                    :style="{ 'background-color': dataSeats[0].color }">
                                 </div>
-                                <p class="col-auto m-0 p-0 fw-medium fs-5">Hạng vé: {{ dataSeats[0].class }}</p>
+                                <p class="col-auto m-0 p-0 fw-medium text-responsive">
+                                    {{ $t("booking_page.ticket_class") }}: {{ dataSeats[0].class }}
+                                </p>
                             </div>
-                            <div v-for="seat in dataSeats" :key="seat.name + booking.hall" class="card-body py-1">
-                                <div class="row col-12">
-                                    <p class="col fw-medium mb-0">{{ seat.name }}</p>
-                                    <p class="col fw-medium p-0 m-0">
-                                        <span
-                                            :class="{ 'text-decoration-line-through text-danger me-2': seat.price > seat.discountPrice }">
-                                            {{ numberWithCommas(seat.price) }} VND
-                                        </span>
-                                        <span v-if="seat.price > seat.discountPrice">{{
-                                            numberWithCommas(seat.discountPrice) }} VND</span>
-                                    </p>
-                                    <div class="col-2 d-flex align-items-center justify-content-end">
-                                        <button class="btn btn-link"
-                                            @click="$emit('unSelectSeat', seat.name, booking.hall)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                <path
-                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                            </svg>
-                                        </button>
+                            <hr class="m-0 mb-1" />
+                            <div class="card-body p-1">
+                                <div v-for="seat in dataSeats" :key="seat.name + booking.hall">
+                                    <div class="row col-12 text-responsive m-0">
+                                        <p class="col fw-medium mb-0">{{ seat.name }}</p>
+                                        <p class="col fw-medium p-0 m-0">
+                                            <span
+                                                :class="{ 'text-decoration-line-through text-danger me-2': seat.price > seat.discountPrice }">
+                                                {{ numberWithCommas(seat.price) }} VND
+                                            </span>
+                                            <span v-if="seat.price > seat.discountPrice">{{
+                                                numberWithCommas(seat.discountPrice) }} VND</span>
+                                        </p>
+                                        <div class="col-2 d-flex align-items-center justify-content-end">
+                                            <button class="btn btn-link"
+                                                @click="$emit('unSelectSeat', seat.name, booking.hall)">
+                                                <svg class="bi bi-trash d-none d-md-block" width="20px" height="20px"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg>
+                                                <svg class="bi bi-trash d-block d-md-none" width="12px" height="12px"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -43,10 +55,10 @@
                     </template>
                 </div>
                 <div class="row col-12 px-2">
-                    <div class="col">
-                        <p class="text-end fw-bold">{{ $t("booking_page.total") }}: </p>
+                    <div class="col-md col-5 p-0">
+                        <p class="text-end fw-bold text-responsive m-0">{{ $t("booking_page.total") }}: </p>
                     </div>
-                    <div class="col">
+                    <div class="col text-responsive mb-1">
                         <p class="fw-bold p-0 m-0 text-start"
                             :class="{ 'text-decoration-line-through text-danger': totalPrice > totalPriceDiscount }">
                             {{ numberWithCommas(totalPrice) }} VND
@@ -58,19 +70,18 @@
                     <div class="col-2"></div>
                 </div>
                 <div class="row col-12 px-2">
-                    <div class="col-5">
-                        <p class="fw-medium text-end">Nhập mã giảm giá:</p>
+                    <div class="col-5 p-0 d-flex align-items-center justify-content-end">
+                        <p class="fw-medium text-end text-responsive m-0">{{ $t("discount.input_discount_code") }}:</p>
                     </div>
                     <div class="col-4">
                         <input type="text" class="form-control" v-model="discountCode" />
                     </div>
-                    <div class="col-3">
+                    <div class="col-3 p-0">
                         <button :disabled="isLoading"
-                            class="btn btn-primary text-white d-flex justify-content-center align-items-center w-100"
+                            class="btn btn-primary text-responsive h-100 text-white d-flex justify-content-center align-items-center w-100"
                             @click="applyDiscount">
-                            <div v-if="isLoading" class="spinner-border text-light me-2"
-                                style="width: 20px; height: 20px;" role="status"></div>
-                            <span>Áp dụng</span>
+                            <div v-if="isLoading" class="spinner-border text-light me-2 spinner" role="status"></div>
+                            <span>{{ $t("discount.apply") }}</span>
                         </button>
                     </div>
                 </div>
@@ -78,17 +89,21 @@
             <template v-else>
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <p class="text-center fw-bold">{{ $t("booking_page.no_seat_selected") }}</p>
+                        <p class="text-center fw-medium text-responsive m-0 p-0">
+                            {{ $t("booking_page.no_seat_selected") }}
+                        </p>
                     </div>
                 </div>
             </template>
         </template>
         <template #footer>
             <div class="footer">
-                <button type="button" class="btn btn-secondary mb-sm-0 mb-2 me-sm-2 me-0" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary mb-sm-0 mb-2 me-sm-2 me-0 text-responsive"
+                    data-bs-dismiss="modal">
                     {{ $t('booking_page.btn_close_modal') }}
                 </button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('confirm')">
+                <button type="button" class="btn btn-primary text-responsive" data-bs-dismiss="modal"
+                    @click="$emit('confirm')">
                     {{ $t('booking_page.btn_cf_modal') }}
                 </button>
             </div>
@@ -221,5 +236,33 @@ const calculateBookings = (bookings) => {
             width: 100% !important;
         }
     }
+
+    .container-ticket-color {
+        width: 10px;
+        height: 10px;
+    }
+
+    .text-responsive {
+        font-size: 12px !important;
+    }
+
+    .spinner {
+        width: 10px !important;
+        height: 10px !important;
+    }
+}
+
+.container-ticket-color {
+    width: 15px;
+    height: 15px;
+}
+
+.text-responsive {
+    font-size: 15px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
 }
 </style>

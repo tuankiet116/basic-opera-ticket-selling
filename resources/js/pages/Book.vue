@@ -12,30 +12,30 @@
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" ref="refHall1" />
     <Hall2 v-else-if="hallSelected == 2" @selectSeat="selectSeatTemporary" :selected="seatSelectedHall2"
         :seat-ticket-classes="seatTicketClasses" :bookings="bookings" />
-    <div
-        class="box position-sticky border border-1 bg-white box-setting py-md-3 px-md-4 p-2 z-1 shadow-sm rounded col-sm-8 col-md-6 col-lg-4 col-12 start-0 end-0 m-auto">
+    <div class="box position-sticky border border-1 bg-white box-setting py-md-3 px-md-4 p-2 z-1 shadow-sm rounded 
+        col-sm-8 col-md-7 col-lg-5 col-xl-4 col-12 start-0 end-0 m-auto">
         <div class="row position-relative">
             <button
                 class="position-absolute btn btn-light top-0 col-1 end-0 d-flex justify-content-center align-items-center p-1 w-fit"
                 @click="isZoomOutBox = !isZoomOutBox">
                 <svg v-if="!isZoomOutBox" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-dash-square" viewBox="0 0 16 16">
-                    <path
-                        d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 
+                        2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
                     <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                 </svg>
                 <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-plus-square" viewBox="0 0 16 16">
-                    <path
-                        d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 
+                        2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
                     <path
                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>
             </button>
             <h5 class="fw-medium d-none d-md-block text-responsive">{{ $t("booking_page.booking_info") }}</h5>
-            <div class="col-12 mt-2 ">
-                <p class="text-center text-danger fst-italic mb-1 fw-bold" style="font-size: 10px;">
-                    Website đặt vé chỉ hoạt động từ 10h00 đến 22h00 hàng ngày
+            <div class="col-12 mt-2">
+                <p class="text-center text-danger fst-italic mb-1 fw-bold warning-text">
+                    {{ $t("warning_text") }}
                 </p>
                 <div v-if="!isZoomOutBox" class="d-flex justify-content-center flex-wrap">
                     <div class="d-flex text-responsive" v-for="ticketClass in ticketClasses" :key="ticketClass.id">
@@ -416,6 +416,22 @@ const confirm = () => {
     @media screen and (max-width: 1081px) {
         width: 14px !important;
         height: 14px !important;
+    }
+}
+
+.warning-text {
+    font-size: 15px !important;
+}
+
+@media screen and (max-width: 576px) {
+    .warning-text {
+        font-size: 10px !important;
+    }
+}
+
+@media screen and (max-width: 748px) {
+    .warning-text {
+        font-size: 12px !important;
     }
 }
 </style>

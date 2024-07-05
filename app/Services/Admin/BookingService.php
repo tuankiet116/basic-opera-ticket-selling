@@ -19,6 +19,7 @@ class BookingService
     {
         $searchString = request()->get("search");
         $clients = ClientModel::whereRaw("LOWER(clients.phone_number) LIKE ?", ["%$searchString%"])
+            ->orWhereRaw("LOWER(clients.banking_code) LIKE ?", ["%$searchString%"])
             ->where("isSpecial", false)
             ->where("event_id", $eventId)
             ->orderBy("created_at", "DESC")

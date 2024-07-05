@@ -5,7 +5,7 @@
             <div class="container p-5">
                 <div class="row g-3 align-items-center justify-content-center">
                     <div class="col-auto">
-                        <label for="searchEvent" class="col-form-label">Tìm kiếm theo số điện thoại</label>
+                        <label for="searchEvent" class="col-form-label">Tìm kiếm theo số điện thoại, mã banking:</label>
                     </div>
                     <div class="col-auto">
                         <input type="search" id="searchEvent" class="form-control" v-model="searchString">

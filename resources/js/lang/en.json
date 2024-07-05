@@ -57,5 +57,10 @@
         "address": "Address",
         "phone_number": "Phone",
         "copy_right": "© Ho Guom Opera. All rights reserved."
+    },
+    "warning_text": "The ticket booking website only works from 10 AM - 10 PM every day",
+    "discount": {
+        "apply": "Apply",
+        "input_discount_code": "Input discount code"
     }
 }

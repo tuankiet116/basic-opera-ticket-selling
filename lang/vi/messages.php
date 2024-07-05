@@ -11,5 +11,9 @@ return [
         "is_booked" => "Ghế của bạn đã được đặt chỗ, vui lòng chọn ghế khác.",
         "error" => "Đã xảy ra lỗi không mong muốn, vui lòng liên hệ trực tiếp để đặt chỗ.",
         "address_must_present" => "Địa chỉ là bắt buộc khi bạn không nhận vé tại nhà hát.",
+    ],
+    "discount" => [
+        "invalid_code" => "Mã giảm giá không hợp lệ.",
+        "used_up" => "Mã giảm giá đã được sử dụng hết.",
     ]
 ];

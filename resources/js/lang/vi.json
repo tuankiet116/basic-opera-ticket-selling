@@ -57,5 +57,10 @@
         "address": "Địa chỉ",
         "phone_number": "Điện thoại",
         "copy_right": "© Ho Guom Opera. All rights reserved."
+    },
+    "warning_text": "Website đặt vé chỉ hoạt động từ 10h00 đến 22h00 hàng ngày",
+    "discount": {
+        "apply": "Áp dụng",
+        "input_discount_code": "Nhập mã giảm giá"
     }
 }

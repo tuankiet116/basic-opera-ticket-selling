@@ -33,4 +33,13 @@ const props = defineProps({
 })
 </script>
 <style scoped>
+.modal-title {
+    font-size: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .modal-title {
+        font-size: 15px !important;
+    }
+}
 </style>

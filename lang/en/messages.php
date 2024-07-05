@@ -11,5 +11,9 @@ return [
         "is_booked" => "Your seats has been booked, please select another.",
         "error" => "Something has broken, please contact us for booking.",
         "address_must_present" => "Address is required when you are not receving tickets at opera house.",
+    ],
+    "discount" => [
+        "invalid_code" => "Invalid discount code.",
+        "used_up" => "Discount code has been used up.",
     ]
 ];
