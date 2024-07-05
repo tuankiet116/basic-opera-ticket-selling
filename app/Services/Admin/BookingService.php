@@ -18,12 +18,12 @@ class BookingService
     public function getBookings(int $eventId)
     {
         $searchString = request()->get("search");
-        $clients = ClientModel::whereRaw("LOWER(clients.phone_number) LIKE ?", ["%$searchString%"])
-            ->orWhereRaw("LOWER(clients.banking_code) LIKE ?", ["%$searchString%"])
+        $clients = ClientModel::whereRaw("(LOWER(clients.phone_number) LIKE ? OR LOWER(clients.banking_code) LIKE ?)", ["%$searchString%", "%$searchString%"])
             ->where("isSpecial", false)
             ->where("event_id", $eventId)
             ->orderBy("created_at", "DESC")
             ->paginate(PAGINATE_NUMBER)->toArray();
+        
         foreach ($clients["data"] as &$client) {
             $bookings = BookModel::with(["seat"])
                 ->where("client_id", $client["id"])
