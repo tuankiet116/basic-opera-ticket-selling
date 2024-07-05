@@ -97,7 +97,7 @@
                 Gươm
                 (40-40A Hàng Bài). Đối với những bạn lựa chọn gửi vé theo địa chỉ đăng ký, chúng tôi sẽ liên lạc và
                 chuyển vé
-                cứng tới địa chỉ đã đăng ký của quý khách trước ngày 22/04/2024. Quý khách vui lòng chi trả theo giá
+                cứng tới địa chỉ đã đăng ký của quý khách trước ngày {{ date('d-m-Y', strtotime($event->date)) }}. Quý khách vui lòng chi trả theo giá
                 ship công
                 nghệ khi nhận vé.
             </span>
@@ -108,7 +108,7 @@
                 paper
                 ticket(s) at Ho Guom Opera (40-40A Hang Bai). For those who want their tickets delivered to their door,
                 we will
-                contact and deliver the paper ticket(s) before April 22nd, 2024. Please pay the shipping fee following
+                contact and deliver the paper ticket(s) before {{ date('F j, Y', strtotime($event->date)) }}. Please pay the shipping fee following
                 the fee
                 on the transportation app when receiving the ticket(s).
             </i>
