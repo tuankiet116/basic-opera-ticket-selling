@@ -36,7 +36,7 @@ class CheckPendingBooking extends Command
     {
         DB::beginTransaction();
         try {
-            $timeToCheck = Carbon::now()->subMinutes(1000)->format('Y-m-d H:i:s');
+            $timeToCheck = Carbon::now()->subMinutes(1020)->format('Y-m-d H:i:s');
             $bookingOverTime = BookModel::with(["client", "seat", "event"])->where("start_pending", "<", $timeToCheck)
                 ->where("isPending", true)->get();
             if (sizeof($bookingOverTime)) {
@@ -53,6 +53,7 @@ class CheckPendingBooking extends Command
                         $eventSeats[$booking->event_id]["seats"] = [$booking->seat];
                     }
                     $clientEmail = data_get($booking, "client.email");
+                    $clientPhoneNumber = data_get($booking, "client.phone_number");
                     $hall =  data_get($booking, "seat.hall");
                     $seatName = data_get($booking, "seat.name");
                     DiscountServiceUltils::releaseDiscountInUsed($booking);
@@ -75,7 +76,7 @@ class CheckPendingBooking extends Command
                 }
                 BookModel::whereIn("id", $bookingIds)->delete();
                 ClientModel::whereIn("id", $clientIds)->delete();
-                Log::info("Delete bookings overtime of clients: ", array_keys($bookingInformation));
+                Log::info("Delete bookings overtime of clients: ", $bookingInformation);
                 Log::info("Delete clients id of booking overtime: ", $clientIds);
             }
             DB::commit();

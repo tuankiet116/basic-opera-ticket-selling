@@ -1,5 +1,5 @@
 <template>
-    <div class="container-sm">
+    <div class="container-sm" v-if="!isNoEvents">
         <div class="row justify-content-center align-items-center">
             <div class="col-md-10">
                 <h3 class="py-5 fs-3"> {{ $t("events.title") }} </h3>
@@ -39,11 +39,13 @@
             </div>
         </div>
     </div>
+    <ComingSoon v-else/>
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
 import { getListEventAPI } from "../api/event";
 import { convertDate } from "../helpers/date";
+import ComingSoon from "./ComingSoon.vue";
 
 let events = ref({
     next_page_url: null,
@@ -52,8 +54,11 @@ let events = ref({
     last_page: 1,
 });
 
+let isNoEvents = ref(false);
+
 onMounted(async () => {
     await getListEvent();
+    if (!events.value.data.length) isNoEvents.value = false;
 });
 
 const getListEvent = async (page = 1) => {
