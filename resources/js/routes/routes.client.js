@@ -4,13 +4,11 @@ import ListEvent from '../pages/ListEvent.vue';
 import ClientForm from '../pages/ClientForm.vue';
 import { getEventAPI } from '../api/event';
 import NotFound from '../pages/errors/NotFound.vue';
-import ComingSoon from '../pages/ComingSoon.vue';
 
 export const routes = [
     {
         path: '/', component: Index, children: [
-            // { path: '', component: ListEvent, name: 'index' },
-            { path: '', component: ComingSoon, name: 'index' },
+            { path: '', component: ListEvent, name: 'index' },
             {
                 path: '/book/:eventId', component: Book, name: 'book-ticket', beforeEnter: async (to, from, next) => {
                     if (!to.params.eventId.match("^\\d+$") || !getEventAPI(to.params.eventId)) {

@@ -67,21 +67,18 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     });
 })->name("admin");
 
-// TODO: remove after close coming soon
-Route::middleware("auth:sanctum")->group(function() {
-    Route::prefix("/event")->group(function () {
-        Route::get("/list", [ClientEventController::class, "list"]);
-        Route::get("/info/{eventId}", [ClientEventController::class, "getEvent"]);
-        Route::get("/bookings/{eventId}", [ClientEventController::class, "getBookings"]);
-    });
-    
-    Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
-    Route::post("/booking", [BookingController::class, "booking"]);
-    Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);
-    Route::get("/temporary-booking", [BookingController::class, "getBookingsTemporary"]);
-    Route::get("/temporary-token", [BookingController::class, "generateTeporaryToken"]);
-    
-    Route::prefix("/discount")->group(function() {
-        Route::post("/apply", [ClientDiscountController::class, "apply"]);
-    });
+Route::prefix("/event")->group(function () {
+    Route::get("/list", [ClientEventController::class, "list"]);
+    Route::get("/info/{eventId}", [ClientEventController::class, "getEvent"]);
+    Route::get("/bookings/{eventId}", [ClientEventController::class, "getBookings"]);
+});
+
+Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
+Route::post("/booking", [BookingController::class, "booking"]);
+Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);
+Route::get("/temporary-booking", [BookingController::class, "getBookingsTemporary"]);
+Route::get("/temporary-token", [BookingController::class, "generateTeporaryToken"]);
+
+Route::prefix("/discount")->group(function() {
+    Route::post("/apply", [ClientDiscountController::class, "apply"]);
 });
