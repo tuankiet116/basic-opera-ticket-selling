@@ -21,7 +21,7 @@ class EventService
     public function getBookings(int $eventId)
     {
         $event = $this->getEvent($eventId);
-        if (!$event) throw new BadRequestException("Event not found or not available");
+        if (!$event) throw new BadRequestException("Event not found or not available for event Id $eventId");
         return BookModel::with(["seat"])->where("event_id", $eventId)
             ->get(["event_id", "seat_id"])->toArray();
     }

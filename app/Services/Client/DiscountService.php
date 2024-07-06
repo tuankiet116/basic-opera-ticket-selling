@@ -16,9 +16,8 @@ class DiscountService
     const DISCOUNT_EXCEPTION = 10001;
     public function applyDiscount(string $discountCode, string $temporaryToken)
     {
-        DB::beginTransaction();
-        // Validate discount code and check quantity remaining, ticket class, and booking temporary token.
-        try {
+        $discountInfo = null;
+        DB::transaction(function () use ($discountCode, $temporaryToken, &$discountInfo) {
             $bookingEvent = BookModel::where("token", $temporaryToken)
                 ->where("is_temporary", true)->first();
             $discount = DiscountModel::where("discount_code", $discountCode)
@@ -29,6 +28,7 @@ class DiscountService
             if (!$discount || !$bookingEvent) {
                 if ($bookingEvent) $this->unApplyDiscountCodeFromBookings($temporaryToken, $bookingEvent->discount_code);
                 Log::error("Mã giảm giá $discountCode không hợp lệ");
+                DB::commit();
                 throw new Exception(trans_format("messages.discount.invalid_code"), self::DISCOUNT_EXCEPTION);
             }
 
@@ -40,6 +40,7 @@ class DiscountService
             if ($discountRemaining == 0) {
                 $this->unApplyDiscountCodeFromBookings($temporaryToken, $bookingEvent->discount_code);
                 Log::info("Đã sử dụng hết mã giảm giá $discountCode cho hạng vé $ticketClassId");
+                DB::commit();
                 throw new Exception(trans_format("messages.discount.used_up"), self::DISCOUNT_EXCEPTION);
             }
             $bookingsUsingDiscount = BookModel::where("token", $temporaryToken)
@@ -81,18 +82,12 @@ class DiscountService
                     $booking->save();
                 }
             });
-            DB::commit();
             Log::info("Update discount ($discountCode - $discount->event_id) quantity from $discountQuantityUsed to $discount->quantity_used");
             $discountInfo = collect($discount)->except(["quantity", "quantity_used", "start_date", "end_date", "created_at", "updated_at"])->toArray();
             $seatsApplied = collect($bookingsValid)->pluck("seat_id");
             $discountInfo["applied"] = $seatsApplied;
-            return $discountInfo;
-        } catch (Exception $e) {
-            if ($e->getCode() === self::DISCOUNT_EXCEPTION) {
-                DB::commit();
-            } else DB::rollBack();
-            throw $e;
-        }
+        }, 5);
+        return $discountInfo;
     }
 
     protected function unApplyDiscountCodeFromBookings($temporaryToken, $discountCodeUnApply)

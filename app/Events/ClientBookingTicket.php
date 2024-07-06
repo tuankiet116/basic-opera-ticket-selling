@@ -17,7 +17,7 @@ class ClientBookingTicket implements ShouldBroadcast
      * Create a new event instance.
      * @param array<SeatModel> $seatsBooked
      */
-    public function __construct(protected array $seatsBooked, protected $eventId)
+    public function __construct(protected array $seatsBooked, protected int $eventId)
     {
     }
 

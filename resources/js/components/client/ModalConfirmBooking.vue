@@ -173,7 +173,9 @@ const applyDiscount = async () => {
     let response = await applyDiscountAPI(data);
     switch (response.status) {
         case HttpStatusCode.Ok:
-            discount.value = response.data;
+            if (response.data.discount_code) {
+                discount.value = response.data;
+            }
             break;
         default:
             discount.value = null;
