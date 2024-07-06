@@ -82,7 +82,7 @@ class DiscountService
                 }
             });
             DB::commit();
-            Log::info("Update discount ($discountCode) quantity from $discountQuantityUsed to $discount->quantity_used");
+            Log::info("Update discount ($discountCode - $discount->event_id) quantity from $discountQuantityUsed to $discount->quantity_used");
             $discountInfo = collect($discount)->except(["quantity", "quantity_used", "start_date", "end_date", "created_at", "updated_at"])->toArray();
             $seatsApplied = collect($bookingsValid)->pluck("seat_id");
             $discountInfo["applied"] = $seatsApplied;
