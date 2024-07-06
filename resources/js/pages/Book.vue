@@ -258,6 +258,9 @@ const selectHall = (hallId) => {
 
 const selectSeatTemporary = (seatName, hall = null) => {
     let isSelect = reselectSeat(seatName, hall);
+    console.log("isSelect:", isSelect);
+    console.log("seatName:", seatName);
+    console.log("hall:", hall);
     if (isSelect !== null) {
         temporaryBooking(seatName, hallSelected.value, isSelect);
     }

@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->environment('production')) {
+            URL::forceScheme('https');
         }
-        URL::forceScheme('https');
 
         Gate::define('viewPulse', function (User $user) {
             return $user->id;
