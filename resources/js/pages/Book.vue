@@ -222,7 +222,7 @@ onUnmounted(async () => {
 });
 
 const reselectSeat = (seatName, hall) => {
-    if (bookings.value.find((booking => booking.seat == seatName && hall))) return null;
+    if (bookings.value.find((booking => booking.seat == seatName && booking.hall == hall))) return null;
     let seatSelected = toRef(seatSelectedHall1);
     if ((hall && hall == 2) || hallSelected.value == 2) {
         seatSelected = toRef(seatSelectedHall2);
@@ -258,9 +258,6 @@ const selectHall = (hallId) => {
 
 const selectSeatTemporary = (seatName, hall = null) => {
     let isSelect = reselectSeat(seatName, hall);
-    console.log("isSelect:", isSelect);
-    console.log("seatName:", seatName);
-    console.log("hall:", hall);
     if (isSelect !== null) {
         temporaryBooking(seatName, hallSelected.value, isSelect);
     }
