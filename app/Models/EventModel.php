@@ -37,6 +37,9 @@ class EventModel extends Model
 
     public function scopeAvailable(Builder $query)
     {
+        if (auth()->user()) {
+            return $query->where("is_delete", false);
+        }
         return $query->where("is_openning", true)->where("is_delete", false);
     }
 
