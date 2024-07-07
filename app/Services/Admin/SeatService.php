@@ -113,7 +113,7 @@ class SeatService
             $seats = array_chunk($seats->all(), CHUNK_SIZE_BROADCAST);
             foreach ($seats as $seatsChunk) {
                 if ($isCancel) ClientRemoveBookingTicket::dispatch($seatsChunk, $event);
-                else ClientBookingTicket::dispatch($seatsChunk, $event);
+                else ClientBookingTicket::dispatch($seatsChunk, $event->id);
             }
         } catch (Exception $e) {
             Log::error("Pre Booking: ", [
