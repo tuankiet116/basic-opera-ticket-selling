@@ -1,7 +1,7 @@
 <template>
-    <div v-show="event.is_openning" class="alert alert-danger position-sticky z-2 m-auto left-0 w-50" style="top: 1rem;"
-        role="alert">
-        Không thể sửa đổi thông tin khi sự kiện đang trong trạng thái mở bán vé!
+    <div v-show="event.is_openning && mode == MODE_TICKET_CLASS_SETTING"
+        class="alert alert-danger position-sticky z-2 m-auto left-0 w-50" style="top: 1rem;" role="alert">
+        Không thể sửa đổi hạng vé khi sự kiện đang trong trạng thái mở bán vé!
     </div>
     <div class="container text-center pt-5 position-relative">
         <h1 class="fs-3 pt-5">Cài đặt hạng vé chỗ ngồi cho {{ event.name }}</h1>
@@ -51,11 +51,11 @@
                     <div class="col-10">
                         <div class="d-flex">
                             <span>Ghế đã đặt chỗ bởi khách hàng Online: </span>
-                            <div class="box-color-note admin-seat-booked"/>
+                            <div class="box-color-note admin-seat-booked" />
                         </div>
                         <div class="d-flex">
                             <span>Ghế được đặt trước: </span>
-                            <div class="box-color-note admin-seat-booked-special"/>
+                            <div class="box-color-note admin-seat-booked-special" />
                         </div>
                     </div>
                     <button type="button" class="btn btn-light col btn-sm" data-bs-toggle="modal"

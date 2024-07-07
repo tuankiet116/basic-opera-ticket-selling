@@ -17,13 +17,14 @@ class DiscountService
     public function applyDiscount(string $discountCode, string $temporaryToken)
     {
         $discountInfo = null;
+        DB::enableQueryLog();
         DB::transaction(function () use ($discountCode, $temporaryToken, &$discountInfo) {
             $bookingEvent = BookModel::where("token", $temporaryToken)
                 ->where("is_temporary", true)->first();
-            $discount = DiscountModel::where("discount_code", $discountCode)
+            $discount = DiscountModel::lockForUpdate()->where("discount_code", $discountCode)
                 ->where("event_id", data_get($bookingEvent, "event_id"))
                 ->where("start_date", "<=", Carbon::now()->format("Y-m-d"))
-                ->where("end_date", ">=", Carbon::now()->format("Y-m-d"))->lockForUpdate()->first();
+                ->where("end_date", ">=", Carbon::now()->format("Y-m-d"))->first();
 
             if (!$discount || !$bookingEvent) {
                 if ($bookingEvent) $this->unApplyDiscountCodeFromBookings($temporaryToken, $bookingEvent->discount_code);
@@ -87,6 +88,7 @@ class DiscountService
             $seatsApplied = collect($bookingsValid)->pluck("seat_id");
             $discountInfo["applied"] = $seatsApplied;
         }, 5);
+        dd(DB::getRawQueryLog());
         return $discountInfo;
     }
 
@@ -99,7 +101,7 @@ class DiscountService
                 ->update([
                     "discount_code" => null
                 ]);
-            $discount = DiscountModel::where("discount_code", $discountCodeUnApply)->first();
+            $discount = DiscountModel::lockForUpdate()->where("discount_code", $discountCodeUnApply)->first();
             if (!$discount) return;
             $discountQuantityUsed = $discount->quantity_used;
             $discount->update([

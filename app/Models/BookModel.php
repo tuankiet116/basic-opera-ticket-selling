@@ -23,6 +23,7 @@ class BookModel extends Model
         "is_client_special",
         "discount_code",
         "discount_price",
+        "pricing",
     ];
 
     protected $casts = [

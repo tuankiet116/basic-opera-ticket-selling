@@ -20,7 +20,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
 use function App\Helpers\generateRandomString;
 
 class BookingService
@@ -134,24 +133,28 @@ class BookingService
         $startTime = Carbon::now()->format("Y-m-d H:i:s");
         $firstTemporary = BookModel::where("token", $token)->first();
         if ($firstTemporary) $startTime = $firstTemporary->created_at;
+    
+        $event = EventModel::find($eventId);
+        $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
         DB::beginTransaction();
         try {
             foreach ($data["bookings"] as $dBooking) {
                 $seats = SeatModel::whereIn("name", $dBooking["seats"])->where("hall", $dBooking["hall"])->get()->toArray();
                 foreach ($seats as $seat) {
-                    $ticketClass = EventSeatClassModel::with(["ticketClass", "event"])->where("seat_id", data_get($seat, "id"))->where("event_id", $eventId)->first();
-                    if (!$ticketClass || !$ticketClass->ticketClass) throw new Exception("No ticket class found while booking.");
+                    $eventSeatClass = EventSeatClassModel::where("seat_id", $seat["id"])->where("event_id", $eventId)->first();
+                    $ticketClass = collect($ticketClasses)->where("id", $eventSeatClass->ticket_class_id)->first();
+                    if (!$eventSeatClass || !$ticketClass) throw new Exception("No ticket class found while booking.");
                     if (data_get($data, "is_booking")) {
                         BookModel::insert([
                             "event_id" => $eventId,
                             "seat_id" => data_get($seat, "id"),
-                            "ticket_class_id" => $ticketClass->ticketClass->id,
+                            "ticket_class_id" => $ticketClass->id,
                             "isBooked" => false,
                             "isPending" => false,
                             "start_pending" => null,
                             "is_temporary" => true,
                             "token" => $token,
-                            "pricing" => $ticketClass->ticketClass->price,
+                            "pricing" => $ticketClass->price,
                             "is_client_special" => false,
                             "created_at" => $startTime,
                             "updated_at" => $startTime,
@@ -173,13 +176,13 @@ class BookingService
                         broadcast(new ClientRemoveBookingTicket([[
                             "name" => $seat["name"],
                             "hall" => $seat["hall"],
-                        ]], $ticketClass->event))->toOthers();
+                        ]], $event))->toOthers();
                     }
                 }
             }
             DB::commit();
         } catch (\Exception $e) {
-            Log::error("Error on temporary booking:", $e->getMessage());
+            Log::error("Error on temporary booking:" . $e->getMessage());
             DB::rollBack();
         }
 

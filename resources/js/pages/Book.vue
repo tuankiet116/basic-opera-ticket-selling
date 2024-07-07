@@ -244,6 +244,7 @@ const reselectSeat = (seatName, hall) => {
     if (currentSeatIdx > -1) {
         factor = -1;
         seatSelected.value.splice(currentSeatIdx, 1);
+        createBookingsCart();
     } else {
         seatSelected.value.push(seatName);
     }

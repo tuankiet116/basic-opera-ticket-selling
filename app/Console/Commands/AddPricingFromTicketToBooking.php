@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\BookModel;
+use App\Models\EventSeatClassModel;
+use App\Models\TicketClassModel;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class AddPricingFromTicketToBooking extends Command
 {
@@ -26,7 +29,25 @@ class AddPricingFromTicketToBooking extends Command
      */
     public function handle()
     {
-        $bookings = BookModel::get();
-        
+        $bookings = BookModel::where("pricing", null)->get();
+        $bookings->each(function (BookModel &$booking) {
+            $ticketClass = TicketClassModel::find($booking->ticket_class_id);
+            $updateData = [];
+            if ($ticketClass) {
+                $updateData = [
+                    "pricing" => $ticketClass->price
+                ];
+            } else {
+                $eventSeatClass = EventSeatClassModel::with("ticketClass")->where("seat_id", $booking->seat_id)->where("event_id", $booking->event_id)->first();
+                if ($eventSeatClass) {
+                    $updateData = [
+                        "pricing" => $eventSeatClass->ticketClass->price,
+                        "ticket_class_id" => $eventSeatClass->ticket_class_id
+                    ];
+                }
+            }
+            Log::info("Update", $updateData);
+            BookModel::find($booking->id)->update($updateData);
+        });
     }
 }
