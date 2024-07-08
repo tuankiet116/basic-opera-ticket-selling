@@ -101,7 +101,11 @@ class BookingService
                     ]);
                 }
             }
-            BookModel::where(["token" => $temporaryToken])->delete();
+            $bookingsUnused = BookModel::where(["token" => $temporaryToken])->get();
+            $bookingsUnused->each(function (BookModel $booking) {
+                DiscountServiceUltils::releaseDiscountInUsed($booking);
+                $booking->delete();
+            });
 
             Mail::to($client)->queue(new AskingPayment($event, $client, $dataBookingSendMail));
 
@@ -181,6 +185,11 @@ class BookingService
                 }
             }
             DB::commit();
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) {
+                Log::error("Error while customers booking temporary: " . $e->getMessage());
+            }
         } catch (\Exception $e) {
             Log::error("Error on temporary booking:" . $e->getMessage());
             DB::rollBack();

@@ -9,6 +9,7 @@ use App\Models\BookModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\SeatModel;
+use App\Models\TicketClassModel;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PHPUnit\Framework\Attributes\Ticket;
 
 class SeatService
 {
@@ -32,6 +34,9 @@ class SeatService
         try {
             $event = EventModel::find($data["event_id"]);
             if ($event->is_openning) throw new Exception("Sự kiện đang mở bán vé, không thể cập nhật.");
+            $ticketClassId = $data["ticket_class_id"];
+            $ticketClass = TicketClassModel::findOrFail($ticketClassId);
+
             foreach ($data["seats"] as $seatData) {
                 if (sizeof($seatData["names"])) {
                     $seats = SeatModel::where("hall", $seatData["hall"])->whereIn("name", $seatData["names"])->get()->toArray();
@@ -44,22 +49,36 @@ class SeatService
                     foreach ($seats as $seat) {
                         $eventId = $data["event_id"];
                         $seatId = $seat["id"];
-                        $ticketClassId = $data["ticket_class_id"];
                         $oldSeatsClass = EventSeatClassModel::where([
                             "event_id" => $eventId,
                             "seat_id" => $seatId
                         ])->first();
+                        $seatBookedSpecial = BookModel::where([
+                            "event_id" => $event->id,
+                            "is_client_special" => true,
+                            "seat_id" => $seatId
+                        ])->first();
+
+                        if ($seatBookedSpecial) {
+                            $seatBookedSpecial->update([
+                                "ticket_class_id" => $ticketClassId,
+                                "pricing" => $ticketClass->price
+                            ]);
+                            $seatBookedSpecial->save();
+                        }
+
                         if ($oldSeatsClass) {
                             $oldSeatsClass->update(["ticket_class_id" => $ticketClassId]);
                             $oldSeatsClass->save();
-                        } else {
-                            $dataCreate = [
-                                "event_id" => $data["event_id"],
-                                "seat_id" => $seat["id"],
-                                "ticket_class_id" => $data["ticket_class_id"]
-                            ];
-                            EventSeatClassModel::create($dataCreate);
+                            continue;
                         }
+
+                        $dataCreate = [
+                            "event_id" => $data["event_id"],
+                            "seat_id" => $seat["id"],
+                            "ticket_class_id" => $data["ticket_class_id"]
+                        ];
+                        EventSeatClassModel::create($dataCreate);
                     }
                 }
             }
@@ -91,11 +110,15 @@ class SeatService
         $bookingsOnline = $this->getBooksWithClientNonSpecial($seatIds, $data["event_id"]);
         if (sizeof($bookingsOnline)) throw new InvalidBookingException($bookingsOnline->pluck("seat_id")->toArray());
 
-        $ticketClasses = EventSeatClassModel::where("event_id", $event->id)->whereIn("seat_id", $seatIds)->pluck("ticket_class_id");
-        if (sizeof($ticketClasses) != sizeof($seatIds)) throw new Exception("Không thể prebooking khi chưa có hạng vé");
+        $eventTicketClasses = EventSeatClassModel::where("event_id", $event->id)->whereIn("seat_id", $seatIds)->get();
+        $ticketClassIds = collect($eventTicketClasses)->pluck("ticket_class_id");
+        if (sizeof($ticketClassIds) != sizeof($seatIds)) throw new Exception("Không thể prebooking khi chưa có hạng vé");
+        $ticketClasses = TicketClassModel::whereIn("id", $ticketClassIds)->get();
         DB::beginTransaction();
         try {
             foreach ($seatIds as $id) {
+                $ticketClassId = collect($eventTicketClasses)->where("seat_id", $id)->first()->ticket_class_id;
+                $ticketClass = collect($ticketClasses)->where("id", $ticketClassId)->first();
                 if ($isCancel) {
                     BookModel::where([
                         "event_id" => $data["event_id"],
@@ -105,7 +128,9 @@ class SeatService
                     BookModel::updateOrCreate([
                         "event_id" => $data["event_id"],
                         "seat_id" => $id,
-                        "is_client_special" => true
+                        "is_client_special" => true,
+                        "ticket_class_id" => $ticketClass->id,
+                        "pricing" => $ticketClass->price,
                     ], ["client_id" => $data["client_id"]]);
                 }
             }

@@ -56,8 +56,8 @@ class DiscountService
 
             $countBooking = collect($bookings)->count();
             if ($ticketClassId) {
-                $countBooking = collect($bookings)->where("ticket_class_id", $ticketClassId)->count();
                 $bookingsValid = $bookings->where("ticket_class_id", $ticketClassId);
+                $countBooking = collect($bookings)->where("ticket_class_id", $ticketClassId)->count();
             }
             if ($countBooking > $discountRemaining) {
                 $bookingsValid->splice($discountRemaining);

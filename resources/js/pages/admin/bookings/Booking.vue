@@ -102,6 +102,7 @@
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
                 <p class="mb-0">Mã banking: <strong>{{ bookingSelected?.banking_code }}</strong></p>
+                <p class="mb-0">Thời gian: <strong>{{ bookingSelected?.updated_at }}</strong></p>
                 <p class="mb-0">
                     Địa chỉ nhận vé:
                     <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>
