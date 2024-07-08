@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Models\BookModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AddPricingFromTicketToBooking extends Command
@@ -29,25 +31,32 @@ class AddPricingFromTicketToBooking extends Command
      */
     public function handle()
     {
-        $bookings = BookModel::where("pricing", null)->get();
-        $bookings->each(function (BookModel $booking) {
-            $ticketClass = TicketClassModel::find($booking->ticket_class_id);
-            $updateData = [];
-            if ($ticketClass) {
-                $updateData = [
-                    "pricing" => $ticketClass->price
-                ];
-            } else {
-                $eventSeatClass = EventSeatClassModel::with("ticketClass")->where("seat_id", $booking->seat_id)->where("event_id", $booking->event_id)->first();
-                if ($eventSeatClass) {
+        DB::beginTransaction();
+        try {
+            $bookings = BookModel::where("pricing", null)->get();
+            $bookings->each(function (BookModel $booking) {
+                $ticketClass = TicketClassModel::find($booking->ticket_class_id);
+                $updateData = [];
+                if ($ticketClass) {
                     $updateData = [
-                        "pricing" => $eventSeatClass->ticketClass->price,
-                        "ticket_class_id" => $eventSeatClass->ticket_class_id
+                        "pricing" => $ticketClass->price
                     ];
+                } else {
+                    $eventSeatClass = EventSeatClassModel::with("ticketClass")->where("seat_id", $booking->seat_id)->where("event_id", $booking->event_id)->first();
+                    if ($eventSeatClass) {
+                        $updateData = [
+                            "pricing" => $eventSeatClass->ticketClass->price,
+                            "ticket_class_id" => $eventSeatClass->ticket_class_id
+                        ];
+                    }
                 }
-            }
-            Log::info("Update booking $booking->id:", $updateData);
-            BookModel::find($booking->id)->update($updateData);
-        });
+                Log::info("Update booking $booking->id:", $updateData);
+                BookModel::find($booking->id)->update($updateData);
+            });
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error("Error on adding pricing from ticket to booking: ". $e->getMessage());
+            DB::rollBack();
+        }
     }
 }
