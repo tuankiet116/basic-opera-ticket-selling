@@ -17,7 +17,6 @@ class DiscountService
     public function applyDiscount(string $discountCode, string $temporaryToken)
     {
         $discountInfo = null;
-        DB::enableQueryLog();
         DB::transaction(function () use ($discountCode, $temporaryToken, &$discountInfo) {
             $bookingEvent = BookModel::where("token", $temporaryToken)
                 ->where("is_temporary", true)->first();
@@ -88,7 +87,6 @@ class DiscountService
             $seatsApplied = collect($bookingsValid)->pluck("seat_id");
             $discountInfo["applied"] = $seatsApplied;
         }, 5);
-        dd(DB::getRawQueryLog());
         return $discountInfo;
     }
 
