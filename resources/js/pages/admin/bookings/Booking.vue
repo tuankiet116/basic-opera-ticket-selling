@@ -68,6 +68,14 @@
                     <p class="mb-0 fs-5">
                         Mã banking: <strong>{{ booking.banking_code }}</strong>
                     </p>
+                    <p class="mb-0">Thời gian đặt vé:
+                        <strong>
+                            {{
+                                booking?.updated_at ?
+                                    convertDateTime(booking?.updated_at) : "Không có"
+                            }}
+                        </strong>
+                    </p>
                     <p class="mb-0 fs-5">Tổng tiền thanh toán:
                         <template v-if="booking.priceDiscounted < booking.priceTotal">
                             <span class="text-decoration-line-through text-danger me-2">
@@ -102,13 +110,20 @@
                 <p class="mb-0">Email: <strong>{{ bookingSelected?.email }}</strong></p>
                 <p class="mb-0">Số điện thoại: <strong>{{ bookingSelected?.phone_number }}</strong></p>
                 <p class="mb-0">Mã banking: <strong>{{ bookingSelected?.banking_code }}</strong></p>
-                <p class="mb-0">Thời gian: <strong>{{ bookingSelected?.updated_at }}</strong></p>
                 <p class="mb-0">
                     Địa chỉ nhận vé:
                     <strong v-if="!bookingSelected.is_receive_in_opera">{{ bookingSelected.address }}</strong>
                     <span class="badge rounded-pill text-bg-info ms-2" v-else>
                         Nhận vé tại nhà hát
                     </span>
+                </p>
+                <p class="mb-0">Thời gian đặt vé:
+                    <strong>
+                        {{
+                            bookingSelected?.updated_at ?
+                                convertDateTime(bookingSelected?.updated_at) : "Không có"
+                        }}
+                    </strong>
                 </p>
                 <p class="mb-0">
                     <strong class="p-1">
@@ -183,6 +198,7 @@ import { acceptBookingAPI, getListBookingsAPI } from "../../../api/admin/booking
 import { numberWithCommas } from "../../../helpers/number";
 import { useToast } from "vue-toastification";
 import Modal from '../../../components/Modal.vue';
+import { convertDateTime } from "../../../helpers/date";
 
 const TAB_ALL = 'all';
 const TAB_PAID = 'paid';
