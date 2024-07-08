@@ -120,7 +120,7 @@
                                 {{ numberWithCommas(bookingSelected.priceDiscounted ?? 0) }} vnd
                             </span>
                         </template>
-                        <span v-else class="text-decoration-line-through text-danger me-2">
+                        <span v-else>
                             {{ numberWithCommas(bookingSelected.priceTotal ?? 0) }} vnd
                         </span>
                     </strong>
