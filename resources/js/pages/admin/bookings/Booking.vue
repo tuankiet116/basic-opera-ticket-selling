@@ -55,7 +55,7 @@
                         Chưa thanh toán
                     </span>
                     <span class="badge rounded-pill text-bg-info ms-2" v-if="booking.is_receive_in_opera">
-                        Nhận vé tại nhà hát 
+                        Nhận vé tại nhà hát
                     </span>
                     <p class="mb-0 fs-5">Khách hàng: <strong>{{ booking.name }}</strong></p>
                     <p class="mb-0 fs-5">Email: <strong>{{ booking.email }}</strong></p>
@@ -120,6 +120,9 @@
                                 {{ numberWithCommas(bookingSelected.priceDiscounted ?? 0) }} vnd
                             </span>
                         </template>
+                        <span v-else class="text-decoration-line-through text-danger me-2">
+                            {{ numberWithCommas(bookingSelected.priceTotal ?? 0) }} vnd
+                        </span>
                     </strong>
                 </p>
             </div>
