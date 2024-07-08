@@ -30,7 +30,7 @@ class AddPricingFromTicketToBooking extends Command
     public function handle()
     {
         $bookings = BookModel::where("pricing", null)->get();
-        $bookings->each(function (BookModel &$booking) {
+        $bookings->each(function (BookModel $booking) {
             $ticketClass = TicketClassModel::find($booking->ticket_class_id);
             $updateData = [];
             if ($ticketClass) {
@@ -46,7 +46,7 @@ class AddPricingFromTicketToBooking extends Command
                     ];
                 }
             }
-            Log::info("Update", $updateData);
+            Log::info("Update booking $booking->id:", $updateData);
             BookModel::find($booking->id)->update($updateData);
         });
     }
