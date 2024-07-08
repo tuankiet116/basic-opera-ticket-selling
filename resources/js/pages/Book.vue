@@ -46,7 +46,7 @@
                         <span class="mx-1">|</span>
                     </div>
                 </div>
-                <p class="fw-bold">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>
+                <p class="fw-bold" v-if="timer">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>
                 <div v-if="!isZoomOutBox" class="col-12 text-responsive">
                     <p style="word-break: break-all">
                         <span class="fw-medium">{{ $t("booking_page.hall") }} 1: </span>
@@ -147,7 +147,7 @@ let event = ref({});
 let total = ref(0);
 let totalDiscount = ref(0);
 let discount = ref(null);
-let timer = ref("");
+let timer = ref(null);
 let currentBookingsCart = ref([]);
 let eventId = route.params.eventId;
 const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
@@ -195,7 +195,9 @@ onMounted(async () => {
     setTimeout(async function () {
         refHall1.value.minimap?.reset();
     }, 30);
+});
 
+const excuteTimer = () => {
     let endTime = new Date().getTime() + storeTemporaryBookings.timeRemaining;
     let x = setInterval(function () {
         let now = new Date().getTime();
@@ -205,11 +207,11 @@ onMounted(async () => {
         if (distance < 0) {
             clearInterval(x);
             minutes = seconds = "00";
+            timer.value = null;
             unselectAllSeats();
-        }
-        timer.value = minutes + ":" + seconds;
+        } else timer.value = minutes + ":" + seconds;
     }, 1000);
-});
+}
 
 onUnmounted(async () => {
     window.Echo.leave(`client-booking-event-${event.value.id}`);
@@ -304,6 +306,9 @@ const temporaryBooking = async (seat, hall, isBooking) => {
     switch (response.status) {
         case HttpStatusCode.Ok:
             storeTemporaryBookings.setToken(response.data.token);
+            if ((seatSelectedHall1.value.length == 1 || seatSelectedHall2.value.length == 1) && !timer.value) {
+                excuteTimer();
+            }
             break;
         default:
             reselectSeat(seat, hall);

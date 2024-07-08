@@ -4,7 +4,7 @@
             <template v-if="groupBookings.some(booking => Object.keys(booking.seats).length)">
                 <div v-for="booking in groupBookings" :key="booking.hall" class="content">
                     <template v-if="Object.keys(booking.seats).length">
-                        <h7>{{ $t("booking_page.hall") }}: {{ booking.hall }} </h7>
+                        <h6>{{ $t("booking_page.hall") }}: {{ booking.hall }} </h6>
                         <div class="card mb-2 shadow-sm" v-for="(dataSeats, index) in booking.seats" :key="index">
                             <div class="row my-2 mx-0 align-items-center">
                                 <div class="col-1 p-0 m-0 mx-1 border rounded-circle container-ticket-color"
