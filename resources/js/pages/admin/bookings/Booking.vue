@@ -68,7 +68,7 @@
                     <p class="mb-0 fs-5">
                         Mã banking: <strong>{{ booking.banking_code }}</strong>
                     </p>
-                    <p class="mb-0">Thời gian đặt vé:
+                    <p class="mb-0 fs-5">Thời gian đặt vé:
                         <strong>
                             {{
                                 booking?.updated_at ?
