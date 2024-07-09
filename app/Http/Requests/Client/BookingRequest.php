@@ -29,7 +29,7 @@ class BookingRequest extends FormRequest
             "event_id" => [
                 "required",
                 Rule::exists("events", "id")->where(function (Builder $query) {
-                    return $query->where("is_delete", false)->where("is_openning", true);
+                    return !!auth()->user() || $query->where("is_delete", false)->where("is_openning", true);
                 })
             ],
             "name" => "required|string",
