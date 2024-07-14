@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\DiscountModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
@@ -62,7 +63,7 @@ class AggregateRevenueDaily extends Exports
             "events" => $totalAggregate
         ]];
         $totalAggregate = $this->exportSheetAggregateTicketDistribution($dataClientBookingsSpecial, $totalTickets, $events, true);
-        $this->exportSheetRevenue($totalAggregate, $totalTickets, $eventsTicketsBooked, $events);
+        // $this->exportSheetRevenue($totalAggregate, $totalTickets, $eventsTicketsBooked, $events);
         $this->saveFile($fileName);
     }
 
@@ -83,16 +84,8 @@ class AggregateRevenueDaily extends Exports
         $sheet->setCellValue([1, 5], "Tổng vé phát hành");
         $sheet->mergeCells([1, 5, 2, 5]);
 
-        /**
-         * Render events and ticket class name
-         */
-        $endColumnIndex = 3;
-        $events->each(function (EventModel $event) use (&$sheet, &$endColumnIndex, $totalTickets) {
-            $event->ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$endColumnIndex, $totalTickets, $event) {
-                $sheet->setCellValue([$endColumnIndex, 5], $totalTickets[$event->id][$ticketClass->id]);
-                $endColumnIndex++;
-            });
-        });
+        $sheet->setCellValue([1, 6], "Mã giảm giá");
+        $sheet->mergeCells([1, 6, 2, 6]);
 
         /**
          * Render tickets distribution excel
@@ -105,11 +98,25 @@ class AggregateRevenueDaily extends Exports
 
             if (!isset($totalTicketByEvents[$e->id])) $totalTicketByEvents[$e->id] = [];
             $ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$totalTicketByEvents, &$currentColumn, $ticketClasses, $e) {
-                if (!isset($totalTicketByEvents[$ticketClass->event_id][$ticketClass->id])) $totalTicketByEvents[$e->id][$ticketClass->id] = 0;
+                $discounts = collect($e->discounts)->filter(
+                    fn (DiscountModel $discount) => $discount->ticket_class_id == $ticketClass->id || !$discount->ticket_class_id
+                )->all();
+                if (!isset($totalTicketByEvents[$ticketClass->event_id][$ticketClass->id])) {
+                    $totalTicketByEvents[$e->id][$ticketClass->id]["total"] = 0;
+                    $totalTicketByEvents[$e->id][$ticketClass->id]["discounts"] = $discounts;
+                }
+
+                $discountColumnIndex = $currentColumn;
+                foreach ($discounts as $discount) {
+                    $sheet->setCellValue([$discountColumnIndex, 6], $discount->discount_code);
+                    $discountColumnIndex++;
+                }
+                if (count($discounts)) $discountColumnIndex--;
                 $sheet->setCellValue([$currentColumn, 4], $ticketClass->name);
+                $sheet->setMergeCells([$currentColumn, 4, $discountColumnIndex, 4]);
                 $sheet->getColumnDimensionByColumn($currentColumn)->setAutoSize(true);
+                $currentColumn = $discountColumnIndex + 1;
                 if ($ticketClasses->last()->id == $ticketClass->id) return;
-                $currentColumn++;
             });
             $sheet->setCellValue([$endColumnIndex, 3], $e->name . "($eventDate)");
             $sheet->mergeCells([$endColumnIndex, 3, $currentColumn, 3]);
@@ -119,50 +126,65 @@ class AggregateRevenueDaily extends Exports
         });
 
         /**
-         * Render bookings of each clients included online clients and special clients
-         * @param number $endRowIndex The end row of data
+         * Render events and ticket class name
          */
-        $endRowIndex = 6;
-        if (!sizeof($dataClientBookings)) $endRowIndex = 5;
-        foreach ($dataClientBookings as $key => $client) {
-            $currentColumn = 3;
-            $sheet->setCellValue([1, $endRowIndex], $key + 1);
-            $sheet->setCellValue([2, $endRowIndex], $client["name"]);
-            $sheet->getColumnDimensionByColumn(1)->setAutoSize(true);
-            $sheet->getColumnDimensionByColumn(2)->setAutoSize(true);
-            $events->each(function (EventModel $e) use (&$sheet, &$totalTicketByEvents, $endRowIndex, &$currentColumn, $client) {
-                $ticketClasses = $e->ticketClasses;
-                $ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$totalTicketByEvents, &$currentColumn, $client, $endRowIndex, $e) {
-                    if (isset($client["events"][$e->id][$ticketClass->id])) {
-                        if (is_array($client["events"][$e->id][$ticketClass->id])) $numberTicket = sizeof($client["events"][$e->id][$ticketClass->id]);
-                        else $numberTicket = $client["events"][$e->id][$ticketClass->id];
-                    } else $numberTicket = 0;
-                    $totalTicketByEvents[$e->id][$ticketClass->id] += $numberTicket;
-                    $sheet->setCellValue([$currentColumn, $endRowIndex], $numberTicket);
-                    $sheet->getStyle([$currentColumn, $endRowIndex])->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
-                    $currentColumn++;
-                });
-            });
-            $endRowIndex++;
-        }
+        $rowIndex = 5;
+        // $endColumnIndex = 3;
+        // $events->each(function (EventModel $event) use (&$sheet, &$endColumnIndex, $totalTickets, $totalTicketByEvents, $rowIndex) {
+        //     $event->ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$endColumnIndex, $totalTickets, $totalTicketByEvents, $event, $rowIndex) {
+        //         $currentColumnDiscount = $endColumnIndex + sizeof($totalTicketByEvents[$event->id][$ticketClass->id]["discounts"]);
+        //         $sheet->setCellValue([$endColumnIndex, $rowIndex], $totalTickets[$event->id][$ticketClass->id]);
+        //         $sheet->mergeCells([$endColumnIndex, $rowIndex, $currentColumnDiscount, $rowIndex]);
+        //         $endColumnIndex = $currentColumnDiscount;
+        //         $endColumnIndex++;
+        //     });
+        // });
 
-        /**
-         * Render total tickets has been distributed to the client
-         */
-        $currentColumn = 3;
-        $dataSize = sizeof($dataClientBookings);
-        $sheet->mergeCells([1, $endRowIndex, 2, $endRowIndex]);
-        $sheet->setCellValue([1, $endRowIndex], "Tổng vé đã phân phối");
-        $events->each(function (EventModel $event) use (&$sheet, &$currentColumn, $endRowIndex, $dataSize) {
-            $event->ticketClasses->each(function () use (&$sheet, &$currentColumn, $endRowIndex, $dataSize) {
-                $columnName = Coordinate::stringFromColumnIndex($currentColumn);
-                if (!$dataSize) $formula = "0";
-                else $formula = $columnName . "6:$columnName" . $endRowIndex - 1;
-                $sheet->setCellValueExplicit([$currentColumn, $endRowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
-                $sheet->getColumnDimensionByColumn($currentColumn)->setAutoSize(true);
-                $currentColumn++;
-            });
-        });
+        // /**
+        //  * Render bookings of each clients included online clients and special clients
+        //  * @param number $endRowIndex The end row of data
+        //  */
+        $endRowIndex = $rowIndex + 1;
+        // if (!sizeof($dataClientBookings)) $endRowIndex = 5;
+        // foreach ($dataClientBookings as $key => $client) {
+        //     $currentColumn = 3;
+        //     $sheet->setCellValue([1, $endRowIndex], $key + 1);
+        //     $sheet->setCellValue([2, $endRowIndex], $client["name"]);
+        //     $sheet->getColumnDimensionByColumn(1)->setAutoSize(true);
+        //     $sheet->getColumnDimensionByColumn(2)->setAutoSize(true);
+        //     $events->each(function (EventModel $e) use (&$sheet, &$totalTicketByEvents, $endRowIndex, &$currentColumn, $client) {
+        //         $ticketClasses = $e->ticketClasses;
+        //         $ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$totalTicketByEvents, &$currentColumn, $client, $endRowIndex, $e) {
+        //             if (isset($client["events"][$e->id][$ticketClass->id])) {
+        //                 if (is_array($client["events"][$e->id][$ticketClass->id])) $numberTicket = sizeof($client["events"][$e->id][$ticketClass->id]);
+        //                 else $numberTicket = $client["events"][$e->id][$ticketClass->id];
+        //             } else $numberTicket = 0;
+        //             $totalTicketByEvents[$e->id][$ticketClass->id] += $numberTicket;
+        //             $sheet->setCellValue([$currentColumn, $endRowIndex], $numberTicket);
+        //             $sheet->getStyle([$currentColumn, $endRowIndex])->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
+        //             $currentColumn++;
+        //         });
+        //     });
+        //     $endRowIndex++;
+        // }
+
+        // /**
+        //  * Render total tickets has been distributed to the client
+        //  */
+        // $currentColumn = 3;
+        // $dataSize = sizeof($dataClientBookings);
+        // $sheet->mergeCells([1, $endRowIndex, 2, $endRowIndex]);
+        // $sheet->setCellValue([1, $endRowIndex], "Tổng vé đã phân phối");
+        // $events->each(function (EventModel $event) use (&$sheet, &$currentColumn, $endRowIndex, $dataSize) {
+        //     $event->ticketClasses->each(function () use (&$sheet, &$currentColumn, $endRowIndex, $dataSize) {
+        //         $columnName = Coordinate::stringFromColumnIndex($currentColumn);
+        //         if (!$dataSize) $formula = "0";
+        //         else $formula = $columnName . "6:$columnName" . $endRowIndex - 1;
+        //         $sheet->setCellValueExplicit([$currentColumn, $endRowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
+        //         $sheet->getColumnDimensionByColumn($currentColumn)->setAutoSize(true);
+        //         $currentColumn++;
+        //     });
+        // });
 
         $sheet->mergeCells([1, 1, $endColumnIndex, 1]);
         $this->setCenterStyle([1, 1]);

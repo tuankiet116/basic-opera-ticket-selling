@@ -52,4 +52,9 @@ class EventModel extends Model
     {
         return $this->hasMany(TicketClassModel::class, "event_id", "id");
     }
+
+    public function discounts()
+    {
+        return $this->hasMany(DiscountModel::class, "event_id", "id");
+    }
 }
