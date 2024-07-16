@@ -26,55 +26,54 @@ class ExportService
         $endDate = data_get($data, "end_date");
         $exportType = data_get($data, "type");
 
-        $fileName = "HGO_TICKET_" . time();
+        $fileName = "report_all_" . time() . "";
+        if ($exportType == "report-daily") {
+            $startDate = Carbon::createFromFormat("Y-m-d H:i:s", "$startDate 00:00:00")->setTimezone("-7")->format("Y-m-d H:i:s");
+            $endDate = Carbon::createFromFormat("Y-m-d H:i:s", "$endDate 00:00:00")->addDay(1)->setTimezone("-7")->format("Y-m-d H:i:s");
+            $fileName = "report_all_" . time() . "($startDate)_($endDate)";
+        }
         try {
             $dataClientBookingsSpecial = [];
             $dataClientBookingsOnline = [];
             $eventsTicketsBooked = [];
-            if ($exportType == "report-daily") {
-                $endDate = Carbon::createFromFormat("Y-m-d H:i:s", "$endDate 00:00:00")->addDay(1)->setTimezone("-7")->format("Y-m-d H:i:s");
-                $startDate = Carbon::createFromFormat("Y-m-d H:i:s", "$startDate 00:00:00")->setTimezone("-7")->format("Y-m-d H:i:s");
-            }
-            $bookings = BookModel::with(["client", "seat"])->where("start_pending", null);
+            $bookings = BookModel::with(["client", "seat"])->where("start_pending", null)
+                ->where("is_temporary", 0);
             $bookings = $bookings->whereIn("event_id", data_get($data, "events"))->get();
-            $events = EventModel::with(["ticketClasses"])->whereIn("id", $eventIds)->get();
+            $events = EventModel::with(["ticketClasses", "discounts"])->whereIn("id", $eventIds)->get();
+
             $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
                 $ticketClassId = $booking->ticket_class_id;
+                $discountCode = $booking->discount_code;
                 $dataRef = &$dataClientBookingsOnline;
                 if ($exportType == "report-daily" && !Carbon::parse($booking->created_at)->between(Carbon::parse($startDate), Carbon::parse($endDate))) goto NEXT;
                 if ($booking->client->isSpecial) $dataRef = &$dataClientBookingsSpecial;
+
                 foreach ($dataRef as &$data) {
                     if (
                         (!$booking->client->isSpecial && ($data["phone_number"] == $booking->client->phone_number || $data["id_number"] == $booking->client->id_number))
                         || ($booking->client->isSpecial && $data["id"] == $booking->client_id)
                     ) {
-                        if (isset($data["events"][$bookingEventId])) {
-                            if (isset($data["events"][$bookingEventId][$ticketClassId])) {
-                                $data["events"][$bookingEventId][$ticketClassId][] = $booking->seat->name;
-                            } else {
-                                $data["events"][$bookingEventId][$ticketClassId] = [$booking->seat->name];
-                            }
-                        } else {
-                            $data["events"][$bookingEventId] = [
-                                $ticketClassId => [$booking->seat->name]
-                            ];
-                        }
-                        goto NEXT;
+                        $currentDataBooking = data_get($data, "events.$bookingEventId.$ticketClassId.$discountCode", []);
+                        $currentDataBooking[] = $booking;
+                        data_set($data, "events.$bookingEventId.$ticketClassId.$discountCode", $currentDataBooking);
                     }
+                    goto NEXT;
                 }
                 $dataRef[$booking->client_id] = [
                     ...$booking->client->toArray(),
                     "events" => [
                         $bookingEventId => [
-                            $ticketClassId => [$booking->seat->name]
+                            $ticketClassId => [
+                                $discountCode => [$booking]
+                            ]
                         ]
                     ]
                 ];
                 NEXT:
-                if (!isset($eventsTicketsBooked[$bookingEventId])) $eventsTicketsBooked[$bookingEventId] = [];
-                if (!isset($eventsTicketsBooked[$bookingEventId][$ticketClassId])) $eventsTicketsBooked[$bookingEventId][$ticketClassId] = [];
-                $eventsTicketsBooked[$bookingEventId][$ticketClassId][] = $booking->seat->name;
+                $currentTicketsBooked = data_get($eventsTicketsBooked, "$bookingEventId.$ticketClassId", []);
+                $currentTicketsBooked[] = $booking;
+                data_set($eventsTicketsBooked, "$bookingEventId.$ticketClassId.$discountCode", $currentTicketsBooked);
             });
 
             usort($dataClientBookingsSpecial, fn ($clientA, $clientB) => strcasecmp($clientA["name"], $clientB["name"]));
@@ -82,11 +81,12 @@ class ExportService
 
             $this->aggregateRevenueDaily->export($dataClientBookingsOnline, $dataClientBookingsSpecial, $eventsTicketsBooked, $events, $fileName);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thành công!", true);
-            FileModel::create([
-                "file_name" => $fileName,
-                "is_exported" => true
-            ]);
+            // FileModel::create([
+            //     "file_name" => $fileName,
+            //     "is_exported" => true
+            // ]);
         } catch (Exception $e) {
+            dd($e);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thất bại!", false);
             FileModel::create([
                 "file_name" => $fileName,
