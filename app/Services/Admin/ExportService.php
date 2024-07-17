@@ -41,7 +41,7 @@ class ExportService
             $bookings = $bookings->whereIn("event_id", data_get($data, "events"))->get();
             $events = EventModel::with(["ticketClasses", "discounts"])->whereIn("id", $eventIds)->get();
             $eventsSaveToFile = collect($events)->select(["id", "name"])->all();
-
+            // dd($bookings->pluck("client"));
             $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
                 $ticketClassId = $booking->ticket_class_id;
@@ -52,14 +52,14 @@ class ExportService
 
                 foreach ($dataRef as &$data) {
                     if (
-                        (!$booking->client->isSpecial && ($data["phone_number"] == $booking->client->phone_number))
+                        (!$booking->client->isSpecial && $data["phone_number"] == $booking->client->phone_number)
                         || ($booking->client->isSpecial && $data["id"] == $booking->client_id)
                     ) {
                         $currentDataBooking = data_get($data, "events.$bookingEventId.$ticketClassId.$discountCode", []);
                         $currentDataBooking[] = $booking;
                         data_set($data, "events.$bookingEventId.$ticketClassId.$discountCode", $currentDataBooking);
+                        goto NEXT;
                     }
-                    goto NEXT;
                 }
                 $dataRef[$booking->client_id] = [
                     ...$booking->client->toArray(),
@@ -76,7 +76,6 @@ class ExportService
                 $currentTicketsBooked[] = $booking;
                 data_set($eventsTicketsBooked, "$bookingEventId.$ticketClassId.$discountCode", $currentTicketsBooked);
             });
-
             usort($dataClientBookingsSpecial, fn ($clientA, $clientB) => strcasecmp($clientA["name"], $clientB["name"]));
             usort($dataClientBookingsOnline, fn ($clientA, $clientB) => strcasecmp($clientA["name"], $clientB["name"]));
 
@@ -90,7 +89,6 @@ class ExportService
                 "end_date" => $exportType == "report-daily" ? $endDate : null,
             ]);
         } catch (Exception $e) {
-            dd($e);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thất bại!", false);
             FileModel::create([
                 "file_name" => $fileName,
