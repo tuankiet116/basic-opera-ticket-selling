@@ -30,7 +30,7 @@ class ExportService
         if ($exportType == "report-daily") {
             $startDate = Carbon::createFromFormat("Y-m-d H:i:s", "$startDate 00:00:00")->setTimezone("-7")->format("Y-m-d H:i:s");
             $endDate = Carbon::createFromFormat("Y-m-d H:i:s", "$endDate 00:00:00")->addDay(1)->setTimezone("-7")->format("Y-m-d H:i:s");
-            $fileName = "report_all_" . time() . "($startDate)_($endDate)";
+            $fileName = "report_daily_" . time();
         }
         try {
             $dataClientBookingsSpecial = [];
@@ -40,6 +40,7 @@ class ExportService
                 ->where("is_temporary", 0);
             $bookings = $bookings->whereIn("event_id", data_get($data, "events"))->get();
             $events = EventModel::with(["ticketClasses", "discounts"])->whereIn("id", $eventIds)->get();
+            $eventsSaveToFile = collect($events)->select(["id", "name"])->all();
 
             $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
@@ -51,7 +52,7 @@ class ExportService
 
                 foreach ($dataRef as &$data) {
                     if (
-                        (!$booking->client->isSpecial && ($data["phone_number"] == $booking->client->phone_number || $data["id_number"] == $booking->client->id_number))
+                        (!$booking->client->isSpecial && ($data["phone_number"] == $booking->client->phone_number))
                         || ($booking->client->isSpecial && $data["id"] == $booking->client_id)
                     ) {
                         $currentDataBooking = data_get($data, "events.$bookingEventId.$ticketClassId.$discountCode", []);
@@ -81,17 +82,21 @@ class ExportService
 
             $this->aggregateRevenueDaily->export($dataClientBookingsOnline, $dataClientBookingsSpecial, $eventsTicketsBooked, $events, $fileName);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thành công!", true);
-            // FileModel::create([
-            //     "file_name" => $fileName,
-            //     "is_exported" => true
-            // ]);
+            FileModel::create([
+                "file_name" => $fileName,
+                "is_exported" => true,
+                "events" => $eventsSaveToFile,
+                "start_date" => $exportType == "report-daily" ? $startDate : null,
+                "end_date" => $exportType == "report-daily" ? $endDate : null,
+            ]);
         } catch (Exception $e) {
             dd($e);
             AdminSystemNotification::dispatch("Xuất file báo cáo $fileName.xlsx thất bại!", false);
             FileModel::create([
                 "file_name" => $fileName,
                 "is_failed" => true,
-                "reason" => $e->getMessage()
+                "reason" => $e->getMessage(),
+                "events" => $eventsSaveToFile
             ]);
         }
     }

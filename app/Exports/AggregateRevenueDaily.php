@@ -80,19 +80,38 @@ class AggregateRevenueDaily extends Exports
         $sheet->setCellValue([1, 3], "STT");
         $sheet->mergeCells("A3:A4");
 
-        $sheet->setCellValue([2, 3], "Đơn vị");
+        $sheet->setCellValue([2, 3], "Tên đơn vị (khách hàng)");
         $sheet->mergeCells("B3:B4");
 
+        $sheet->setCellValue([3, 3], "Địa chỉ");
+        $sheet->mergeCells("C3:C4");
+
+        $sheet->setCellValue([4, 3], "Hình thức nhận vé");
+        $sheet->mergeCells("D3:D4");
+
+        $sheet->setCellValue([5, 3], "Số điện thoại");
+        $sheet->mergeCells("E3:E4");
+
+        $sheet->setCellValue([6, 3], "Email");
+        $sheet->mergeCells("F3:F4");
+
         $sheet->setCellValue([1, 5], "Tổng vé phát hành");
-        $sheet->mergeCells([1, 5, 2, 5]);
+        $sheet->mergeCells([1, 5, 6, 5]);
 
         $sheet->setCellValue([1, 6], "Mã giảm giá");
-        $sheet->mergeCells([1, 6, 2, 6]);
+        $sheet->mergeCells([1, 6, 6, 6]);
+
+        $sheet->getColumnDimension("A")->setAutoSize(true);
+        $sheet->getColumnDimension("B")->setAutoSize(true);
+        $sheet->getColumnDimension("C")->setAutoSize(true);
+        $sheet->getColumnDimension("D")->setAutoSize(true);
+        $sheet->getColumnDimension("E")->setAutoSize(true);
+        $sheet->getColumnDimension("F")->setAutoSize(true);
 
         /**
          * Render events and ticket class name and discount name
          */
-        $endColumnIndex = 3;
+        $endColumnIndex = 7;
         $events->each(function (EventModel $e) use (&$sheet, &$totalTicketByEvents, &$discounts, &$endColumnIndex, $events, $isClientSpecial) {
             $currentColumn = $endColumnIndex;
             $ticketClasses = $e->ticketClasses;
@@ -136,7 +155,7 @@ class AggregateRevenueDaily extends Exports
          * Render tickets distribution excel
          */
         $rowIndex = 5;
-        $endColumnIndex = 3;
+        $endColumnIndex = 7;
         $events->each(function (EventModel $event) use (
             &$sheet,
             &$endColumnIndex,
@@ -175,9 +194,15 @@ class AggregateRevenueDaily extends Exports
          */
         $endRowIndex = $rowIndex + 2;
         foreach ($dataClientBookings as $key => $client) {
-            $currentColumn = 3;
+            $currentColumn = 7;
             $sheet->setCellValue([1, $endRowIndex], $key + 1);
             $sheet->setCellValue([2, $endRowIndex], $client["name"]);
+            $sheet->setCellValue([3, $endRowIndex], $client["address"] ?? "");
+            $sheet->setCellValue([4, $endRowIndex], ($client["is_receive_in_opera"] ?? null)
+                ? "Nhận vé tại nhà hát" : "Chuyển đến tận nơi");
+            $sheet->setCellValue([5, $endRowIndex], $client["phone_number"] ?? "");
+            $sheet->setCellValue([6, $endRowIndex], $client["email"] ?? "");
+
             $sheet->getColumnDimensionByColumn(1)->setAutoSize(true);
             $sheet->getColumnDimensionByColumn(2)->setAutoSize(true);
             $events->each(function (EventModel $e) use (&$sheet, &$totalTicketByEvents, $endRowIndex, &$currentColumn, $client, $events, $discounts) {
@@ -209,7 +234,7 @@ class AggregateRevenueDaily extends Exports
         /**
          * Render total tickets has been distributed to the client
          */
-        $currentColumn = 3;
+        $currentColumn = 7;
         $dataSize = sizeof($dataClientBookings);
         $sheet->mergeCells([1, $endRowIndex, 2, $endRowIndex]);
         $sheet->setCellValue([1, $endRowIndex], "Tổng vé đã phân phối");

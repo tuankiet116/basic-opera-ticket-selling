@@ -17,10 +17,12 @@
         <table class="table table-group-divider">
             <thead>
                 <tr>
-                    <th width="2%">#</th>
-                    <th width="12%">Tên file</th>
-                    <th width="15%">Trạng thái</th>
-                    <th width="15%">Ngày</th>
+                    <th>#</th>
+                    <th>Tên file</th>
+                    <th>Trạng thái</th>
+                    <th>Thời gian báo cáo</th>
+                    <th>Sự kiện</th>
+                    <th>Ngày xuất</th>
                     <th>Lý do lỗi</th>
                     <th width="10%"></th>
                 </tr>
@@ -63,6 +65,19 @@
                                 d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                         </svg>
                         Thành công
+                    </td>
+                    <td>
+                        <template v-if="file.start_date && file.end_date">
+                            {{ moment(file.start_date).format("DD-MM-YYYY") }} - {{ moment(file.end_date).format("DD-MM-YYYY") }}
+                        </template>
+                        <template v-else>
+                            Toàn bộ sự kiện
+                        </template>
+                    </td>
+                    <td>
+                        <p class="m-0" v-for="event in file.events" :key="event.id">
+                            - {{ event.name }}
+                        </p>
                     </td>
                     <td>{{ moment(file.created_at).format("DD-MM-YYYY H:mm:ss") }}</td>
                     <td>{{ file.reason }}</td>
@@ -109,9 +124,9 @@ onUnmounted(() => {
 onMounted(async () => {
     await fetchListFiles();
     window.Echo.private(`admin.notifications`)
-        .listen("AdminSystemNotification", (e) => {
+        .listen("AdminSystemNotification", async (e) => {
             if (e.status) {
-                fetchListFiles()
+                await fetchListFiles()
             }
         })
 })

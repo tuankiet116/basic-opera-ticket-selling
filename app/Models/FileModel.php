@@ -14,6 +14,15 @@ class FileModel extends Model
         "file_name",
         "is_exported",
         "is_failed",
-        "reason"
+        "reason",
+        "events",
+        "start_date",
+        "end_date"
+    ];
+
+    protected $casts = [
+        "is_failed" => "boolean",
+        "is_exported" => "boolean",
+        "events" => "array"
     ];
 }

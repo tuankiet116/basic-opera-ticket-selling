@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->unsignedBigInteger("event_id");
+            $table->string("events");
             $table->date("start_date")->nullable();
             $table->date("end_date")->nullable();
         });
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->dropColumn("event_id");
+            $table->dropColumn("events");
             $table->dropColumn("start_date");
             $table->dropColumn("end_date");
         });
