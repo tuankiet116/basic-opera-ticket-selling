@@ -41,7 +41,7 @@ class ExportService
             $bookings = $bookings->whereIn("event_id", data_get($data, "events"))->get();
             $events = EventModel::with(["ticketClasses", "discounts"])->whereIn("id", $eventIds)->get();
             $eventsSaveToFile = collect($events)->select(["id", "name"])->all();
-            // dd($bookings->pluck("client"));
+
             $bookings->each(function ($booking) use (&$dataClientBookingsSpecial, &$dataClientBookingsOnline, &$eventsTicketsBooked, $startDate, $endDate, $exportType) {
                 $bookingEventId = $booking->event_id;
                 $ticketClassId = $booking->ticket_class_id;

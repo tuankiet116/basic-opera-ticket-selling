@@ -198,9 +198,15 @@ class AggregateRevenueDaily extends Exports
             $sheet->setCellValue([1, $endRowIndex], $key + 1);
             $sheet->setCellValue([2, $endRowIndex], $client["name"]);
             $sheet->setCellValue([3, $endRowIndex], $client["address"] ?? "");
-            $sheet->setCellValue([4, $endRowIndex], ($client["is_receive_in_opera"] ?? null)
+            $sheet->setCellValue([4, $endRowIndex], data_get($client, "is_receive_in_opera")
                 ? "Nhận vé tại nhà hát" : "Chuyển đến tận nơi");
-            $sheet->setCellValue([5, $endRowIndex], $client["phone_number"] ?? "");
+            if (data_get($client, "is_receive_in_opera")) {
+                $sheet->getStyle([4, $endRowIndex])->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB('f3f57f');
+            }
+            $sheet->setCellValueExplicit([5, $endRowIndex], $client["phone_number"] ?? "", DataType::TYPE_STRING2);
             $sheet->setCellValue([6, $endRowIndex], $client["email"] ?? "");
 
             $sheet->getColumnDimensionByColumn(1)->setAutoSize(true);
@@ -236,7 +242,7 @@ class AggregateRevenueDaily extends Exports
          */
         $currentColumn = 7;
         $dataSize = sizeof($dataClientBookings);
-        $sheet->mergeCells([1, $endRowIndex, 2, $endRowIndex]);
+        $sheet->mergeCells([1, $endRowIndex, 6, $endRowIndex]);
         $sheet->setCellValue([1, $endRowIndex], "Tổng vé đã phân phối");
         $events->each(function (EventModel $event) use (&$sheet, &$currentColumn, $endRowIndex, $dataSize, $discounts, $events) {
             $event->ticketClasses->each(function (TicketClassModel $ticketClass) use (
@@ -338,7 +344,7 @@ class AggregateRevenueDaily extends Exports
                         return !$booking->is_client_special;
                     });
                     $numberTickets = count($bookings);
-                    $price = data_get($bookings, "0.pricing", 0) - data_get($bookings, "0.discount_price", 0);
+                    $price = $ticketClass->price - data_get($bookings, "0.discount_price", 0);
 
                     $sheet->setCellValue("C$currentRow", $discountCode);
                     $sheet->setCellValueExplicit("D$currentRow", $price, DataType::TYPE_NUMERIC);
