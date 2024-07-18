@@ -72,7 +72,7 @@ class ExportService
                     ]
                 ];
                 NEXT:
-                $currentTicketsBooked = data_get($eventsTicketsBooked, "$bookingEventId.$ticketClassId", []);
+                $currentTicketsBooked = data_get($eventsTicketsBooked, "$bookingEventId.$ticketClassId.$discountCode", []);
                 $currentTicketsBooked[] = $booking;
                 data_set($eventsTicketsBooked, "$bookingEventId.$ticketClassId.$discountCode", $currentTicketsBooked);
             });

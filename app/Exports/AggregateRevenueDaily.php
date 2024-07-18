@@ -182,6 +182,7 @@ class AggregateRevenueDaily extends Exports
                     $endColumnName = Coordinate::stringFromColumnIndex($endColumnIndex);
                     $formula = "C$rowIndex:$endColumnName$rowIndex";
                     $sheet->setCellValueExplicit([$endColumnIndex + 1, $rowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
+                    $sheet->getStyle([$endColumnIndex + 1, $rowIndex])->getFont()->setBold(true);
                     return;
                 };
                 $endColumnIndex++;
@@ -202,9 +203,9 @@ class AggregateRevenueDaily extends Exports
                 ? "Nhận vé tại nhà hát" : "Chuyển đến tận nơi");
             if (data_get($client, "is_receive_in_opera")) {
                 $sheet->getStyle([4, $endRowIndex])->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()
-                ->setARGB('f3f57f');
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setARGB('f3f57f');
             }
             $sheet->setCellValueExplicit([5, $endRowIndex], $client["phone_number"] ?? "", DataType::TYPE_STRING2);
             $sheet->setCellValue([6, $endRowIndex], $client["email"] ?? "");
@@ -228,7 +229,6 @@ class AggregateRevenueDaily extends Exports
                     $endColumnName = Coordinate::stringFromColumnIndex($currentColumn - 1);
                     $formula = "C$endRowIndex:$endColumnName$endRowIndex";
                     $sheet->setCellValueExplicit([$currentColumn, $endRowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
-                    $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setSize(11);
                     $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setBold(true);
                     $this->setCenterStyle([$currentColumn, $endRowIndex]);
                     $this->setBorderStyle([$currentColumn, $endRowIndex]);
@@ -244,6 +244,8 @@ class AggregateRevenueDaily extends Exports
         $dataSize = sizeof($dataClientBookings);
         $sheet->mergeCells([1, $endRowIndex, 6, $endRowIndex]);
         $sheet->setCellValue([1, $endRowIndex], "Tổng vé đã phân phối");
+        $sheet->getStyle([1, $endRowIndex])->getFont()->setBold(true);
+
         $events->each(function (EventModel $event) use (&$sheet, &$currentColumn, $endRowIndex, $dataSize, $discounts, $events) {
             $event->ticketClasses->each(function (TicketClassModel $ticketClass) use (
                 &$sheet,
@@ -261,23 +263,26 @@ class AggregateRevenueDaily extends Exports
                     else $formula = $columnName . "7:$columnName" . $endRowIndex - 1;
                     $sheet->setCellValueExplicit([$currentColumn, $endRowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
                     $sheet->getColumnDimensionByColumn($currentColumn)->setAutoSize(true);
+                    $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setBold(true);
                     $currentColumn++;
                 }
                 if ($events->last()->id == $event->id) {
                     $endColumnName = Coordinate::stringFromColumnIndex($currentColumn - 1);
                     $formula = "C$endRowIndex:$endColumnName$endRowIndex";
                     $sheet->setCellValueExplicit([$currentColumn, $endRowIndex], "=SUM($formula)", DataType::TYPE_FORMULA);
-                    $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setSize(11);
-                    $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setBold(true);
                     $this->setCenterStyle([$currentColumn, $endRowIndex]);
                     $this->setBorderStyle([$currentColumn, $endRowIndex]);
+                    $sheet->getStyle([$currentColumn, $endRowIndex])->getFont()->setBold(true);
                 }
             });
         });
 
         $endColumnIndex++;
+        $endColumnName = Coordinate::stringFromColumnIndex($endColumnIndex);
         $sheet->mergeCells([$endColumnIndex, 3, $endColumnIndex, 4]);
         $sheet->setCellValue([$endColumnIndex, 3], "Tổng cộng");
+        $sheet->getColumnDimension($endColumnName)->setAutoSize(true);
+        $sheet->getStyle("A3:" . $endColumnName . "4")->getFont()->setBold(true);
 
         $sheet->mergeCells([1, 1, $endColumnIndex, 1]);
         $this->setCenterStyle([1, 1]);
@@ -359,6 +364,7 @@ class AggregateRevenueDaily extends Exports
                     $sheet->getColumnDimension("D")->setAutoSize(true);
                     $sheet->getColumnDimension("E")->setAutoSize(true);
                     $sheet->getColumnDimension("F")->setAutoSize(true);
+                    $sheet->getStyle("F$currentRow")->getFont()->setBold(true);
                     $currentRow++;
                 }
                 $endRow = $currentRow - 1;
@@ -383,31 +389,47 @@ class AggregateRevenueDaily extends Exports
 
 
             //Render table unbooked tickets
-            $sheet->mergeCells("H4:K4");
+            $sheet->mergeCells("H4:L4");
             $sheet->setCellValue("H4", "Số lượng vé tồn");
             $sheet->setCellValue("H5", "Hạng vé");
             $sheet->setCellValue("I5", "Tổng vé phát hành");
             $sheet->setCellValue("J5", "Đã bán");
-            $sheet->setCellValue("K5", "Số lượng tồn");
+            $sheet->setCellValue("K5", "Vé mời");
+            $sheet->setCellValue("L5", "Số lượng tồn");
             $sheet->getColumnDimension("H")->setAutoSize(true);
             $sheet->getColumnDimension("I")->setAutoSize(true);
             $sheet->getColumnDimension("J")->setAutoSize(true);
             $sheet->getColumnDimension("K")->setAutoSize(true);
-            $sheet->getStyle("H4:K5")->getFont()->setBold(true);
+            $sheet->getColumnDimension("L")->setAutoSize(true);
+
+            $sheet->getStyle("H4:L5")->getFont()->setBold(true);
 
             $currentRow = 6;
             $ticketsBooked = data_get($eventsTicketsBooked, $event->id, []);
             $ticketsEvent = data_get($totalTickets, $event->id, []);
             $ticketClasses->each(function (TicketClassModel $ticketClass) use (&$sheet, &$currentRow, $ticketsEvent, $ticketsBooked) {
-                $countSoldTickets = sizeof(data_get($ticketsBooked, $ticketClass->id, []));
+                $soldTickets = 0;
+                $invitedTickets = 0;
+                $bookingsByDiscounts = data_get($ticketsBooked, $ticketClass->id, []);
+                foreach ($bookingsByDiscounts as $discountCode => $bookingsByDiscount) {
+                    foreach ($bookingsByDiscount as $booking) {
+                        if ($booking->is_client_special) {
+                            $invitedTickets++;
+                        } else {
+                            $soldTickets++;
+                        }
+                    }
+                }
                 $countTotalTickets = data_get($ticketsEvent, $ticketClass->id, 0);
                 $sheet->setCellValue("H$currentRow", $ticketClass->name);
                 $sheet->setCellValueExplicit("I$currentRow", $countTotalTickets, DataType::TYPE_NUMERIC);
-                $sheet->setCellValueExplicit("J$currentRow", $countSoldTickets, DataType::TYPE_NUMERIC);
-                $sheet->setCellValueExplicit("K$currentRow", "=I$currentRow-J$currentRow", DataType::TYPE_FORMULA);
+                $sheet->setCellValueExplicit("J$currentRow", $soldTickets, DataType::TYPE_NUMERIC);
+                $sheet->setCellValueExplicit("K$currentRow", $invitedTickets, DataType::TYPE_NUMERIC);
+                $sheet->setCellValueExplicit("L$currentRow", "=I$currentRow-J$currentRow-K$currentRow", DataType::TYPE_FORMULA);
                 $sheet->getStyle("I$currentRow")->getNumberFormat()->setFormatCode("#,##0");
                 $sheet->getStyle("J$currentRow")->getNumberFormat()->setFormatCode("#,##0");
                 $sheet->getStyle("K$currentRow")->getNumberFormat()->setFormatCode("#,##0");
+                $sheet->getStyle("L$currentRow")->getNumberFormat()->setFormatCode("#,##0");
                 $sheet->getColumnDimension("H")->setAutoSize(true);
                 $currentRow++;
             });
@@ -416,12 +438,15 @@ class AggregateRevenueDaily extends Exports
             $sheet->setCellValueExplicit("I$currentRow", "=SUM(I6:I$endRowData)", DataType::TYPE_FORMULA);
             $sheet->setCellValueExplicit("J$currentRow", "=SUM(J6:J$endRowData)", DataType::TYPE_FORMULA);
             $sheet->setCellValueExplicit("K$currentRow", "=SUM(K6:K$endRowData)", DataType::TYPE_FORMULA);
+            $sheet->setCellValueExplicit("L$currentRow", "=SUM(L6:L$endRowData)", DataType::TYPE_FORMULA);
+
             $sheet->getStyle("I$currentRow")->getNumberFormat()->setFormatCode("#,##0");
             $sheet->getStyle("J$currentRow")->getNumberFormat()->setFormatCode("#,##0");
             $sheet->getStyle("K$currentRow")->getNumberFormat()->setFormatCode("#,##0");
-            $sheet->getStyle("H$currentRow:K$currentRow")->getFont()->setBold(true);
-            $this->setCenterStyle("H4:K$currentRow");
-            $this->setBorderStyle("H4:K$currentRow");
+            $sheet->getStyle("L$currentRow")->getNumberFormat()->setFormatCode("#,##0");
+            $sheet->getStyle("H$currentRow:L$currentRow")->getFont()->setBold(true);
+            $this->setCenterStyle("H4:L$currentRow");
+            $this->setBorderStyle("H4:L$currentRow");
         });
     }
 
