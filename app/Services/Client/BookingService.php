@@ -47,14 +47,12 @@ class BookingService
             $dataBookingSendMail = [];
             $dataClient = $client->toArray();
             $dataBookings = [];
-
-            $seatNames = [...data_get($data, "bookings.0.seats", []), ...data_get($data, "bookings.1.seats", [])];
-            $seatModels = SeatModel::whereIn("name", $seatNames)->get()->toArray();
-            $seatModels = array_filter($seatModels, fn (array $seat) => sizeof($seat));
             BookModel::where("token", $temporaryToken)->update(["is_temporary" => false]);
             foreach ($bookings as $booking) {
-                $seats = collect($seatModels)->where("hall", data_get($booking, "hall"))->all();
+                $seats = SeatModel::whereIn("name", data_get($booking, "seats"))->where("hall", data_get($booking, "hall"))->get();
                 $dataBookingSendMail[$booking["hall"]] = [];
+                if ($seats) $seats = $seats->toArray();
+                else $seats = [];
                 array_push($seatsBooking, ...$seats);
                 foreach ($seats as $seat) {
                     $bookingClient = BookModel::where([
@@ -139,21 +137,15 @@ class BookingService
         $startTime = Carbon::now()->format("Y-m-d H:i:s");
         $firstTemporary = BookModel::where("token", $token)->first();
         if ($firstTemporary) $startTime = $firstTemporary->created_at;
-
+    
         $event = EventModel::find($eventId);
         $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
-
-        $seatsHall1 = SeatModel::whereIn("name", data_get($data, "bookings.0.seats", []))->where("hall", data_get($data, "bookings.0.hall"))->get()->toArray();
-        $seatsHall2 = SeatModel::whereIn("name", data_get($data, "bookings.1.seats", []))->where("hall", data_get($data, "bookings.1.hall"))->get()->toArray();
-        $seats = array_filter([...$seatsHall1, ...$seatsHall2], fn (array $seat) => sizeof($seat));
-        $eventSeatClasses = EventSeatClassModel::whereIn("seat_id", collect($seats)->pluck("id")->toArray())
-            ->where("event_id", $eventId)->get();
         DB::beginTransaction();
         try {
             foreach ($data["bookings"] as $dBooking) {
-                $seats = $dBooking["hall"] == 1 ? $seatsHall1 : $seatsHall2;
+                $seats = SeatModel::whereIn("name", $dBooking["seats"])->where("hall", $dBooking["hall"])->get()->toArray();
                 foreach ($seats as $seat) {
-                    $eventSeatClass = collect($eventSeatClasses)->where("seat_id", $seat["id"])->where("event_id", $eventId)->first();
+                    $eventSeatClass = EventSeatClassModel::where("seat_id", $seat["id"])->where("event_id", $eventId)->first();
                     $ticketClass = collect($ticketClasses)->where("id", $eventSeatClass->ticket_class_id)->first();
                     if (!$eventSeatClass || !$ticketClass) throw new Exception("No ticket class found while booking.");
                     if (data_get($data, "is_booking")) {
