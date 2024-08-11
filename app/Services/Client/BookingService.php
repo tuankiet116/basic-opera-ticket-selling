@@ -106,8 +106,7 @@ class BookingService
                 DiscountServiceUltils::releaseDiscountInUsed($booking);
                 $booking->delete();
             });
-
-            Mail::to($client)->queue(new AskingPayment($event, $client, $dataBookingSendMail));
+            Mail::to($client)->bcc(env("MAIL_RECEIVER_NOTIFY"))->queue(new AskingPayment($event, $client, $dataBookingSendMail));
 
             $dataAdminBookingTicket = [...$dataClient];
             foreach (array_chunk($dataBookings, CHUNK_SIZE_BROADCAST) as $dataBookingsChunk) {

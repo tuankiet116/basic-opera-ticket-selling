@@ -45,11 +45,12 @@
         "door": "Door"
     },
     "success": {
-        "title": "Congratulations! You have successfully booked your ticket. ",
+        "title": "Congrats, you have completed Step 1: Book the tickets! ",
+        "step_2": "Step 2: Please kindly check the Payment request EMAIL ",
+        "step_3": "Step 3: Reply the email and attach the payment screenshot",
         "content": "We have sent a payment information email to your inbox. ",
-        "content_0": "The seat will be <strong>temporarily reserved</strong> once you complete the booking process and will only be confirmed after you complete the payment within <strong>15 minutes</strong> of receiving the payment information email.",
-        "content_1": "After <strong>15 minutes</strong>, if the Organizer does not receive payment, the seat will return to an available status.",
-        "content_2": "If you still haven't received a confirmation email after <strong>15 minutes</strong>, please check your spam folder or contact us for assistance.",
+        "content_0": "The seat will be <strong>temporarily reserved</strong> once you complete the booking process and will only be confirmed after you complete the payment within <strong>30 minutes</strong> of receiving the payment information email.",
+        "content_1": "After <strong>30 minutes</strong>, if the Organizer does not receive payment, the seat will return to an available status.",
         "hotline": "(Hotline: 082 558 3888)"
     },
     "footer": {

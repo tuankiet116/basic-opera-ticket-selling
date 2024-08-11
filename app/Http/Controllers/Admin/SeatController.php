@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\InvalidBookingException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PreBookingRequest;
 use App\Http\Requests\Admin\SetSeatTicketClassRequest;

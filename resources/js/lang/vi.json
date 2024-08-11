@@ -45,11 +45,12 @@
         "door": "Cửa số"
     },
     "success": {
-        "title": "Xin chúc mừng, bạn đã đặt vé thành công",
+        "title": "Xin chúc mừng, bạn đã hoàn thành Bước 1: Đặt vé!",
+        "step_2": "Bước 2: Vui lòng kiểm tra EMAIL thông tin thanh toán vé.",
+        "step_3": "Bước 3: Phản hồi EMAIL và đính kèm ảnh chụp giao dịch thanh toán vé.",
         "content": "Chúng tôi đã gửi email thông tin thanh toán đến hòm thư của bạn.",
-        "content_0": "Ghế sẽ được <strong>tạm giữ</strong> khi bạn hoàn tất bước đặt chỗ và chỉ được xác nhận sau khi bạn hoàn tất thanh toán trong vòng <strong>15 phút</strong> kể từ khi nhận được email thông tin thanh toán.",
-        "content_1": "Sau <strong>15 phút</strong>, nếu Ban tổ chức không nhận được thanh toán, ghế sẽ trở lại trạng thái trống.",
-        "content_2": "Nếu sau <strong>15 phút</strong> bạn vẫn chưa nhận được email xác nhận, vui lòng kiểm tra hòm thư spam hoặc liên hệ với chúng tôi để được hỗ trợ. ",
+        "content_0": "Ghế sẽ được <strong>tạm giữ</strong> khi bạn hoàn tất bước đặt chỗ và chỉ được xác nhận sau khi bạn hoàn tất thanh toán trong vòng <strong>30 phút</strong> kể từ khi nhận được email thông tin thanh toán.",
+        "content_1": "Sau <strong>30 phút</strong>, nếu Ban tổ chức không nhận được thanh toán, ghế sẽ trở lại trạng thái trống.",
         "hotline": "(Hotline: 082 558 3888)"
     },
     "footer": {
