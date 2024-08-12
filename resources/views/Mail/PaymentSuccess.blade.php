@@ -103,7 +103,7 @@
         <p dir="ltr">
             <i>
                 <strong>
-                    We will contact directly you about either receiving tickets at Ho Guom Theater (40-40A Hang Bai) or
+                    We will contact directly you about either receiving tickets at Ho Guom Opera (40-40A Hang Bai) or
                     receiving tickets at the registered.
                 </strong>
                 The theater will send them via post office, please pay the shipping fee when receiving the tickets.
