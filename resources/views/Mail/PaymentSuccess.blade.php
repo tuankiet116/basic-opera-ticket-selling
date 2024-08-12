@@ -44,47 +44,47 @@
                 </thead>
                 <tbody>
                     @php
-                        $price = 0;
-                        $priceDiscount = 0;
+                    $price = 0;
+                    $priceDiscount = 0;
                     @endphp
                     @foreach ($bookings as $hall => $booking)
-                        @foreach ($booking as $seat)
-                            <tr>
-                                <td style="border: 1px solid black; text-align:center;">
-                                    <b>{{ $hall }}</b>
-                                </td>
-                                <td style="border: 1px solid black; text-align:center;">
-                                    <b>{{ $seat['seat'] }}</b>
-                                </td>
-                                <td style="border: 1px solid black; text-align:center;">
-                                    <b>{{ $seat['class'] }}</b>
-                                </td>
-                                <td style="border: 1px solid black; text-align:center;">
-                                    @if ($seat['price'] > $seat['discount_price'])
-                                        <span style="text-decoration: line-through; color: red; margin-right: 2px;">
-                                            {{ number_format($seat['price']) }} vnd</span>
-                                        <span>{{ number_format($seat['discount_price']) }} vnd</span>
-                                    @else
-                                        {{ number_format($seat['price']) }} vnd
-                                    @endif
-                                </td>
-                            </tr>
-                            @php
-                                $price += $seat['price'];
-                                $priceDiscount += $seat['discount_price'];
-                            @endphp
-                        @endforeach
+                    @foreach ($booking as $seat)
+                    <tr>
+                        <td style="border: 1px solid black; text-align:center;">
+                            <b>{{ $hall }}</b>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center;">
+                            <b>{{ $seat['seat'] }}</b>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center;">
+                            <b>{{ $seat['class'] }}</b>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center;">
+                            @if ($seat['price'] > $seat['discount_price'])
+                            <span style="text-decoration: line-through; color: red; margin-right: 2px;">
+                                {{ number_format($seat['price']) }} vnd</span>
+                            <span>{{ number_format($seat['discount_price']) }} vnd</span>
+                            @else
+                            {{ number_format($seat['price']) }} vnd
+                            @endif
+                        </td>
+                    </tr>
+                    @php
+                    $price += $seat['price'];
+                    $priceDiscount += $seat['discount_price'];
+                    @endphp
+                    @endforeach
                     @endforeach
                     <tr>
                         <td style="border: 1px solid black; text-align:center;">Tổng cộng/Total</td>
                         <td style="border: 1px solid black; text-align:center;" colspan=3>
                             @if ($price > $priceDiscount)
-                                <span style="text-decoration: line-through; color: red; margin-right: 2px;">
-                                    {{ number_format($price) }} vnd
-                                </span>
-                                <span>{{ number_format($priceDiscount) }} vnd</span>
-                            @else
+                            <span style="text-decoration: line-through; color: red; margin-right: 2px;">
                                 {{ number_format($price) }} vnd
+                            </span>
+                            <span>{{ number_format($priceDiscount) }} vnd</span>
+                            @else
+                            {{ number_format($price) }} vnd
                             @endif
                         </td>
                     </tr>
@@ -92,38 +92,35 @@
             </table>
         </div>
         <p dir="ltr">
+            <strong>
+                Chúng tôi sẽ liên hệ trực tiếp khách hàng về việc nhận vé cứng tại Nhà hát Hồ Gươm (40-40A Hàng Bài)
+                hoặc nhận vé theo địa chỉ đã đăng ký.
+            </strong>
             <span>
-                Vui lòng đến trước giờ biểu diễn ít nhất 30 phút, xuất trình mã đặt chỗ để nhận vé cứng tại Nhà hát Hồ
-                Gươm
-                (40-40A Hàng Bài). Đối với những bạn lựa chọn gửi vé theo địa chỉ đăng ký, chúng tôi sẽ liên lạc và
-                chuyển vé
-                cứng tới địa chỉ đã đăng ký của quý khách trước ngày {{ date('d-m-Y', strtotime($event->date)) }}. Quý khách vui lòng chi trả theo giá
-                ship công
-                nghệ khi nhận vé.
+                Nhà hát sẽ gửi chuyển phát qua bưu điện, Quý khách vui lòng thanh toán phí ship khi nhận vé.
             </span>
         </p>
         <p dir="ltr">
             <i>
-                Please arrive at least 30 minutes before the performance and present your booking code to receive the
-                paper
-                ticket(s) at Ho Guom Opera (40-40A Hang Bai). For those who want their tickets delivered to their door,
-                we will
-                contact and deliver the paper ticket(s) before {{ date('F j, Y', strtotime($event->date)) }}. Please pay the shipping fee following
-                the fee
-                on the transportation app when receiving the ticket(s).
+                <strong>
+                    We will contact directly you about either receiving tickets at Ho Guom Theater (40-40A Hang Bai) or
+                    receiving tickets at the registered.
+                </strong>
+                The theater will send them via post office, please pay the shipping fee when receiving the tickets.
             </i>
         </p>
         <p dir="ltr">
             <span>
                 Lưu ý về chính sách đổi/trả vé: Chương trình không áp dụng đổi/trả vé sau khi đã xác nhận thanh toán
-                thành
-                công vì bất kỳ lý do gì. Mọi thắc mắc, xin hãy trao đổi trực tiếp với chúng tôi qua
+                thành công vì bất kỳ lý do gì.
+                Mọi thắc mắc, xin hãy trao đổi trực tiếp với chúng tôi qua
+                Hotline: 088.801.1280 hoặc 082.558.3888
             </span>
         </p>
         <p dir="ltr">
             <i>
                 Ticket exchange and return policy: The ticket(s) cannot be exchanged/ returned after successful payment
-                confirmation. If you have any questions, please contact us via:
+                confirmation. If you have any questions, please contact us via hotline: 088 801 1280 hoặc 082 558 3888
             </i>
         </p>
         <p dir="ltr">

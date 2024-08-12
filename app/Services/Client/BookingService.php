@@ -119,6 +119,7 @@ class BookingService
                 return __("messages.booking.is_booked");
             }
             Log::error("Error while customers booking tickets: " . $e->getMessage());
+            DB::rollBack();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Booking Error: " . $e->getMessage(), $data);
