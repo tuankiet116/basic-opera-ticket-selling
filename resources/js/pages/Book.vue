@@ -43,7 +43,7 @@
                         <div class="mx-1 rounded color-ticket" :style="'background-color: ' + ticketClass.color"></div>
                         <span>:
                             {{ numberWithCommas(ticketClass.price) }} vnđ</span>
-                        <span class="mx-1">|</span>
+                        <span v-if="ticketClasses.length > 1" class="mx-1">|</span>
                     </div>
                 </div>
                 <p class="fw-bold" v-if="timer">{{ $t("booking_page.pls_complete_in") }}{{ timer }}</p>

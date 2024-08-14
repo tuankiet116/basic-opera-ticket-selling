@@ -13,11 +13,12 @@ use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Client\DiscountController as ClientDiscountController;
 use App\Http\Controllers\Client\EventController as ClientEventController;
 use App\Http\Controllers\Client\TicketController;
+use App\Http\Middleware\GzipMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/admin/login', [AuthController::class, "login"]);
 
-Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
+Route::middleware(["auth:sanctum", GzipMiddleware::class])->prefix("/admin")->group(function () {
     Route::get('/is-logged-in', [AuthController::class, "isLoggedIn"]);
     Route::post('/logout', [AuthController::class, "logout"]);
     Route::prefix("/event")->group(function () {
@@ -67,18 +68,19 @@ Route::middleware("auth:sanctum")->prefix("/admin")->group(function () {
     });
 })->name("admin");
 
-Route::prefix("/event")->group(function () {
+Route::prefix("/event")->middleware(GzipMiddleware::class)->group(function () {
     Route::get("/list", [ClientEventController::class, "list"]);
     Route::get("/info/{eventId}", [ClientEventController::class, "getEvent"]);
     Route::get("/bookings/{eventId}", [ClientEventController::class, "getBookings"]);
 });
 
-Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
-Route::post("/booking", [BookingController::class, "booking"]);
-Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);
-Route::get("/temporary-booking", [BookingController::class, "getBookingsTemporary"]);
-Route::get("/temporary-token", [BookingController::class, "generateTeporaryToken"]);
-
-Route::prefix("/discount")->group(function() {
-    Route::post("/apply", [ClientDiscountController::class, "apply"]);
+Route::middleware(GzipMiddleware::class)->group(function() {
+    Route::get("/ticket-classes/{eventId}", [TicketController::class, "getTicketClasses"]);
+    Route::post("/booking", [BookingController::class, "booking"]);
+    Route::post("/temporary-booking", [BookingController::class, "temporaryBooking"]);
+    Route::get("/temporary-booking", [BookingController::class, "getBookingsTemporary"]);
+    Route::get("/temporary-token", [BookingController::class, "generateTeporaryToken"]);
+    Route::prefix("/discount")->group(function() {
+        Route::post("/apply", [ClientDiscountController::class, "apply"]);
+    });
 });
