@@ -34,7 +34,7 @@ jobs:
       run: |
         npm install
         yarn build --if-present
-    # - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       env:
         DB_CONNECTION: mysql
         DB_DATABASE: hgo-ticket
