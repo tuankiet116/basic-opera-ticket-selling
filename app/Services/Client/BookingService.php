@@ -137,7 +137,7 @@ class BookingService
         $startTime = Carbon::now()->format("Y-m-d H:i:s");
         $firstTemporary = BookModel::where("token", $token)->first();
         if ($firstTemporary) $startTime = $firstTemporary->created_at;
-    
+
         $event = EventModel::find($eventId);
         $ticketClasses = TicketClassModel::where("event_id", $eventId)->get();
         DB::beginTransaction();

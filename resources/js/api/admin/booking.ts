@@ -10,3 +10,7 @@ export const acceptBookingAPI = async (eventId: number, clientId: number) => {
         client_id: clientId
     });
 }
+
+export const cancelBookingAPI = async (eventId: number, clientId: number) => {
+    return await axiosInstance.delete(`admin/bookings/cancel/${eventId}/client/${clientId}`);
+}

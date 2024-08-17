@@ -181,7 +181,11 @@
             <button class="btn btn-info" @click="bookingSelected = {}" data-bs-dismiss="modal">Đóng</button>
             <button
                 v-if="bookingSelected?.bookings && bookingSelected?.bookings.length && !bookingSelected.bookings[0].isBooked"
-                class="btn btn-danger" @click="confirmBooked" data-bs-dismiss="modal">
+                class="btn btn-danger" @click="cancelBooking" data-bs-dismiss="modal">
+                Hủy đặt chỗ</button>
+            <button
+                v-if="bookingSelected?.bookings && bookingSelected?.bookings.length && !bookingSelected.bookings[0].isBooked"
+                class="btn btn-success" @click="confirmBooked" data-bs-dismiss="modal">
                 Xác nhận thanh toán thành công
             </button>
         </template>
@@ -194,7 +198,7 @@ import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { getEventAPI } from "../../../api/admin/events";
 import { HttpStatusCode } from "axios";
-import { acceptBookingAPI, getListBookingsAPI } from "../../../api/admin/booking";
+import { acceptBookingAPI, cancelBookingAPI, getListBookingsAPI } from "../../../api/admin/booking";
 import { numberWithCommas } from "../../../helpers/number";
 import { useToast } from "vue-toastification";
 import Modal from '../../../components/Modal.vue';
@@ -332,6 +336,21 @@ const confirmBooked = async () => {
             break;
         default:
             toast.error("Xác nhận đơn mua vé thất bại");
+    }
+}
+
+const cancelBooking = async () => {
+    let isConfirm = confirm(`Hủy đặt chỗ của khách hàng (${bookingSelected.value.name} - ${bookingSelected.value.phone_number})? (Chỗ sẽ nhả và được đặt bởi người khác)`)
+    if (!isConfirm) return;
+    let response = await cancelBookingAPI(bookingSelected.value.event_id, bookingSelected.value.id);
+    switch (response.status) {
+        case HttpStatusCode.Ok:
+            let idCancel = bookingClients.value.data.findIndex(booking => booking.id == bookingSelected.value.id);
+            bookingClients.value.data.splice(idCancel, 1);
+            toast.success("Hủy đặt chỗ, nhả chỗ thành công!");
+            break;
+        default:
+            toast.error("Không thể hủy chỗ!");
     }
 }
 </script>

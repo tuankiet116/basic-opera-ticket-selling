@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 use App\Mail\PaymentSuccess;
 use App\Models\BookModel;
 use App\Models\ClientModel;
+use App\Models\DiscountModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
@@ -72,6 +73,62 @@ class BookingService
             return false;
         }
         DB::commit();
+        return true;
+    }
+
+    public function cancelBookings(int $eventId, int $clientId)
+    {
+        DB::enableQueryLog();
+        $currentBookings = BookModel::where([
+            "event_id" => $eventId,
+            "client_id" => $clientId,
+            "is_temporary" => false
+        ])->select(["id", "discount_code", "event_id"])->get()->toArray();
+        
+        $discountCodes = array_reduce($currentBookings, function($previous, $current) {
+            if (!$current["discount_code"] || empty($current["discount_code"])) return $previous;
+            if (isset($previous[$current["discount_code"]])) {
+                $previous[$current["discount_code"]]++;
+            } else {
+                $previous[$current["discount_code"]] = 1;
+            }
+            return $previous;
+        }, []);
+        
+        DB::beginTransaction();
+        try {
+            foreach ($discountCodes as $discountCode => $quantity) 
+            {
+                $discount = DiscountModel::where(["discount_code" => $discountCode, "event_id" => $eventId])->lockForUpdate()->first();
+                $oldQuantityUsed = $discount->quantity_used;
+                $discount->update([
+                    "quantity_used" => $oldQuantityUsed - $quantity,
+                ]);
+                $discount->save();
+                Log::info("(Cancel booking)Release discount ($discountCode - $discount->event_id) quantity from $oldQuantityUsed to ". ($discount->quantity_used));
+            }
+            $client = ClientModel::where([
+                "id" => $clientId,
+                "event_id" => $eventId,
+            ])->first();
+
+            BookModel::where([
+                "event_id" => $eventId,
+                "client_id" => $clientId,
+                "is_temporary" => false
+            ])->delete();
+
+            ClientModel::where([
+                "id" => $clientId,
+                "event_id" => $eventId,
+            ])->delete();
+            Log::info("(Cancel booking) Delete client (client_id $clientId) and bookings (event_id $eventId)", $client->toArray());
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error("Xảy ra lỗi trong quá trình hủy booking: " . $e->getMessage());
+            DB::rollBack();
+            return false;
+        }
         return true;
     }
 }

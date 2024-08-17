@@ -8,9 +8,7 @@ use App\Services\Admin\BookingService;
 
 class BookingController extends Controller
 {
-    public function __construct(protected BookingService $bookingService)
-    {
-    }
+    public function __construct(protected BookingService $bookingService) {}
 
     public function getBookings(int $eventId)
     {
@@ -25,6 +23,12 @@ class BookingController extends Controller
         if ($result) {
             return $this->responseSuccess();
         }
+        return $this->responseError();
+    }
+
+    public function cancelBooking(int $eventId, int $clientId) {
+        $result = $this->bookingService->cancelBookings($eventId, $clientId);
+        if ($result) return $this->responseSuccess();
         return $this->responseError();
     }
 }

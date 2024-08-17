@@ -12,9 +12,7 @@ use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
-    public function __construct(protected BookingService $bookingService)
-    {
-    }
+    public function __construct(protected BookingService $bookingService) {}
 
     public function booking(BookingRequest $request)
     {
@@ -52,7 +50,8 @@ class BookingController extends Controller
         return $this->responseSuccess($result);
     }
 
-    public function generateTeporaryToken() {
+    public function generateTeporaryToken()
+    {
         $token = md5(request()->getClientIp() . Str::random(5));
         return $this->responseSuccess([
             "token" => $token

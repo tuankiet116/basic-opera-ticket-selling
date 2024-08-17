@@ -58,6 +58,7 @@ Route::middleware(["auth:sanctum", GzipMiddleware::class])->prefix("/admin")->gr
     Route::prefix("/bookings")->group(function () {
         Route::get("/list/{eventId}", [AdminBookingController::class, "getBookings"]);
         Route::put("/accept", [AdminBookingController::class, "acceptBooking"]);
+        Route::delete("/cancel/{eventId}/client/{clientId}", [AdminBookingController::class, "cancelBooking"]);
     });
     Route::prefix("/report")->group(function () {
         Route::post("/aggregate", [ExportController::class, "createReport"]);
