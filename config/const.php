@@ -48,3 +48,10 @@ if (!defined("CHUNK_SIZE_BROADCAST")) define("CHUNK_SIZE_BROADCAST", 5);
 
 if (!defined("PRICE_DISCOUNT_TYPE")) define("PRICE_DISCOUNT_TYPE", "price-discount");
 if (!defined("PERCENTAGE_DISCOUNT_TYPE")) define("PERCENTAGE_DISCOUNT_TYPE", "percentage-discount");
+
+if (!defined("IMAGETYPE_GIF")) define("IMAGETYPE_GIF", 1);
+if (!defined("IMAGETYPE_JPEG")) define("IMAGETYPE_JPEG", 2);
+if (!defined("IMAGETYPE_PNG")) define("IMAGETYPE_PNG", 3);
+if (!defined("IMAGETYPE_BMP")) define("IMAGETYPE_BMP", 6);
+if (!defined("IMAGETYPE_WBMP")) define("IMAGETYPE_WBMP", 15);
+if (!defined("IMAGETYPE_XBM")) define("IMAGETYPE_XBM", 16);

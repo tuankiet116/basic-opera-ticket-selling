@@ -7,6 +7,7 @@ use App\Models\ClientModel;
 use App\Models\EventModel;
 use App\Models\EventSeatClassModel;
 use App\Models\TicketClassModel;
+use App\Services\Common\ConvertImage;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +28,17 @@ class EventService
         DB::beginTransaction();
         try {
             $image = request()->file("image");
-            $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".webp");
-            data_set($data, "image_url", $filePath);
+            $filePath = Storage::disk("public")->putFileAs("/events", $image, time());
+            $resultConvert = app(ConvertImage::class)->webpConvert2(storage_path("app/public/" . $filePath));
+            if ($resultConvert) {
+                data_set($data, "image_url", $filePath . "webp");
+            } else {
+                Storage::disk("public")->delete($filePath);
+                $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . "." . $image->extension());
+                data_set($data, "image_url", $filePath);
+            }
             $event = EventModel::create($data);
-            $ticketClassesData = array_map(fn ($data) => $data + [
+            $ticketClassesData = array_map(fn($data) => $data + [
                 "event_id" => $event->id,
                 "created_at" => $time
             ], $data["ticketClasses"]);
@@ -74,8 +82,15 @@ class EventService
             $image = request()->file("image");
             if ($image) {
                 if ($event->image_url) Storage::disk("public")->delete($event->image_url);
-                $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . ".png");
-                data_set($data, "image_url", $filePath);
+                $filePath = Storage::disk("public")->putFileAs("/events", $image, time());
+                $resultConvert = app(ConvertImage::class)->webpConvert2(storage_path("app/public/" . $filePath));
+                if ($resultConvert) {
+                    data_set($data, "image_url", $filePath . ".webp");
+                } else {
+                    Storage::disk("public")->delete($filePath);
+                    $filePath = Storage::disk("public")->putFileAs("/events", $image, time() . "." . $image->extension());
+                    data_set($data, "image_url", $filePath);
+                }
             }
             $event->update($data);
             $event->save();
