@@ -85,12 +85,12 @@
             </tr>
         </tbody>
     </table>
-    <p dir="ltr">Tên tài khoản/Beneficiary: <strong>NHA HAT HO GUOM</strong></p>
-    <p dir="ltr">Ngân hàng/Bank: <strong>Ngân hàng TMCP Kỹ Thương Việt Nam - Techcombank</strong></p>
-    <p dir="ltr">Số tài khoản/Bank account number:<strong> 3135 9999</strong></p>
-    <p dir="ltr">Nội dung chuyển khoản/Syntax:<strong> {{ $event->banking_code . "_Tên bạn_Ghế đã đặt" }}/  {{ $client->banking_code . "_Your name_Your seats" }}</strong></p>
+    <p dir="ltr">Tên tài khoản/Beneficiary: <strong>Nguyễn Phương Lan</strong></p>
+    <p dir="ltr">Ngân hàng/Bank: <strong>Ngân hàng Việt Nam Thịnh Vượng - VP Bank</strong></p>
+    <p dir="ltr">Số tài khoản/Bank account number:<strong> 138373967</strong></p>
+    <p dir="ltr">Nội dung chuyển khoản/Syntax:<strong> {{ $event->banking_code . "_Tên bạn_Ghế đã đặt" }} / {{ $event->banking_code . "_Your name_Your seats" }}</strong></p>
     <p dir="ltr"><img
-            src="https://lh7-us.googleusercontent.com/AxruJbuIJ03ByvTXV-y9y1Ex2JjIu0K6HkNK2jxa2YdPz-6ukfR4KBxp-NLWCYcFojV9YybJfioVR_QsPiQZbGGzLd8yLC4nyBbiJz9zztX4qemXfucXCcAJw0UKb7aRHaknvvrT_981-NPAP2_JJd8"
+            src="{{ Vite::asset('resources/images/banking.jpg') }}"
             width="602" height="779"></p>
     <p dir="ltr"> </p>
     <p dir="ltr"><strong>Lưu ý: </strong>Ghế sẽ được TẠM GIỮ khi bạn gửi form và chỉ được XÁC NHẬN khi bạn thanh
