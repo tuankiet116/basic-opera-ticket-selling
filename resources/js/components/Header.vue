@@ -3,11 +3,11 @@
         <div class="container-fluid py-2 d-flex row">
             <div class="col p-0">
                 <router-link :to="{ name: 'index' }">
-                    <img class="d-none d-md-block" height="50px" src="../../images/image.webp" alt="Ho Guom Opera"/>
+                    <img class="d-none d-md-block" height="70px" src="../../images/image.webp" alt="Ho Guom Opera"/>
                     <img class="d-md-none" height="30px" src="../../images/image.webp" />
                 </router-link>
             </div>
-            <div class="col text-center p-0">
+            <div class="col text-center align-content-center p-0">
                 <h1 class="fs-5 d-md-none">{{ $t("title") }}</h1>
                 <h1 class="fs-2 d-none d-md-block">{{ $t("title") }}</h1>
             </div>

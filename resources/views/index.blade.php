@@ -11,7 +11,7 @@
     <meta property="article:publisher" content="https://www.facebook.com/hoguomoperavn">
     <meta name="description" content="Nhà hát Hồ Gươm">
     <meta name="keywords"
-        content="hanoi,hgo,hoguomopera,hoguom,opera,nhà hát,hồ gươm,nhà hát hồ gươm, đặt vé, mua vé, sự kiện">
+        content="hanoi,hgo,hoguomopera,hoguom,opera,nhà hát,hồ gươm,nhà hát hồ gươm, đặt vé, mua vé, sự kiện,hà nội,vietnam airlines">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">

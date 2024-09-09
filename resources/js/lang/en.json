@@ -57,7 +57,9 @@
         "title": "Ho Guom Opera",
         "address": "Address",
         "phone_number": "Phone",
-        "copy_right": "© Ho Guom Opera. All rights reserved."
+        "copy_right": "© Hanoi Ticket. All rights reserved.",
+        "address_detail": "No. 8, Alley 198, Thái Hà Street, Đống Đa District, Hanoi City",
+        "company_name": "Nhật Minh SHD Joint Stock Company"
     },
     "warning_text": "The ticket booking website only works from 10 AM - 10 PM every day",
     "discount": {
