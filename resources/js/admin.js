@@ -16,6 +16,7 @@ import "./echo.js";
 import { createI18n } from 'vue-i18n';
 import * as VI from "./lang/vi.json";
 import * as EN from "./lang/en.json";
+import.meta.glob([ '../images/**', ]);
 
 const pinia = createPinia();
 const authenticatedStore = useAuthenticateStore(pinia);
