@@ -86,7 +86,7 @@
         </tbody>
     </table>
     <p dir="ltr">Tên tài khoản/Beneficiary: <strong>CT CP NHAT MINH SHD</strong></p>
-    <p dir="ltr">Ngân hàng/Bank: <strong>Ngân hàng Việt Nam Thịnh Vượng - VP Bank</strong></p>
+    <p dir="ltr">Ngân hàng/Bank: <strong>Ngân hàng TMCP Ngoại Thương Việt Nam - Vietcombank</strong></p>
     <p dir="ltr">Số tài khoản/Bank account number:<strong>1101416666</strong></p>
     <p dir="ltr">Nội dung chuyển khoản/Syntax:<strong> {{ $event->banking_code . "_Tên bạn_Ghế đã đặt" }} / {{ $event->banking_code . "_Your name_Your seats" }}</strong></p>
     <p dir="ltr"><img
