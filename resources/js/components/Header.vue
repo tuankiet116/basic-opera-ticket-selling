@@ -1,15 +1,11 @@
 <template>
     <div class="container-fluid shadow row pe-0 w-100 position-sticky top-0 bg-white w-100 m-0 z-2">
         <div class="container-fluid py-2 d-flex row">
-            <div class="col p-0">
+            <div class="col-md-11 col-sm-9 col-4 text-center align-content-center p-0">
                 <router-link :to="{ name: 'index' }">
-                    <img class="d-none d-md-block" height="70px" src="../../images/image.webp" alt="Ho Guom Opera"/>
-                    <img class="d-md-none" height="30px" src="../../images/image.webp" />
+                    <h1 class="fs-5 d-md-none">{{ $t("title") }}</h1>
+                    <h1 class="fs-2 d-none d-md-block">{{ $t("title") }}</h1>
                 </router-link>
-            </div>
-            <div class="col text-center align-content-center p-0">
-                <h1 class="fs-5 d-md-none">{{ $t("title") }}</h1>
-                <h1 class="fs-2 d-none d-md-block">{{ $t("title") }}</h1>
             </div>
             <div class="col p-0 d-flex align-items-center justify-content-end">
                 <div class="d-flex align-items-center">
