@@ -19,7 +19,7 @@ class EventService
 {
     public function listAll(string $query = "")
     {
-        return EventModel::searchBy($query)->paginate(PAGINATE_NUMBER);
+        return EventModel::searchBy($query)->orderBy("created_at", "desc")->paginate(PAGINATE_NUMBER);
     }
 
     public function create(array $data): EventModel | null

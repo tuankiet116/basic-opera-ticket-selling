@@ -63,9 +63,10 @@
                 </div>
                 <div class="col-6">
                     <label for="ticket_class_id" class="form-label fw-medium">Hạng vé áp dụng: </label>
-                    <Multiselect :disabled="!props.isCreate" v-model="ticketClassSelected" :options="optionsTicketClasses" track-by="id"
-                        @searchChange="searchTicketClassChange" deselect-label="Bỏ chọn" label="name"
-                        select-label="Chọn hạng vé áp dụng" selected-label="Đã chọn">
+                    <Multiselect :disabled="!props.isCreate" v-model="ticketClassSelected"
+                        :options="optionsTicketClasses" track-by="id" @searchChange="searchTicketClassChange"
+                        deselect-label="Bỏ chọn" label="name" select-label="Chọn hạng vé áp dụng"
+                        selected-label="Đã chọn">
                         <template #option="props">
                             {{ props.option.name + (props.option.price ? `(${numberWithCommas(props.option.price)}) vnd`
                                 : "") }}
@@ -188,6 +189,7 @@ async function handleUpsertDiscountCode() {
                 data.value.end_date = dateSelected.value[1];
                 emits("afterUpdate", data.value)
             };
+            toast.success("Mã giảm giá đã được cập nhật");
             break;
         default:
             toast.error(response.data.message);
@@ -196,7 +198,10 @@ async function handleUpsertDiscountCode() {
 
 watch(ticketClassSelected, (ticketClassSelected) => data.value.ticket_class_id = ticketClassSelected?.id ?? null);
 watch(() => props.discountData, (newValue) => {
-    if (Object.keys(newValue).length) data.value = newValue;
+    if (Object.keys(newValue).length) {
+        data.value = newValue;
+        discountType.value = newValue.discount_type;
+    }
     else data.value = {
         discount_code: "",
         ticket_class_id: null,

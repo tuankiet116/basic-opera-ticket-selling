@@ -16,9 +16,9 @@ class ClientService
     {
         return ClientModel::search($searchStr)
             ->where("isSpecial", $isSpecial)->when($isPaginate, function ($q) {
-                return $q->paginate(PAGINATE_NUMBER);
+                return $q->orderBy("created_at", "desc")->paginate(PAGINATE_NUMBER);
             }, function ($q) {
-                return $q->get();
+                return $q->orderBy("created_at", "desc")->get();
             });
     }
 

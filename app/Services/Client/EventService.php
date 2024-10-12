@@ -10,7 +10,7 @@ class EventService
 {
     public function listAvailableEvents()
     {
-        return EventModel::available()->paginate(PAGINATE_NUMBER);
+        return EventModel::available()->orderBy("created_at", "desc")->paginate(PAGINATE_NUMBER);
     }
 
     public function getEvent(int $eventId)

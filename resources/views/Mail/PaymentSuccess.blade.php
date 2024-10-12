@@ -129,36 +129,6 @@
         <p dir="ltr">
             <strong>Musical Seasons<br></strong>
         </p>
-        <table>
-            <tr>
-                <td>
-                    <img style="width:121px;height:90px" src="{{ Vite::asset('resources/images/image.webp') }}">
-                </td>
-                <td>
-                    <p dir="ltr"><strong>HO GUOM OPERA</strong></p>
-                    <p dir="ltr">
-                        <strong>Address:</strong>
-                        40-40A Hang Bai Str., Hoan Kiem Dist, Hanoi
-                    </p>
-                    <p dir="ltr">
-                        <span>
-                            <strong>Email:</strong> <a href="mailto:musicalseasons@hoguomopera.com"
-                                target="_blank">musicalseasons@hoguomopera.com</a>
-                        </span>
-                    </p>
-                    <p dir="ltr">
-                        <span>
-                            <strong>Fanpage:</strong>
-                            <a href="https://www.facebook.com/hoguomoperavn" target="_blank">
-                                Ho Guom Opera: Musical Seasons
-                            </a>
-                        </span>
-                    </p>
-                    <p dir="ltr">
-                        <span><strong>Hotline:</strong> 082 558 3888</span>
-                    </p>
-                </td>
-            </tr>
-        </table>
     </span>
+    @include("Mail.footer")
 </div>
